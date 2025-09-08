@@ -9,11 +9,9 @@ import com.lingo.account.model.Account;
 import com.lingo.account.repository.AccountRepository;
 import com.lingo.account.repository.IdentityClient;
 import com.lingo.common_library.exception.NotFoundException;
-import com.netflix.discovery.converters.Auto;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -43,14 +41,12 @@ public class AccountService {
   }
 
   public ResAccountDTO createNewAccount(ReqAccountDTO request) {
-    var token = this.identityClient.exchangeClientToken(TokenExchangeRequest.builder()
-            .grant_type("client_credentials")
-            .client_id(clientId)
-            .client_secret(clientSecret)
-            .scope("openid")
-            .build());
+    TokenExchangeRequest newToken = new TokenExchangeRequest("client_credentials", clientId, clientSecret, "openid");
 
-    var createAccountRes = this.identityClient.createAccount("Bearer" + token.access_token(),
+    var token = this.identityClient.exchangeClientToken(newToken);
+
+    var createAccountRes = identityClient.createAccount(
+            "Bearer " + token.getAccessToken(),
             ReqAccount.builder()
                     .username(request.getUsername())
                     .firstName(request.getFirstName())
@@ -63,16 +59,15 @@ public class AccountService {
                             .temporary(false)
                             .value(request.getPassword())
                             .build()))
-                    .build()
-    );
+                    .build());
 
     String userId = extractUserId(createAccountRes);
     log.info("KEYCLOAK, User created with id: {}", userId);
 
-    Account account = this.accountMapper.toModel(request, userId);
+    Account account = accountMapper.toModel(request, userId);
     this.accountRepository.save(account);
 
-    return this.accountMapper.toResDTO(account);
+    return accountMapper.toResDTO(account);
   }
 
 

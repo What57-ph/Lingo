@@ -3,18 +3,35 @@ package com.lingo.account.mapper;
 import com.lingo.account.dto.request.ReqAccountDTO;
 import com.lingo.account.dto.response.ResAccountDTO;
 import com.lingo.account.model.Account;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
 @Component
-public interface AccountMapper {
+@RequiredArgsConstructor
+public class AccountMapper {
 
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "keycloakId", source = "keycloakId")
-  Account toModel(ReqAccountDTO reqAccountDTO, String keycloakId);
+  private final ModelMapper modelMapper;
 
-  ResAccountDTO toResDTO(Account account);
+  public Account toModel(ReqAccountDTO reqAccountDTO, String keycloakId) {
+    if (reqAccountDTO == null) {
+      return null;
+    }
 
+    Account account = modelMapper.map(reqAccountDTO, Account.class);
+
+    account.setKeycloakId(keycloakId);
+
+    account.setId(null);
+
+    return account;
+  }
+
+  public ResAccountDTO toResDTO(Account account) {
+    if (account == null) {
+      return null;
+    }
+
+    return modelMapper.map(account, ResAccountDTO.class);
+  }
 }

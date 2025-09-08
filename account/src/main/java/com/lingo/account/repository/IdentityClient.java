@@ -17,6 +17,9 @@ public interface IdentityClient {
   @PostMapping(value = "/realms/Lingo/protocol/openid-connect/token", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   TokenExchangeResponse exchangeClientToken(@QueryMap TokenExchangeRequest token);
 
+//  @PostMapping(value = "/admin/realms/Lingo/users", consumes = MediaType.APPLICATION_JSON_VALUE)
+//  ResponseEntity<?> createAccount(@RequestHeader("authorization") String token, @RequestBody ReqAccount reqAccount );
+
   @PostMapping(value = "/admin/realms/Lingo/users", consumes = MediaType.APPLICATION_JSON_VALUE)
-  ResponseEntity<?> createAccount(@RequestHeader("Authorization") String token, @RequestBody ReqAccount reqAccount );
+  ResponseEntity<?> createAccount(@RequestHeader("authorization") String token, @RequestBody ReqAccount param);
 }

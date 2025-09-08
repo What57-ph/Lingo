@@ -1,8 +1,22 @@
 package com.lingo.account.dto.identity;
 
-import lombok.Builder;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public record TokenExchangeResponse(String access_token, String expires_in, String refresh_expires_in,
-                                    String token_type, String id_token, String scope) {
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+public class TokenExchangeResponse {
+  String accessToken;
+  String expiresIn;
+  String refreshExpiresIn;
+  String tokenType;
+  String idToken;
+  String scope;
 }
