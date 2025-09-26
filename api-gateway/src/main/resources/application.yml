@@ -24,6 +24,12 @@ spring:
           uri: lb://attempt-service
           predicates:
             - Path=/api/v1/attempt/**
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/Lingo
+
 eureka:
   instance:
     hostname: localhost
@@ -32,3 +38,8 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
       register-with-eureka: true
       fetch-registry: true
+idp:
+  url: http://localhost:8180
+  client-id: Lingo
+  client-secret: JK7Mc23PlhXx3TSCVlC3wKhq7PmohD8I
+  realm: Lingo

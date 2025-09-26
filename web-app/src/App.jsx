@@ -1,22 +1,37 @@
 import { useState } from 'react'
 import './App.css'
+import './styles/antStyle.css'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AdminLayout from './layouts/AdminLayout';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 import AuthLayout from './layouts/AuthLayout';
-import LoginPage from './pages/LoginPage';
 import ClientLayout from './layouts/ClientLayout';
 import HomePage from './pages/HomePage';
 import CreateTestPage from './pages/admin/CreateTestPage';
 import UserPage from './pages/admin/UserPage';
 import TestPage from './pages/admin/TestPage';
 import DashboardPage from './pages/admin/DashboardPage';
-import ListTestsPage from './pages/tests/ListTestsPage';
+import LoginPage from './pages/auth/LoginPage';
+import RegisterPage from './pages/auth/RegisterPage';
+import ForgetPage from './pages/auth/ForgetPage';
+import ResetPage from './pages/auth/ResetPage';
+import { ToastContainer } from 'react-toastify';
 import BeforeTestPage from './pages/tests/BeforeTestPage';
 import AfterTestPage from './pages/tests/AfterTestPage';
 import TestListPage from './pages/tests/TestListPage';
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { initializeAuth } from "./slice/authentication";
 function App() {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(initializeAuth());
+  }, [dispatch]);
 
   const router = createBrowserRouter([
     {
@@ -50,6 +65,18 @@ function App() {
         {
           path: "login",
           element: <LoginPage />,
+        },
+        {
+          path: "register",
+          element: <RegisterPage />,
+        },
+        {
+          path: "forget",
+          element: <ForgetPage />,
+        },
+        {
+          path: "reset",
+          element: <ResetPage />,
         }
       ],
     },
@@ -81,6 +108,16 @@ function App() {
   return (
     <>
       <RouterProvider router={router} />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+      />
     </>
   );
 }

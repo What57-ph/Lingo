@@ -1,23 +1,32 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from "react-redux";
-import { retrieveAttempts } from '../slice/attempts';
-
+import React, { useContext, useEffect, useState } from 'react';
+import AuthContext from '../contexts/AuthContext';
+import { useDispatch } from 'react-redux';
+import { loginGoogle } from '../slice/authentication';
+import { toast } from 'react-toastify';
 
 const HomePage = () => {
-
     const dispatch = useDispatch();
-    const { attempts } = useSelector(state => state.attempts);
+
     useEffect(() => {
-        dispatch(retrieveAttempts(1));
-    }, []);
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get('code');
 
-
-    console.log(attempts);
-
+        if (code) {
+            (async () => {
+                try {
+                    await dispatch(loginGoogle(code)).unwrap();
+                    toast.success("Đăng nhập thành công");
+                } catch {
+                    toast.error("Đăng nhập thất bại");
+                } finally {
+                    window.history.replaceState({}, "", "/");
+                }
+            })();
+        }
+    }, [dispatch]);
 
     return (
         <div>
-            hello
         </div>
     );
 };
