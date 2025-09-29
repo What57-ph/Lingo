@@ -4,6 +4,7 @@ import com.lingo.testservice.mapper.AnswerMapper;
 import com.lingo.testservice.model.Answer;
 import com.lingo.testservice.model.dto.request.answer.ReqAnswerDTO;
 import com.lingo.testservice.model.dto.response.ResAnswerDTO;
+import com.lingo.testservice.model.dto.response.ResCorrectAnswerDTO;
 import com.lingo.testservice.repository.AnswerRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +12,9 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public interface AnswerService {
@@ -28,6 +29,8 @@ public interface AnswerService {
     ResAnswerDTO getOne(long id) throws Exception;
 
     void saveAllAnswers(List<ReqAnswerDTO> list);
+
+    List<ResCorrectAnswerDTO> getCorrectAnswerOfQuestions(List<Long> questionIds);
 }
 
 @RequiredArgsConstructor
@@ -80,4 +83,28 @@ class AnswerServiceImpl implements AnswerService {
                 .collect(Collectors.toList());
         answerRepository.saveAll(answers);
     }
+
+    @Override
+    public List<ResCorrectAnswerDTO> getCorrectAnswerOfQuestions(List<Long> questionIds) {
+        List<ResCorrectAnswerDTO> result = new ArrayList<>();
+
+        for (Long questionId : questionIds) {
+            List<Answer> answers = answerRepository.findByQuestionId(questionId);
+            Optional<Answer> optCorrectAnswer = answers.stream()
+                    .filter(answer -> "true".equals(answer.getCorrect()))
+                    .findFirst();
+
+            ResCorrectAnswerDTO dto = optCorrectAnswer
+                    .map(answer -> ResCorrectAnswerDTO.builder()
+                            .correctAnswer(answer.getContent())
+                            .questionId(questionId)
+                            .build())
+                    .orElseThrow(() -> new RuntimeException("Correct answer not found for questionId: " + questionId));
+
+            result.add(dto);
+        }
+
+        return result;
+    }
+
 }

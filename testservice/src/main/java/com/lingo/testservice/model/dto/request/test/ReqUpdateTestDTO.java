@@ -7,7 +7,7 @@ import lombok.experimental.FieldDefaults;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ReqUpdateTestDTO extends ReqTestDTO{
+public class ReqUpdateTestDTO extends ReqTestDTO {
     @Nullable
     String mediaURL;
 }

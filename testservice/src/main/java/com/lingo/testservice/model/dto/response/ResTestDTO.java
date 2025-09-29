@@ -1,13 +1,10 @@
 package com.lingo.testservice.model.dto.response;
 
-import com.lingo.testservice.model.MediaResource;
-import com.lingo.testservice.model.Question;
+import com.lingo.testservice.utils.enums.TestCategory;
 import com.lingo.testservice.utils.enums.TestType;
-import jakarta.persistence.*;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
 
 @Data
 @Builder
@@ -20,6 +17,10 @@ public class ResTestDTO {
     int maxScore;
     int timeLimit;
     TestType type;
-//    List<Long> questions;
+    // List<Long> questions;
     String mediaUrl;
+    TestCategory category;
+    int numOfQuestions;
+    int attempts;
+
 }

@@ -14,8 +14,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ReqMediaResourceDTO {
 
-    String mediaUrl;
+    String resourceContent;
+    String explanationResourceContent;
     @Nullable
     String description;
-    MediaResourceCategory category;
+
 }

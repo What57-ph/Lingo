@@ -10,7 +10,10 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
     Question toQuestion(ReqQuestionDTO request);
-    @Mapping(target = "mediaUrl", source = "resource.mediaUrl")
+
+    @Mapping(target = "resourceContent", source = "resource.resourceContent")
     @Mapping(target = "testId", source = "test.id")
+    @Mapping(target = "resourceContentId", source = "resource.id")
+    // @Mapping(target = "explanationResourceContentId", source = "resource.id")
     ResQuestionDTO toQuestionResponse(Question question);
 }

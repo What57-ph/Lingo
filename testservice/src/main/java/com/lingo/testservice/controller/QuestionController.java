@@ -2,6 +2,7 @@ package com.lingo.testservice.controller;
 
 import com.lingo.testservice.model.dto.request.question.ReqCreateQuestionDTO;
 import com.lingo.testservice.model.dto.request.question.ReqQuestionDTO;
+import com.lingo.testservice.model.dto.request.question.ReqUpdateQuestionDTO;
 import com.lingo.testservice.model.dto.response.ResQuestionDTO;
 import com.lingo.testservice.service.QuestionService;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,7 @@ public class QuestionController {
     }
 
     @PutMapping("/update/{id}")
-    public ResQuestionDTO update(@RequestBody ReqQuestionDTO dto, @PathVariable("id") long id) {
+    public ResQuestionDTO update(@RequestBody ReqUpdateQuestionDTO dto, @PathVariable("id") long id) {
         return questionService.update(dto, id);
     }
 
@@ -52,7 +53,8 @@ public class QuestionController {
     }
 
     @GetMapping("/all/{testId}")
-    public ResponseEntity<List<ResQuestionDTO>> getAllQuestionForTest(@PathVariable("testId") long testId) {
+    public ResponseEntity<List<ResQuestionDTO>> getAllQuestionForTest(@PathVariable("testId") long testId)
+            throws Exception {
         return ResponseEntity.ok().body(questionService.findByTestId(testId));
     }
 

@@ -1,5 +1,6 @@
 package com.lingo.testservice.model;
 
+import com.lingo.testservice.utils.enums.TestCategory;
 import com.lingo.testservice.utils.enums.TestType;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -25,7 +26,10 @@ public class Test {
     int timeLimit;
     @Enumerated(EnumType.STRING)
     TestType type;
-
+    @Enumerated(EnumType.STRING)
+    TestCategory category;
+    int attempts;
+    int numOfQuestions;
     @OneToMany(mappedBy = "test", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Question> questions;
     // @OneToMany(mappedBy = "test", cascade = CascadeType.ALL)

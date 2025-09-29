@@ -22,9 +22,10 @@ public class Question {
     String title;
     long point;
     // fe pass question id to save key
-    long answerKey;
+    String answerKey;
     String explanation;
     String part;
+    int questionNumber;
     @Enumerated(value = EnumType.STRING)
     MediaResourceCategory category; // for reading or listening
     @ManyToOne
@@ -32,6 +33,8 @@ public class Question {
     Test test;
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     List<Answer> answers;
-    @OneToOne(mappedBy = "question", cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "resource_id")
     MediaResource resource;
+    String explanationResourceContent;
 }
