@@ -6,7 +6,6 @@ const initialState = {
     other: []
 };
 
-// ✅ Async Thunks
 export const createTest = createAsyncThunk("tests/create", async (test) => await addTest(test));
 export const retrieveAllTests = createAsyncThunk("tests/retrieveAll", async () => await getAllTests());
 export const retrieveSingleTest = createAsyncThunk("tests/retrieveOne", async (id) => await getOneTest(id));

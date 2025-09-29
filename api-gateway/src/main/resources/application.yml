@@ -19,7 +19,21 @@ spring:
           uri: http://localhost:9004
           predicates:
             - Path=/api/v1/file/**
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/Lingo
+
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
+idp:
+  url: http://localhost:8180
+  client-id: Lingo
+  client-secret: JK7Mc23PlhXx3TSCVlC3wKhq7PmohD8I
+  realm: Lingo
+

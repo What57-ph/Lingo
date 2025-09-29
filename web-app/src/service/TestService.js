@@ -1,5 +1,4 @@
 // Test service
-
 import instance from "./axios-customize";
 export const getAllTests = async () => {
     const URL = "/test/all";
@@ -138,4 +137,3 @@ export const addMultipleAnswers = async (answerList) => {
     const response = await instance.post(URL);
     return (await response).data;
 }
-

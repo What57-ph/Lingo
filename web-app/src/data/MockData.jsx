@@ -12,4 +12,6 @@ export const attempt = {
     correct_answer: ["A", "B", "C", "D"][Math.floor(Math.random() * 4)],
     is_correct: false
   }))
+
 };
+

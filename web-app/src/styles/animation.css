@@ -1,0 +1,30 @@
+@keyframes shake {
+  0% { transform: translateY(17px); }
+  25% { transform: translateY(15px); }
+  50% { transform: translateY(10px); }
+  75% { transform: translateY(5px); }
+  100% { transform: translateY(0px); }
+}
+
+.shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+.lift-on-hover {
+  transition: transform 0.7s ease, box-shadow 0.7s ease;
+}
+
+.lift-on-hover:hover {
+  transform: translateY(-4px); /* nhô lên 4px */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* bóng đổ mạnh hơn */
+}
+
+.lift-on-focus {
+  transition: transform 0.5s ease, box-shadow 0.7s ease;
+}
+
+.lift-on-focus:focus-within {
+  transform: translateY(-3px); /* nhô lên 4px */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* bóng đổ mạnh hơn */
+}
+

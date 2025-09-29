@@ -16,6 +16,8 @@ public class WebClientConfiguration {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
         corsConfiguration.setAllowedMethods(List.of("GET", "PUT", "POST", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowedHeaders(List.of("Content-Type", "X-Requested-With", "accept", "Origin", "Access-Control-Request-Method",
+               "Access-Control-Request-Headers", "Authorization"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setMaxAge(3600L);
@@ -25,3 +27,4 @@ public class WebClientConfiguration {
         return new CorsWebFilter(urlBasedCorsConfigurationSource);
     }
 }
+
