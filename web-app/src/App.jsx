@@ -19,20 +19,19 @@ import ListTestsPage from './pages/tests/ListTestsPage';
 import BeforeTestPage from './pages/tests/BeforeTestPage';
 import AfterTestPage from './pages/tests/AfterTestPage';
 import HavingTestPage from './pages/tests/HavingTestPage';
-
-function App() {
-
-
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import ForgetPage from './pages/auth/ForgetPage';
 import ResetPage from './pages/auth/ResetPage';
 import { ToastContainer } from 'react-toastify';
-import BeforeTestPage from './pages/tests/BeforeTestPage';
-import AfterTestPage from './pages/tests/AfterTestPage';
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { initializeAuth } from "./slice/authentication";
+
+
+
+
+
 function App() {
 
   const dispatch = useDispatch();
@@ -97,7 +96,6 @@ function App() {
           index: true,
           element: <HomePage />,
         },
-        {
         {
 
           path: "tests/:id/:name",
