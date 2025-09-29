@@ -8,9 +8,13 @@ import com.lingo.testservice.model.Question;
 import com.lingo.testservice.model.Test;
 import com.lingo.testservice.model.dto.request.question.ReqCreateQuestionDTO;
 import com.lingo.testservice.model.dto.request.question.ReqQuestionDTO;
+import com.lingo.testservice.model.dto.request.question.ReqUpdateQuestionDTO;
 import com.lingo.testservice.model.dto.response.ResQuestionDTO;
+import com.lingo.testservice.repository.MediaResourceRepository;
 import com.lingo.testservice.repository.QuestionRepository;
 import com.lingo.testservice.repository.TestRepository;
+import com.lingo.testservice.utils.enums.MediaResourceCategory;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,7 +29,7 @@ import java.util.stream.Collectors;
 public interface QuestionService {
     ResQuestionDTO add(ReqCreateQuestionDTO dto);
 
-    ResQuestionDTO update(ReqQuestionDTO dto, long id);
+    ResQuestionDTO update(ReqUpdateQuestionDTO dto, long id);
 
     void delete(long id);
 
@@ -35,7 +39,7 @@ public interface QuestionService {
 
     void saveAll(List<ReqCreateQuestionDTO> reqListQuestion);
 
-    List<ResQuestionDTO> findByTestId(long Id);
+    List<ResQuestionDTO> findByTestId(long Id) throws Exception;
 }
 
 @RequiredArgsConstructor
@@ -46,6 +50,7 @@ class QuestionServiceImpl implements QuestionService {
     QuestionRepository repository;
     // AnswerRepository answerRepository;
     TestRepository testRepository;
+    MediaResourceRepository resourceRepository;
     QuestionMapper mapper;
     AnswerMapper answerMapper;
 
@@ -62,8 +67,11 @@ class QuestionServiceImpl implements QuestionService {
         }).collect(Collectors.toList());
 
         question.setAnswers(answerList);
-        MediaResource resource = MediaResource.builder().mediaUrl(dto.getMediaURL()).question(question).build();
+        MediaResource resource = MediaResource.builder().resourceContent(dto.getResourceContent())
+                .questions(List.of(question))
+                .build();
         question.setResource(resource);
+        question.setExplanationResourceContent(dto.getExplanationResourceContent());
         repository.save(question);
         // ResQuestionDTO response=mapper.toQuestionResponse(question);
         // response.setMediaUrl(question.getResource().getMediaUrl());
@@ -71,14 +79,35 @@ class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public ResQuestionDTO update(ReqQuestionDTO dto, long id) {
+    public ResQuestionDTO update(ReqUpdateQuestionDTO dto, long id) {
         Optional<Question> questionOptional = repository.findById(id);
+        Optional<MediaResource> resourceOptional = resourceRepository.findByResourceContent(dto.getResourceContent());
         questionOptional.ifPresent(question -> {
-            question.setPart(dto.getPart());
-            question.setCategory(dto.getCategory());
-            question.setExplanation(dto.getExplanation());
-            question.setTitle(dto.getTitle());
-            question.setAnswerKey(dto.getAnswerKey());
+            if (dto.getPart() != null) {
+                question.setPart(dto.getPart());
+            }
+            if (dto.getCategory() != null) {
+                question.setCategory(dto.getCategory());
+            }
+            if (dto.getExplanation() != null) {
+                question.setExplanation(dto.getExplanation());
+            }
+            if (dto.getTitle() != null) {
+                question.setTitle(dto.getTitle());
+            }
+            if (dto.getAnswerKey() != null) {
+                question.setAnswerKey(dto.getAnswerKey());
+            }
+            if (dto.getTitle() != null) {
+                question.setTitle(dto.getTitle());
+            }
+            question.setExplanationResourceContent(dto.getExplanationResourceContent());
+            if (resourceOptional.isPresent()) {
+                MediaResource resource = resourceOptional.get();
+                resource.setResourceContent(dto.getResourceContent());
+                question.setResource(resource);
+            }
+
         });
 
         Question question = repository.save(questionOptional.get());
@@ -105,7 +134,7 @@ class QuestionServiceImpl implements QuestionService {
     public void saveAll(List<ReqCreateQuestionDTO> dtos) {
         List<Question> questions = dtos.stream().map(dto -> {
             Question question = mapper.toQuestion(dto);
-            Optional<Test> testOptional = testRepository.findTopByTitle(dto.getTestTitle());
+            Optional<Test> testOptional = testRepository.findTopByTitle(dto.getTestTitle().replaceAll(" ", "_"));
             testOptional.ifPresent(question::setTest);
             List<Answer> answerList = dto.getAnswers().stream().map(reqAnswerDTO -> {
                 Answer answer = answerMapper.toAnswer(reqAnswerDTO);
@@ -115,8 +144,20 @@ class QuestionServiceImpl implements QuestionService {
             }).collect(Collectors.toList());
 
             question.setAnswers(answerList);
-            MediaResource resource = MediaResource.builder().mediaUrl(dto.getMediaURL()).question(question).build();
+            Optional<MediaResource> existing = resourceRepository.findByResourceContent(dto.getResourceContent());
+
+            MediaResource resource = existing.orElseGet(() -> {
+                MediaResource newRes = MediaResource.builder()
+                        .resourceContent(dto.getResourceContent())
+
+                        .category(dto.getCategory())
+                        .build();
+                return resourceRepository.save(newRes);
+            });
+
             question.setResource(resource);
+            question.setExplanationResourceContent(dto.getExplanationResourceContent());
+
             return question;
         })
                 .collect(Collectors.toList());
@@ -125,8 +166,11 @@ class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<ResQuestionDTO> findByTestId(long testId) {
+    public List<ResQuestionDTO> findByTestId(long testId) throws Exception {
         List<Question> questions = repository.findAllByTestId(testId);
+        if (questions.isEmpty()) {
+            throw new Exception("Not found test");
+        }
         List<ResQuestionDTO> resQuestions = questions.stream().map(question -> {
             return mapper.toQuestionResponse(question);
         }).collect(Collectors.toList());

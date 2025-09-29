@@ -1,5 +1,7 @@
 package com.lingo.testservice.model;
 
+import java.util.List;
+
 import com.lingo.testservice.utils.enums.MediaResourceCategory;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
@@ -17,8 +19,8 @@ public class MediaResource {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    @Column(name = "media_url")
-    String mediaUrl;
+    @Column(name = "resource_content", columnDefinition = "LONGTEXT")
+    String resourceContent;
     @Nullable
     String description;
     @Enumerated(value = EnumType.STRING)
@@ -26,7 +28,6 @@ public class MediaResource {
     @OneToOne
     @JoinColumn(name = "test_id")
     Test test;
-    @OneToOne
-    @JoinColumn(name = "question_id")
-    Question question;
+    @OneToMany(mappedBy = "resource", cascade = CascadeType.ALL)
+    List<Question> questions;
 }

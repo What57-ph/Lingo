@@ -20,7 +20,8 @@ public class MediaResourceController {
     }
 
     @PutMapping("/update/{id}")
-    public ResMediaResourceDTO update(@RequestBody ReqMediaResourceDTO dto, @PathVariable("id") long id) {
+    public ResMediaResourceDTO update(@RequestBody ReqMediaResourceDTO dto,
+            @PathVariable("id") long id) {
         return mediaResourceService.update(dto, id);
     }
 

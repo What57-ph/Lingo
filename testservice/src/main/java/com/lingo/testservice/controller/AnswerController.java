@@ -2,13 +2,18 @@ package com.lingo.testservice.controller;
 
 import com.lingo.testservice.model.dto.request.answer.ReqAnswerDTO;
 import com.lingo.testservice.model.dto.response.ResAnswerDTO;
+import com.lingo.testservice.model.dto.response.ResCorrectAnswerDTO;
 import com.lingo.testservice.service.AnswerService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api/v1/answer")
@@ -36,9 +41,14 @@ public class AnswerController {
         return answerService.getAll();
     }
 
-    @GetMapping("/one/{id}")
+    @GetMapping("/{id}")
     public ResAnswerDTO getOne(@PathVariable long id) throws Exception {
         return answerService.getOne(id);
+    }
+
+    @GetMapping("/correct")
+    public ResponseEntity<List<ResCorrectAnswerDTO>> getMethodName(@RequestBody List<Long> questionIds) {
+        return ResponseEntity.ok().body(answerService.getCorrectAnswerOfQuestions(questionIds));
     }
 
     @PostMapping("/bulk")

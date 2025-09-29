@@ -3,6 +3,8 @@ package com.lingo.testservice.model.dto.response;
 import com.lingo.testservice.model.Answer;
 import com.lingo.testservice.model.MediaResource;
 import com.lingo.testservice.model.Test;
+import com.lingo.testservice.utils.enums.MediaResourceCategory;
+
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import java.util.List;
@@ -17,10 +19,14 @@ public class ResQuestionDTO {
     String title;
     long point;
     // fe pass question id to save key
-    long answerKey;
+    String answerKey;
     String explanation;
     String part;
+    int questionNumber;
     long testId;
     List<ResAnswerDTO> answers;
-    String mediaUrl;
+    MediaResourceCategory category;
+    String resourceContent;
+    String explanationResourceContent;
+    long resourceContentId;
 }
