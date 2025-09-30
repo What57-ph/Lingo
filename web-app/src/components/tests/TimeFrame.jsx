@@ -8,7 +8,7 @@ import { submitUserAnswer } from "../../slice/tests";
 const TimeFrame = ({ editMode, setEditMode }) => {
     const dispatch = useDispatch();
     const { userAnswers, questions } = useSelector((state) => state.questions);
-    const { test } = useSelector(state => state.tests);
+    const { test } = useSelector(state => state.test);
     const [timeRemaining, setTimeRemaining] = useState(0);
     const [timeLimitFormat, setTimeLimitFormat] = useState();
     useEffect(() => {
