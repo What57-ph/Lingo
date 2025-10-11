@@ -44,7 +44,8 @@ export const postAttempt = (testData) => {
 }
 
 export const getAttemptUserShort = (userId) => {
-  return instance.get("api/v1/attempt", { params: { userId } })
+  // return instance.get("api/v1/attempt", { params: { userId } })
+  return publicInstance.get("api/v1/attempt", { params: { userId } })
 };
 
 export const getAttempt = (attemptId) => {
