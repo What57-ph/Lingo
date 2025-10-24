@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getUserInfoApi, handleApiError, loginApi, loginGoogleApi, logoutApi, registerApi, registerGG } from "../config/api";
 import { decodeToken } from "../utils/DecodeToken";
+import { updateAvatarAccount } from "./accounts";
 
 const initialState = {
   user: JSON.parse(localStorage.getItem('user_profile')) || null,
@@ -177,6 +178,11 @@ const authSlice = createSlice({
       .addCase(loginGoogle.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      .addCase(updateAvatarAccount.fulfilled, (state, action) => {
+        const { avatar } = action.meta.arg;
+        state.user.avatar = avatar;
       })
 
   }

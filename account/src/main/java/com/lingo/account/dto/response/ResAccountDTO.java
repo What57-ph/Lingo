@@ -20,7 +20,9 @@ public class ResAccountDTO {
   private String username;
 //  private String firstName;
 //  private String lastName;
+  private String phone;
   private boolean enable;
   private Instant createdAt;
+  private String avatar;
   private String[] roles ;
 }

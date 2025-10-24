@@ -27,6 +27,7 @@ import ProtectedRoute from './components/share/ProtectedRoute';
 import NotFound from './components/share/NotFound';
 import RootLayout from './layouts/RouteLayout';
 import Analytics from './pages/user/Analytics';
+import Profile from './pages/user/Profile';
 function App() {
   const router = createBrowserRouter([
     {
@@ -64,6 +65,10 @@ function App() {
             {
               path: "analytics",
               element: <Analytics />,
+            },
+            {
+              path: "profile",
+              element: <Profile />,
             },
 
           ]

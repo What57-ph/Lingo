@@ -137,7 +137,7 @@ const UserTable = ({ users, loading, onUpdate, onDelete, onToggleStatus, setFilt
       rowKey="keycloakId"
       scroll={{ x: 'max-content' }}
       pagination={{
-        current: (meta.page ?? 0) + 1,        // AntD dùng 1-based index, API của bạn trả 0-based
+        current: (meta.page ?? 0) + 1,
         pageSize: meta.pageSize,
         total: meta.total,
         showSizeChanger: true,

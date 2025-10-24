@@ -32,7 +32,7 @@ public class SecurityConfig {
             .csrf(ServerHttpSecurity.CsrfSpec::disable)
             .authorizeExchange(exchange -> exchange
                     .pathMatchers("/api/v1/auth/**", "/api/v1/account", "/api/v1/account/**","/api/v1/account/**'**",
-                            "api/v1/test/**", "api/v1/attempt/**").permitAll()
+                            "api/v1/test/**", "api/v1/attempt/**", "api/v1/file/**").permitAll()
 //                    .pathMatchers("api/v1/account/**").hasAuthority("ADMIN")
                     .anyExchange().authenticated()
             )

@@ -139,7 +139,8 @@ const HeaderClient = () => {
                 {
                     key: "profile",
                     icon: <UserOutlined />,
-                    label: "Trang cá nhân",
+                    // label: "Trang cá nhân",
+                    label: <Link to={"/profile"}>Trang cá nhân</Link>
                 },
                 {
                     key: "settings",
@@ -216,7 +217,8 @@ const HeaderClient = () => {
                             <Dropdown overlay={menuU} trigger={['click']} placement="bottomRight">
                                 <Button type="text" className="flex items-center space-x-2">
                                     <Avatar
-                                        className="!bg-gradient-to-r !from-blue-400 !to-blue-500" icon={<UserOutlined />}
+                                        className="!bg-gradient-to-r !from-blue-400 !to-blue-500"
+                                        icon={!user?.avatar && <UserOutlined />} src={user?.avatar}
                                     />
                                     <div className="hidden md:block text-left">
                                         <Text type="secondary" style={{ fontSize: 12 }}>
