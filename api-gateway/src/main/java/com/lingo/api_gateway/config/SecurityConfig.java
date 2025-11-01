@@ -45,6 +45,10 @@ public class SecurityConfig {
                 return http.build();
         }
 
+                    .pathMatchers("/api/v1/auth/**", "/api/v1/account",  "/api/v1/account/**","/api/v1/account/**'**",
+                            "/api/v1/test/**","/api/v1/question/**", "/api/v1/file/**","/api/v1/answer/**","/api/v1/resource/**",
+                            "/api/v1/attempt/**","/actuator/**")
+                            .permitAll()
         @Bean
         public JwtAuthenticationConverter jwtAuthenticationConverterForKeycloak() {
                 Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter = jwt -> {

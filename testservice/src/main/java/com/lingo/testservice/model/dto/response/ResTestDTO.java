@@ -6,6 +6,8 @@ import com.lingo.testservice.utils.enums.TestType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Instant;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -23,5 +25,8 @@ public class ResTestDTO {
     int numOfQuestions;
     int attempts;
     long resourceContentId;
+    Instant createdAt;
+    Instant updatedAt;
+
 
 }
