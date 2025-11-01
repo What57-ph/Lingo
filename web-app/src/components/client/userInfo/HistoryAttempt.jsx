@@ -1,5 +1,5 @@
-import React from 'react';
-import { Space, Table, Tag } from 'antd';
+import React, { useState } from 'react';
+import { Select, Space, Table, Tag } from 'antd';
 import { formatTime, getCategoryStyle, getScoreStyle } from '../../../service/GlobalFunction';
 import { BackwardFilled, ClockCircleFilled, ClockCircleOutlined, EyeFilled, EyeInvisibleOutlined, EyeOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
@@ -131,8 +131,12 @@ const columns = [
 
 
 
-const HistoryAttempt = ({ type, time }) => {
+const HistoryAttempt = () => {
   const { attempts } = useSelector(state => state.attempts);
+
+  const [hisType, setHisType] = useState("");
+  const [hisTime, setHisTime] = useState("30");
+
 
   const filterByType = (list, type) => {
     if (!type) return list;
@@ -157,20 +161,54 @@ const HistoryAttempt = ({ type, time }) => {
   };
 
   // Áp dụng filter
-  let filteredAttempts = filterByType(attempts, type);
-  filteredAttempts = filterByTime(filteredAttempts, time);
+  let filteredAttempts = filterByType(attempts, hisType);
+  filteredAttempts = filterByTime(filteredAttempts, hisTime);
 
   return (
-    <Table
-      columns={columns}
-      scroll={{ x: 'max-content' }}
-      dataSource={filteredAttempts}
-      pagination={{
-        pageSize: 8,
-        showTotal: (total, range) =>
-          `Hiển thị ${range[0]} đến ${range[1]} trong tổng số ${total} kết quả`,
-      }}
-    />
+    <>
+      <div className="py-6 border-b border-gray-200">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-semibold text-gray-900">Lịch sử làm bài chi tiết</h2>
+          <div className="flex items-center !space-x-3">
+            <Select
+              defaultValue="Tất cả loại bài"
+              style={{ width: 120 }}
+              onChange={(value) => setHisType(value)}
+              options={[
+                { value: '', label: 'Tất cả loại bài' },
+                { value: 'ielts', label: 'IELTS' },
+                { value: 'toeic', label: 'TOEIC' },
+                { value: 'toefl', label: 'TOEFL' },
+              ]}
+            />
+            <Select
+              defaultValue="30"
+              style={{ width: 120 }}
+              onChange={(value) => setHisTime(value)}
+              options={[
+                { value: '30', label: '30 ngày gần nhất' },
+                { value: '7', label: '7 ngày gần nhất' },
+                { value: '3', label: '3 tháng gần nhất' },
+                { value: '', label: 'Tất cả' },
+              ]}
+            />
+          </div>
+        </div>
+      </div>
+
+      <Table
+        columns={columns}
+        scroll={{ x: 'max-content' }}
+        dataSource={filteredAttempts}
+        // locale={{ emptyText: <span style={{ color: "red" }}>Danh sách trống!</span> }}
+        locale={{ emptyText: "Danh sách trống!" }}
+        pagination={{
+          pageSize: 8,
+          showTotal: (total, range) =>
+            `Hiển thị ${range[0]} đến ${range[1]} trong tổng số ${total} kết quả`,
+        }}
+      />
+    </>
   );
 };
 

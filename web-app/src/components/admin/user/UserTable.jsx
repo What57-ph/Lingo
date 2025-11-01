@@ -1,8 +1,9 @@
 // UserTable.js
 import React from 'react';
 import { Table, Tag, Dropdown, Menu, Button, Space, Switch, Tooltip, Typography } from 'antd';
-import { EditOutlined, DeleteOutlined, MoreOutlined } from '@ant-design/icons';
+import { EditOutlined, DeleteOutlined, MoreOutlined, InfoCircleOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const { Text } = Typography;
 
@@ -10,6 +11,12 @@ const { Text } = Typography;
 const UserTable = ({ users, loading, onUpdate, onDelete, onToggleStatus, setFilters }) => {
 
   const { meta } = useSelector(state => state.accounts);
+  const navigate = useNavigate();
+
+  const onInfo = (record) => {
+    console.log(record);
+    navigate(`/admin/users/${record.keycloakId}`, { state: { user: record } });
+  };
 
   const columns = [
     {
@@ -106,6 +113,12 @@ const UserTable = ({ users, loading, onUpdate, onDelete, onToggleStatus, setFilt
           menu={{
             items: [
               {
+                key: 'info',
+                icon: <InfoCircleOutlined />,
+                label: 'Chi tiết',
+                onClick: () => onInfo(record),
+              },
+              {
                 key: 'edit',
                 icon: <EditOutlined />,
                 label: 'Cập nhật',
@@ -137,9 +150,9 @@ const UserTable = ({ users, loading, onUpdate, onDelete, onToggleStatus, setFilt
       rowKey="keycloakId"
       scroll={{ x: 'max-content' }}
       pagination={{
-        current: (meta.page ?? 0) + 1,        // AntD dùng 1-based index, API của bạn trả 0-based
-        pageSize: meta.pageSize,
-        total: meta.total,
+        current: (meta?.page ?? 0) + 1,
+        pageSize: meta?.pageSize,
+        total: meta?.total,
         showSizeChanger: true,
         pageSizeOptions: ['5', '10', '20', '50']
       }}

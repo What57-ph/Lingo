@@ -10,7 +10,8 @@ const HistoryAttempts = () => {
   const { attempts } = useSelector((state) => state.attempts);
   const { user } = useSelector((state) => state.authentication);
   const histories = attempts.filter(a => String(a.quizId) === id) || 0;
-  console.log(user);
+  let path = window.location.pathname;
+  console.log(histories);
 
 
   useEffect(() => {
@@ -41,7 +42,7 @@ const HistoryAttempts = () => {
     {
       key: 'action',
       dataIndex: "detail",
-      render: text => <Link className='!text-blue-700 text-base hover:!text-blue-900'>Xem chi tiết</Link>,
+      render: (_, record) => <Link to={`${path}/results/${record?.attemptId}`} className='!text-blue-700 text-base hover:!text-blue-900'>Xem chi tiết</Link>,
     },
   ];
 

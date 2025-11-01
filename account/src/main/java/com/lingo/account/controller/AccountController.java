@@ -2,6 +2,7 @@ package com.lingo.account.controller;
 
 import com.lingo.account.dto.request.ReqAccountDTO;
 import com.lingo.account.dto.request.ReqAccountGGDTO;
+import com.lingo.account.dto.request.ReqAvatarDTO;
 import com.lingo.account.dto.request.ReqUpdateAccountDTO;
 import com.lingo.account.dto.response.ResAccountDTO;
 import com.lingo.account.dto.response.ResPaginationDTO;
@@ -95,5 +96,13 @@ public class AccountController {
     ResAccountDTO dto = this.accountService.createAccountGG(req);
 
     return ResponseEntity.ok("Account has been created!");
+  }
+
+  @PostMapping("/avatar")
+  public ResponseEntity<String> updateAvatar(@RequestBody ReqAvatarDTO req) {
+
+    this.accountService.updateAvatar(req);
+
+    return ResponseEntity.ok("Avatar has been updated!");
   }
 }

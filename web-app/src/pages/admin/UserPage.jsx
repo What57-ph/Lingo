@@ -7,6 +7,7 @@ import UserTable from "../../components/admin/user/UserTable";
 import UserFilter from '../../components/admin/user/Filter';
 import UserFormModal from '../../components/admin/user/UserFormModal';
 import { createNewAccount, deleteAccount, postEnableAccount, retrieveAccounts, updateCurrentAccount } from '../../slice/accounts';
+import { Outlet } from 'react-router-dom';
 // import { retrieveUsers, deleteUser, updateUserStatus } from "../../../slice/users"; // <-- Bạn cần action mới
 
 const { Title } = Typography;
@@ -25,9 +26,9 @@ const UserPage = () => {
         dispatch(retrieveAccounts(filters));
     }, [filters, dispatch]);
 
-    useEffect(() => {
-        console.log(accounts);
-    }, [accounts]);
+    // useEffect(() => {
+    //     console.log(accounts);
+    // }, [accounts]);
 
     const handleSearch = (values) => {
 
@@ -141,7 +142,6 @@ const UserPage = () => {
                 />
 
             </Space>
-
             {contextHolder}
         </Card>
     );

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getUserInfoApi, handleApiError, loginApi, loginGoogleApi, logoutApi, registerApi, registerGG } from "../config/api";
 import { decodeToken } from "../utils/DecodeToken";
+import { updateAvatarAccount } from "./accounts";
 
 const initialState = {
   user: JSON.parse(localStorage.getItem('user_profile')) || null,
@@ -79,8 +80,9 @@ export const loginGoogle = createAsyncThunk(
   async (code, thunkAPI) => {
     try {
       const response = await loginGoogleApi(code);
+      console.log(response);
       const { access_token } = response;   // public axios so need .data
-      console.log("google: ", access_token);
+      // console.log("google: ", access_token);
       localStorage.setItem("access_token", access_token);
       const userInfo = decodeToken(access_token);
 
@@ -177,6 +179,11 @@ const authSlice = createSlice({
       .addCase(loginGoogle.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      .addCase(updateAvatarAccount.fulfilled, (state, action) => {
+        const { avatar } = action.meta.arg;
+        state.user.avatar = avatar;
       })
 
   }
