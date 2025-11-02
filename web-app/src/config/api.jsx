@@ -45,7 +45,7 @@ export const postAttempt = (testData) => {
 
 export const getAttemptUserShort = (userId) => {
   // return instance.get("api/v1/attempt", { params: { userId } })
-  return publicInstance.get("api/v1/attempt", { params: { userId } })
+  return instance.get("api/v1/attempt", { params: { userId } })
 };
 
 export const getAttempt = (attemptId) => {
@@ -68,6 +68,11 @@ export const getAllAttempts = () => {
 export const getAllAccounts = (params) => {
   return publicInstance.get("api/v1/account", { params });
 };
+
+export const getAccount = (accountId) => {
+  return publicInstance.get(`api/v1/account/${accountId}`);
+};
+
 export const enableAccount = ({ id, enable }) => {
   return publicInstance.post(
     "api/v1/account/enable",
@@ -90,3 +95,7 @@ export const updateAccount = (userData) =>
 export const removeAccount = (accountId) => {
   return publicInstance.delete(`api/v1/account/${accountId}`);
 };
+
+export const updateAvatar = (userData) => {
+  publicInstance.post("/api/v1/account/avatar", userData);
+}

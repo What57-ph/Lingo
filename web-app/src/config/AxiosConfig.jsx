@@ -53,11 +53,13 @@ instance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     if (error.response?.status === 401 && !originalRequest.headers[NO_RETRY_HEADER]) {
-      originalRequest.headers[NO_RETRY_HEADER] = 'true';
+      // originalRequest.headers[NO_RETRY_HEADER] = 'true';  // might be multi requests 
 
       const refreshSuccess = await refreshToken();
 
       if (refreshSuccess) {
+        const newAccessToken = localStorage.getItem('access_token');
+        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
         return instance(originalRequest);
       }
       localStorage.removeItem('access_token');

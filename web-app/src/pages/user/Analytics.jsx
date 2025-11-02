@@ -17,11 +17,6 @@ const Analytics = () => {
   const params = new URLSearchParams(window.location.search);
   const category = params.get("category");
 
-  // console.log(attempts);
-
-  const [hisType, setHisType] = useState("");
-  const [hisTime, setHisTime] = useState("30");
-
   const userId = user?.sub;
 
   useEffect(() => {
@@ -72,37 +67,7 @@ const Analytics = () => {
       </Card>
 
       <Card className="!shadow-md !mb-7 ">
-        <div className="py-6 border-b border-gray-200">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-gray-900">Lịch sử làm bài chi tiết</h2>
-            <div className="flex items-center !space-x-3">
-              <Select
-                defaultValue="Tất cả loại bài"
-                style={{ width: 120 }}
-                onChange={(value) => setHisType(value)}
-                options={[
-                  { value: '', label: 'Tất cả loại bài' },
-                  { value: 'ielts', label: 'IELTS' },
-                  { value: 'toeic', label: 'TOEIC' },
-                  { value: 'toefl', label: 'TOEFL' },
-                ]}
-              />
-              <Select
-                defaultValue="30"
-                style={{ width: 120 }}
-                onChange={(value) => setHisTime(value)}
-                options={[
-                  { value: '30', label: '30 ngày gần nhất' },
-                  { value: '7', label: '7 ngày gần nhất' },
-                  { value: '3', label: '3 tháng gần nhất' },
-                  { value: '', label: 'Tất cả' },
-                ]}
-              />
-            </div>
-          </div>
-        </div>
-
-        <HistoryAttempt type={hisType} time={hisTime} />
+        <HistoryAttempt />
       </Card>
 
 

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createAccount, enableAccount, getAllAccounts, handleApiError, removeAccount, updateAccount } from "../config/api";
+import { createAccount, enableAccount, getAccount, getAllAccounts, handleApiError, removeAccount, updateAccount, updateAvatar } from "../config/api";
 import { toast } from "react-toastify";
 
 const initialState = {
@@ -73,11 +73,29 @@ export const postEnableAccount = createAsyncThunk(
   }
 );
 
+export const retrieveAccount = createAsyncThunk("accounts/retrieve", async (params) => await getAccount(params));
 export const deleteAccount = createAsyncThunk("accounts/delete", async (params) => await removeAccount(params));
+
+export const updateAvatarAccount = createAsyncThunk(
+  "accounts/avatar",
+  async (userData, thunkAPI) => {
+    try {
+      const res = await updateAvatar(userData);
+      return res;
+    } catch (error) {
+      handleApiError(error, "Cập nhật ảnh đại diện thất bại")
+      return thunkAPI.rejectWithValue(error?.response?.detail || "Cập nhật ảnh đại diện thất bại");
+    }
+  }
+);
+
 
 const accountSlice = createSlice({
   name: "accounts",
-  initialState,
+  initialState: {
+    initialState,
+
+  },
   reducers: {
     setPageNo: (state, action) => {
       state.pageNo = action.payload
@@ -95,6 +113,18 @@ const accountSlice = createSlice({
         state.error = null;
       })
       .addCase(retrieveAccounts.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      })
+
+      .addCase(retrieveAccount.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(retrieveAccount.fulfilled, (state, { payload: { meta, result } }) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(retrieveAccount.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
       })
@@ -118,9 +148,11 @@ const accountSlice = createSlice({
       })
       .addCase(updateCurrentAccount.fulfilled, (state, action) => {
         const { id } = action.meta.arg;
-        const index = state.accounts.findIndex(acc => acc.keycloakId === id);
+        const index = state?.accounts?.findIndex(acc => acc.keycloakId === id) || -1;
         if (index !== -1) {
           state.accounts[index] = action.payload;
+          toast.info("Cập nhật tài khoản thành công");
+        } else if (index === -1) {
           toast.info("Cập nhật tài khoản thành công");
         }
         state.loading = false;
@@ -139,10 +171,25 @@ const accountSlice = createSlice({
           toast.info("Cập nhật trạng thái thành công");
         }
       })
+
       .addCase(deleteAccount.fulfilled, (state, action) => {
         const id = action.meta.arg;
         state.accounts = state.accounts.filter(acc => acc.keycloakId !== id);
         toast.info("Xóa tài khoản thành công");
+      })
+
+      .addCase(updateAvatarAccount.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(updateAvatarAccount.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        toast.info("Cập nhật ảnh đại diện thành công");
+      })
+      .addCase(updateAvatarAccount.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+        toast.error("Cập nhật ảnh đại diện thất bại");
       })
   }
 });

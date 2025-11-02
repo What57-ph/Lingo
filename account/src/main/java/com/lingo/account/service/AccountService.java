@@ -5,6 +5,7 @@ import com.lingo.account.dto.identity.ReqAccount;
 import com.lingo.account.dto.identity.TokenExchangeRequest;
 import com.lingo.account.dto.request.ReqAccountDTO;
 import com.lingo.account.dto.request.ReqAccountGGDTO;
+import com.lingo.account.dto.request.ReqAvatarDTO;
 import com.lingo.account.dto.request.ReqUpdateAccountDTO;
 import com.lingo.account.dto.response.ResAccountDTO;
 import com.lingo.account.dto.response.ResPaginationDTO;
@@ -17,6 +18,7 @@ import com.lingo.account.repository.IdentityClient;
 import com.lingo.account.repository.RoleRepository;
 import com.lingo.account.utils.Constants;
 import com.lingo.common_library.exception.CreateUserException;
+import com.lingo.common_library.exception.KeycloakException;
 import com.lingo.common_library.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.NonFinal;
@@ -173,15 +175,24 @@ public class AccountService {
     Account account = (Account) this.accountRepository.findByKeycloakId(request.getId())
             .orElseThrow(() -> new NotFoundException(Constants.ErrorCode.USER_NOT_FOUND));
 
+    // Update Keycloak user representation
+    updateKeycloakUser(request.getId(), request);
+
+    // Update local account
     account.setFirstName(request.getFirstName());
     account.setLastName(request.getLastName());
+    account.setPhone(request.getPhone());
 
-    this.roleService.assignRolesToAccount(request.getId(), List.of(request.getRoles()));
+    if (request.getRoles() != null && request.getRoles().length > 0) {
+      this.roleService.assignRolesToAccount(request.getId(), List.of(request.getRoles()));
+    }
 
     this.accountRepository.save(account);
+    log.info("Updated account: {}", account.getId());
 
     return accountMapper.toResDTO(account);
   }
+
 
   public Account updateEnableAccount(String id, boolean enable) {
     UserRepresentation userRepresentation =
@@ -202,8 +213,6 @@ public class AccountService {
     }
   }
 
-
-
   public ResAccountDTO createAccountGG(ReqAccountGGDTO req) {
     return this.accountRepository.findByEmail(req.getEmail())
             .map(existingAccount -> {
@@ -216,12 +225,27 @@ public class AccountService {
               account.setKeycloakId(req.getSub());
               account.setEnable(true);
               account.setUsername(req.getEmail());
-              this.accountRepository.save(account);
               this.roleService.assignRole(req.getSub(), Collections.singletonList(USER)); // assign in keycloak
+              account.setRoles(this.roleRepository.findAllByNameIn(List.of(USER)));
+              this.accountRepository.save(account);
               log.info("Created new account for email {}", req.getEmail());
               return accountMapper.toResDTO(account);
             });
   }
+
+  public void updateAvatar(ReqAvatarDTO req) throws KeycloakException, NotFoundException {
+    Account account = (Account) this.accountRepository.findByKeycloakId(req.getId())
+            .orElseThrow(() -> new NotFoundException(Constants.ErrorCode.USER_NOT_FOUND));
+
+    Map<String, List<String>> attributes = new HashMap<>();
+    attributes.put("avatar", Collections.singletonList(req.getAvatar()));
+    updateKeycloakUserAttributes(req.getId(), attributes);
+
+    account.setAvatar(req.getAvatar());
+    this.accountRepository.save(account);
+    log.info("Updated avatar for account: {}", account.getId());
+  }
+
 
 
   private String extractUserId(ResponseEntity<?> response) {
@@ -241,4 +265,46 @@ public class AccountService {
     var token = this.identityClient.exchangeClientToken(newToken);
     return token.getAccessToken();
   }
+
+
+
+  private void updateKeycloakUser(String userId, ReqUpdateAccountDTO request) {
+    UserRepresentation userRepresentation = getUserRepresentation(userId);
+
+    userRepresentation.setFirstName(request.getFirstName());
+    userRepresentation.setLastName(request.getLastName());
+
+    Map<String, List<String>> attributes = userRepresentation.getAttributes();
+    if (attributes == null) {
+      attributes = new HashMap<>();
+    }
+    attributes.put("phone", Collections.singletonList(request.getPhone()));
+    userRepresentation.setAttributes(attributes);
+
+    // Update user in Keycloak
+    getUserResource(userId).update(userRepresentation);
+  }
+
+  private void updateKeycloakUserAttributes(String userId, Map<String, List<String>> attributes) {
+    UserRepresentation userRepresentation = getUserRepresentation(userId);
+    userRepresentation.setAttributes(attributes);
+    getUserResource(userId).update(userRepresentation);
+  }
+
+  private UserRepresentation getUserRepresentation(String userId) {
+    UserRepresentation userRepresentation =
+            keycloak.realm(keycloakPropsConfig.getRealm()).users().get(userId).toRepresentation();
+
+    if (userRepresentation == null) {
+      throw new KeycloakException(Constants.ErrorCode.KEYCLOAK_USER_NOT_FOUND);
+    }
+
+    return userRepresentation;
+  }
+
+  private UserResource getUserResource(String userId) {
+    RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
+    return realmResource.users().get(userId);
+  }
+
 }

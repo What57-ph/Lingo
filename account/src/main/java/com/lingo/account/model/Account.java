@@ -37,6 +37,12 @@ public class Account {
   @Column(name = "enable")
   private boolean enable;
 
+  @Column(name = "avatar")
+  private String avatar;
+
+  @Column(name = "phone")
+  private String phone;
+
   @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(
           name = "users_roles",
