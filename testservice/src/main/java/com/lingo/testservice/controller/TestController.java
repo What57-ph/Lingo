@@ -24,19 +24,19 @@ public class    TestController {
 
     // notice that do not pass questions and resource to request body
     @PostMapping("/add")
-    @CacheEvict(value = "allUsers", allEntries = true)
+    @CacheEvict(value = "allTests", allEntries = true)
     public ResTestDTO add(@RequestBody ReqCreateTestDTO dto) {
         return testService.add(dto);
     }
 
     @PutMapping("/update/{id}")
-    @CacheEvict(value = "allUsers", allEntries = true)
+    @CacheEvict(value = "allTests", allEntries = true)
     public ResTestDTO update(@RequestBody ReqUpdateTestDTO dto, @PathVariable("id") long id) {
         return testService.update(id, dto);
     }
 
     @DeleteMapping("/delete/{id}")
-    @CacheEvict(value = "allUsers", allEntries = true)
+    @CacheEvict(value = "allTests", allEntries = true)
     public void delete(@PathVariable long id) {
         testService.delete(id);
     }

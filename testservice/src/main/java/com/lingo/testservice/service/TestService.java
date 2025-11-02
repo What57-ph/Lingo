@@ -109,7 +109,7 @@ class TestServiceImpl implements TestService {
 //    }
 
     @Override
-    @Cacheable("allUsers")
+    @Cacheable(value = "allTests", keyGenerator = "specificationKeyGenerator")
     public ResPaginationDTO getAll(Specification<Test> spec, Pageable pageable) {
         Page<Test> pTests = this.testRepository.findAll(spec, pageable);
 

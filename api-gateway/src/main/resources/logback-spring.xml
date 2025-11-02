@@ -33,8 +33,10 @@
         </encoder>
     </appender>
 
+    <logger name="org.hibernate.SQL" level="DEBUG" />
+    <logger name="org.hibernate.type.descriptor.sql" level="TRACE" />
     <root level="INFO">
-        <appender-ref ref="LOKI" />
+<!--        <appender-ref ref="LOKI" />-->
         <appender-ref ref="CONSOLE" />
     </root>
 </configuration>

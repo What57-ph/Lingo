@@ -5,50 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7807224a-69f2-4995-954d-4271220bc1ae" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/dto/request/ReqAvatarDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common-library/src/main/java/com/lingo/common_library/exception/KeycloakException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/identity/realm.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/keycloak/realm.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web-app/src/components/client/userInfo/FormUpdate.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web-app/src/components/client/userInfo/UpdateAvatarModal.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web-app/src/components/share/Announce.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web-app/src/pages/admin/UserDetailPage.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web-app/src/pages/user/Profile.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/controller/AccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/dto/request/ReqUpdateAccountDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/dto/request/ReqUpdateAccountDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/dto/response/ResAccountDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/dto/response/ResAccountDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/model/Account.java" beforeDir="false" afterPath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/model/Account.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/service/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/service/AccountService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/utils/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/utils/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/java/com/lingo/api_gateway/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/java/com/lingo/api_gateway/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common-library/src/main/java/com/lingo/common_library/exception/ExceptionHandle.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-library/src/main/java/com/lingo/common_library/exception/ExceptionHandle.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fileservice/src/main/java/com/lingo/fileservice/enums/FileCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/fileservice/src/main/java/com/lingo/fileservice/enums/FileCategory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fileservice/src/main/java/com/lingo/fileservice/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fileservice/src/main/java/com/lingo/fileservice/service/FileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/.env" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/App.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/components/admin/HeaderAdmin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/admin/HeaderAdmin.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/components/admin/user/UserTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/admin/user/UserTable.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/components/auth/AuthFooter.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/auth/AuthFooter.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/components/client/HeaderClient.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/client/HeaderClient.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/components/client/userInfo/HistoryAttempt.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/client/userInfo/HistoryAttempt.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/components/tests/BeforePage/HistoryAttempts.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/tests/BeforePage/HistoryAttempts.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/components/tests/RightSider.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/tests/RightSider.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/config/AxiosConfig.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/config/AxiosConfig.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/config/api.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/config/api.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/layouts/RouteLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/layouts/RouteLayout.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/main.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/pages/admin/UserPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/admin/UserPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/pages/user/Analytics.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/user/Analytics.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/service/FileService.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/service/FileService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/slice/accounts.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/slice/accounts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/slice/authentication.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/slice/authentication.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/slice/files.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/slice/files.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/store/selectors.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/store/selectors.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/utils/DecodeToken.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/utils/DecodeToken.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/config/RedisConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/resources/logback-spring.xml" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/resources/logback-spring.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/controller/TestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/controller/TestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/dto/response/ResPaginationDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/dto/response/ResPaginationDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/dto/response/ResTestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/dto/response/ResTestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/service/TestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/service/TestService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testservice/src/main/resources/logback-spring.xml" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/resources/logback-spring.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,11 +53,7 @@
                 <list>
                   <RecentBranch>
                     <option name="branchName" value="observability" />
-                    <option name="lastUsedInstant" value="1761635677" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="DucNM/attempt" />
-                    <option name="lastUsedInstant" value="1759244936" />
+                    <option name="lastUsedInstant" value="1762099354" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="main" />
@@ -142,7 +103,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Merging observability",
+    "git-widget-placeholder": "observability",
     "last_opened_file_path": "C:/Project/Lingo",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
@@ -151,21 +112,11 @@
   }
 }]]></component>
   <component name="RunManager" selected="Application.TestserviceApplication">
-    <configuration name="AccountApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lingo.account.AccountApplication" />
-      <module name="account" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lingo.account.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="ApiGatewayApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="openjdk-21" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="com.lingo.api_gateway.ApiGatewayApplication" />
+      <module name="api-gateway" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.lingo.api_gateway.*" />
@@ -192,6 +143,19 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.lingo.attempt.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DiscoveryserverApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.discoveryserver.DiscoveryserverApplication" />
+      <module name="discoveryserver" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lingo.discoveryserver.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -229,9 +193,9 @@
       <list>
         <item itemvalue="Application.TestserviceApplication" />
         <item itemvalue="Application.ApiGatewayApplication" />
+        <item itemvalue="Application.DiscoveryserverApplication" />
         <item itemvalue="Application.FileserviceApplication" />
         <item itemvalue="Application.AttemptApplication" />
-        <item itemvalue="Application.AccountApplication" />
       </list>
     </recent_temporary>
   </component>
