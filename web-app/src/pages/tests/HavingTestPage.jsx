@@ -12,7 +12,7 @@ const HavingTestPage = () => {
     const { id, name } = useParams();
     const dispatch = useDispatch();
     const { questions, userAnswers } = useSelector((state) => state.questions);
-    const { test } = useSelector((state) => state.tests);
+    const { test } = useSelector((state) => state.test);
     const [isLoadingImages, setIsLoadingImages] = useState(true);
     useEffect(() => {
         const getQuestionsOfTest = async (id) => {
@@ -24,7 +24,7 @@ const HavingTestPage = () => {
         getQuestionsOfTest(id);
         getTestData(id);
     }, [id]);
-    // Preload all images and set loading state
+
     useEffect(() => {
         if (!questions?.length) return;
 
@@ -59,7 +59,8 @@ const HavingTestPage = () => {
             </div>
         );
     }
-    // console.log(test)
+    // console.log("test data:", test)
+    // console.log("question data:", questions)
     // console.log(userAnswers)
     return (
         <>

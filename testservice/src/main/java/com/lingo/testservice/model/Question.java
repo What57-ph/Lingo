@@ -25,6 +25,7 @@ public class Question {
     long point;
     // fe pass question id to save key
     String answerKey;
+    @Column(columnDefinition = "LONGTEXT")
     String explanation;
     String part;
     int questionNumber;
@@ -38,6 +39,7 @@ public class Question {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "resource_id")
     MediaResource resource;
+    @Column(columnDefinition = "LONGTEXT")
     String explanationResourceContent;
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;

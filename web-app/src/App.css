@@ -35,4 +35,7 @@
   .filter-tab.active {
     @apply bg-[#ffffff] shadow-md;
   }
+  .quill-better-table {
+    @apply !w-full;
+  }
 }

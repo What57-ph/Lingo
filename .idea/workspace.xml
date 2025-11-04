@@ -5,15 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7807224a-69f2-4995-954d-4271220bc1ae" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/config/RedisConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/resources/logback-spring.xml" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/resources/logback-spring.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/controller/TestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/controller/TestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/dto/response/ResPaginationDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/dto/response/ResPaginationDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/dto/response/ResTestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/dto/response/ResTestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/service/TestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/service/TestService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/resources/logback-spring.xml" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/resources/logback-spring.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/account/src/main/resources/logback-spring.xml" beforeDir="false" afterPath="$PROJECT_DIR$/account/src/main/resources/logback-spring.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/attempt/src/main/resources/logback-spring.xml" beforeDir="false" afterPath="$PROJECT_DIR$/attempt/src/main/resources/logback-spring.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fileservice/src/main/resources/logback-spring.xml" beforeDir="false" afterPath="$PROJECT_DIR$/fileservice/src/main/resources/logback-spring.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/Question.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/Question.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/components/admin/dashboard/CurrentAttemptsTable.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/admin/dashboard/CurrentAttemptsTable.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/components/admin/dashboard/NumberStatistic.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/admin/dashboard/NumberStatistic.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/components/admin/dashboard/StatisticCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/admin/dashboard/StatisticCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/components/tests/MainContent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/tests/MainContent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/components/tests/QuestionCard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/tests/QuestionCard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/components/tests/SideProgress.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/tests/SideProgress.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/pages/admin/CreateTestPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/admin/CreateTestPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/pages/tests/HavingTestPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/tests/HavingTestPage.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/slice/files.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/slice/files.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/slice/tests.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/slice/tests.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +81,7 @@
   </component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/ducsieunhan/Lingo.git&quot;,
+    &quot;url&quot;: &quot;https://github.com/What57-ph/Lingo.git&quot;,
     &quot;accountId&quot;: &quot;e9f86f7e-0b3b-4ad9-a884-6f1882d2a03f&quot;
   }
 }</component>
@@ -92,29 +103,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.AccountApplication.executor": "Run",
-    "Application.ApiGatewayApplication.executor": "Run",
-    "Application.AttemptApplication.executor": "Run",
-    "Application.DiscoveryserverApplication.executor": "Run",
-    "Application.FileserviceApplication.executor": "Run",
-    "Application.TestserviceApplication.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "observability",
-    "last_opened_file_path": "C:/Project/Lingo",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.keymap"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.AccountApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.AttemptApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.DiscoveryserverApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.FileserviceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.TestserviceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ReadLis&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Project/Lingo_Fork/Lingo&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Application.TestserviceApplication">
+    <configuration name="AccountApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.account.AccountApplication" />
+      <module name="account" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lingo.account.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ApiGatewayApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="openjdk-21" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="com.lingo.api_gateway.ApiGatewayApplication" />
       <module name="api-gateway" />
       <extension name="coverage">
@@ -122,16 +144,6 @@
           <option name="PATTERN" value="com.lingo.api_gateway.*" />
           <option name="ENABLED" value="true" />
         </pattern>
-      </extension>
-      <extension name="net.ashald.envfile">
-        <option name="IS_ENABLED" value="false" />
-        <option name="IS_SUBST" value="false" />
-        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
-        <option name="IS_IGNORE_MISSING_FILES" value="false" />
-        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
-        <ENTRIES>
-          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
-        </ENTRIES>
       </extension>
       <method v="2">
         <option name="Make" enabled="true" />
@@ -143,19 +155,6 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.lingo.attempt.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="DiscoveryserverApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lingo.discoveryserver.DiscoveryserverApplication" />
-      <module name="discoveryserver" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lingo.discoveryserver.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -192,10 +191,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.TestserviceApplication" />
-        <item itemvalue="Application.ApiGatewayApplication" />
-        <item itemvalue="Application.DiscoveryserverApplication" />
-        <item itemvalue="Application.FileserviceApplication" />
+        <item itemvalue="Application.AccountApplication" />
         <item itemvalue="Application.AttemptApplication" />
+        <item itemvalue="Application.FileserviceApplication" />
+        <item itemvalue="Application.ApiGatewayApplication" />
       </list>
     </recent_temporary>
   </component>

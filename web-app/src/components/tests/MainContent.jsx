@@ -1,5 +1,5 @@
-import React, { useRef, useState, useCallback, useEffect } from 'react';
-import { Button, Spin } from 'antd';
+import React, { useRef, useState, useCallback } from 'react';
+import { Button } from 'antd';
 import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import SideProgress from './SideProgress';
@@ -12,65 +12,92 @@ const MainContent = React.memo(({ editMode, testTitle, testId }) => {
     const questionRefs = useRef({});
     const { questions } = useSelector((state) => state.questions);
 
-    const groupQuestion = React.useMemo(() => _.groupBy(
-        questions?.map((q, i) => ({
-            ...q,
-            resourceContent: q.resourceContent ?? `null-${i}`,
-        })),
-        'resourceContent'
-    ), [questions]);
+    const groupedArray = React.useMemo(() => {
+        const groupQuestionByPartAndResource = _(questions)
+            .groupBy("part")
+            .mapValues((partGroup) => _.groupBy(partGroup, "resourceContent"))
+            .value();
 
+        return Object.entries(groupQuestionByPartAndResource).map(([part, resources]) => ({
+            part,
+            resources: Object.entries(resources).map(([resourceContent, questions]) => ({
+                resourceContent,
+                questions,
+            })),
+        }));
+    }, [questions]);
 
+    console.log("groupedArray", groupedArray);
 
-    const questionCardComponents = React.useMemo(() => Object.entries(groupQuestion).map(
-        ([key, item]) => (
-            <div key={key} className="mb-8">
-                <QuestionCard
-                    questions={item}
-                    groupKey={key}
-                    questionRefs={questionRefs}
-                    resourceContent={item[0].resourceContent}
-                    editMode={editMode}
-                    activeQuestion={activeQuestion}
-                    setActiveQuestion={setActiveQuestion}
-                />
+    const questionCardComponents = React.useMemo(() =>
+
+        groupedArray.map(({ part, resources }) => (
+            <div key={part} className="mb-8">
+                <div className="ml-8 my-4 w-[90%]">
+                    <audio controls className="w-full">
+                        <source src={groupedArray[listQuestionNumber].resources[0].questions[0].explanationResourceContent} type="audio/mpeg" />
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+                {resources.map(({ resourceContent, questions }, index) => (
+                    <QuestionCard
+                        key={`${part}-${index}`}
+                        questions={questions}
+                        groupKey={part}
+                        questionRefs={questionRefs}
+                        resourceContent={resourceContent}
+                        editMode={editMode}
+                        activeQuestion={activeQuestion}
+                        setActiveQuestion={setActiveQuestion}
+                        explanationResourceContent={questions[0].explanationResourceContent}
+                    />
+                ))}
             </div>
-        )
-    ), [groupQuestion, editMode, activeQuestion]);
+        )),
+        [groupedArray, editMode, activeQuestion]
+    );
 
-    const movePage = useCallback((action) => {
-        setListQuestionNumber((prev) => {
-            let newIndex = prev;
-            if (action === 'next') newIndex = Math.min(prev + 1, questionCardComponents.length - 1);
-            if (action === 'previous') newIndex = Math.max(prev - 1, 0);
-            const groupKey = Object.keys(groupQuestion)[newIndex];
-            const groupQuestions = groupQuestion[groupKey];
-            if (groupQuestions && groupQuestions.length > 0) {
-                setActiveQuestion(groupQuestions[0].questionNumber);
-                setTimeout(() => {
-                    questionRefs.current[groupQuestions[0].questionNumber]?.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'center',
-                    });
-                }, 100);
-            }
-            return newIndex;
-        });
-    }, [groupQuestion, questionCardComponents.length]);
+    const movePage = useCallback(
+        (action) => {
+            setListQuestionNumber((prev) => {
+                let newIndex = prev;
+                if (action === 'next') newIndex = Math.min(prev + 1, questionCardComponents.length - 1);
+                if (action === 'previous') newIndex = Math.max(prev - 1, 0);
+
+                // find first question of the next/prev part
+                const currentPart = groupedArray[newIndex];
+                const firstQuestion = currentPart?.resources?.[0]?.questions?.[0];
+                if (firstQuestion) {
+                    setActiveQuestion(firstQuestion.questionNumber);
+                    setTimeout(() => {
+                        questionRefs.current[firstQuestion.questionNumber]?.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center',
+                        });
+                    }, 100);
+                }
+                return newIndex;
+            });
+        },
+        [groupedArray, questionCardComponents.length]
+    );
 
     const questionToGroupIndex = React.useMemo(() => {
         const map = {};
-        Object.entries(groupQuestion).forEach(([_, item], groupIdx) => {
-            item.forEach((q) => { map[q.questionNumber] = groupIdx; });
+        groupedArray.forEach((group, groupIdx) => {
+            group.resources.forEach(({ questions }) => {
+                questions.forEach((q) => {
+                    map[q.questionNumber] = groupIdx;
+                });
+            });
         });
         return map;
-    }, [groupQuestion]);
-
-
+    }, [groupedArray]);
+    console.log("audio for", listQuestionNumber, groupedArray[listQuestionNumber].resources[0].questions[0].explanationResourceContent);
     return (
-        <main className="flex min-h-screen flex-col lg:flex-row lg:relative">
+        <main className="flex min-h-screen flex-col lg:flex-row">
             <div className="flex-1 p-4 sm:p-6 overflow-y-auto">
-                <div className="bg-[#ffffff] rounded-xl p-4 sm:p-6 shadow-lg mb-8">
+                <div className="bg-white rounded-xl p-4 sm:p-6 shadow-lg mb-8">
                     <div className="flex justify-between items-center mb-4 lg:hidden">
                         <Button
                             type="primary"
@@ -86,7 +113,7 @@ const MainContent = React.memo(({ editMode, testTitle, testId }) => {
                     <div className={`flex ${editMode ? 'mt-16' : 'mt-6'} justify-between`}>
                         <Button
                             type="primary"
-                            className="rounded-lg bg-black w-32 h-12 hover:bg-gray-700 text-[#ffffff] mx-2 sm:mx-4"
+                            className="rounded-lg bg-black w-32 h-12 hover:bg-gray-700 text-white mx-2 sm:mx-4"
                             onClick={() => movePage('previous')}
                             disabled={listQuestionNumber === 0}
                         >
@@ -104,10 +131,15 @@ const MainContent = React.memo(({ editMode, testTitle, testId }) => {
                 </div>
             </div>
 
-            <div className={`lg:block ${isSideProgressOpen ? 'block' : 'hidden'} lg:relative absolute lg:top-0 top-[450px] w-full lg:w-80 bg-[#ffffff] border-l border-gray-200 p-4 sm:p-6 mt-4 lg:mt-6 rounded-xl lg:mr-7`}>
+            <aside
+                className={`${isSideProgressOpen ? 'block' : 'hidden'} lg:block lg:sticky lg:top-6 lg:self-start
+                    fixed inset-x-0 bottom-0 z-50 lg:relative lg:inset-auto w-full lg:w-60 
+                    h-fit bg-white border-t lg:border-t-0 lg:border-l border-gray-200 
+                    p-4 sm:p-6 rounded-t-xl lg:rounded-xl shadow-lg lg:shadow-none lg:mr-6 mt-6`}
+            >
                 <SideProgress
-                    parts={_.uniq(questions?.map((item) => item.part))}
-                    questionsPerPart={_.countBy(questions, 'part')}
+                    parts={groupedArray.map((g) => g.part)}
+                    questionsPerPart={_.mapValues(_.groupBy(questions, 'part'), (qs) => qs.length)}
                     currentIndex={listQuestionNumber}
                     setCurrentIndex={setListQuestionNumber}
                     questionToGroupIndex={questionToGroupIndex}
@@ -116,7 +148,14 @@ const MainContent = React.memo(({ editMode, testTitle, testId }) => {
                     setActiveQuestion={setActiveQuestion}
                     isSideProgressOpen={isSideProgressOpen}
                 />
-            </div>
+            </aside>
+
+            {isSideProgressOpen && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+                    onClick={() => setIsSideProgressOpen(false)}
+                />
+            )}
         </main>
     );
 });

@@ -82,7 +82,7 @@ const fileSlice = createSlice({
 
                 const question = {
                     title: item.content,
-                    point: 5,
+                    point: item.point,
                     answerKey: item.correct_answer,
                     explanation: item.explanation,
                     part: item.part,

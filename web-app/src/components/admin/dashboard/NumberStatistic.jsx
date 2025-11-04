@@ -95,7 +95,7 @@ const NumberStatistic = ({ topQuizzes }) => {
                 logo: <div className='rounded-full bg-purple-100 statisticCard w-13 h-13'>
                     <FaUserAlt className='text-purple-500 text-2xl' />
                 </div>,
-                number: accounts.length,
+                number: accounts?.length,
                 trend: userTrend,
             },
             {
@@ -134,7 +134,7 @@ const NumberStatistic = ({ topQuizzes }) => {
                         logo={data.logo}
                         number={data.number}
                         trend={data.trend.value}
-                        trendPeriod={data.trend.value > 1 ? "Up from last month" : data.trend.value < 1 ? "Down from last month" : "Same with last month"}
+                        trendPeriod={data.trend.value > 1 ? "Up from last month" : (data.trend.value < 1 && data.trend.value > 0) ? "Down from last month" : "Same with last month"}
                     />
                 </React.Fragment>
             ))}

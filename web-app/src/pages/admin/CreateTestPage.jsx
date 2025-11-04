@@ -85,8 +85,11 @@ const CreateTestPage = () => {
                         const part = item.mediaUrl
                             .split("/")
                             .pop()
-                            .match(/PART[_ ]?(\d+)/i)?.[1];  // extract number like 1, 2, 3
-                        return parseInt(part, 10) === parseInt(q.part.replace(/\D/g, ""), 10);
+                            .match(/(?:PART|SECTION)[_ ]?(\d+)/i)?.[1]; // supports both
+                        return (
+                            parseInt(part, 10) ===
+                            parseInt(q?.part?.replace(/\D/g, ""), 10)
+                        );
                     });
 
                     return matchedAudio
@@ -95,6 +98,7 @@ const CreateTestPage = () => {
                 })
             );
         }
+
 
 
 

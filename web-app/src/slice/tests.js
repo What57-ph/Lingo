@@ -35,8 +35,9 @@ const testSlice = createSlice({
                 state.loading = false;
             })
             .addCase(retrieveSingleTest.fulfilled, (state, action) => {
-                // console.log("Fetched test:", action.payload);
+
                 state.test = action.payload;
+                // console.log("Fetched test:", state.test);
             })
             .addCase(retrieveSingleTest.rejected, (state, action) => {
                 console.error("Failed to fetch test:", action.error);
