@@ -20,10 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,78 +32,26 @@ public class AttemptService {
   private final AttemptSectionResultRepository attemptSectionResultRepository;
   private final FeignTestService feignTestService;
   private final AttemptMapper attemptMapper;
-//  private final TestServiceFallback feignTestService;
   private static final Logger logger = LoggerFactory.getLogger(AttemptService.class);
 
   public List<ResAttemptDTO> getAllAttempts (){
-      return this.attemptRepository.findAll()
-              .stream().map(this.attemptMapper :: toResAttemptDTO)
-              .toList();
+    return this.attemptRepository.findAll()
+            .stream().map(this.attemptMapper :: toResAttemptDTO)
+            .toList();
   }
-public Long createAttempt(ReqAttemptDTO req) {
-    long start = System.currentTimeMillis();
-
+  
+  public Long createAttempt(ReqAttemptDTO req) {
     validateRequest(req);
-
-    Map<Long, String> answers = getCorrectAnswers(req.getQuizId());
-
     Attempt attempt = buildAttempt(req);
 
-
-    int[] types = new int[req.getField().length];
-    int questionCount = 1;
-
-    List<UserAnswers> list = new ArrayList<>(); //db
-
-    for (ReqAttemptDTO.AnswerDTO ans : req.getAnswers()) {
-      if (ans.getUserAnswer() == null ) {
-        continue;
-      }
-
-      String correctAnswer = answers.get(ans.getQuestionId());
-
-      UserAnswers userAnswers = new UserAnswers();
-      userAnswers.setCorrectAnswer(answers.get(ans.getQuestionId()));
-      userAnswers.setUserAnswer(ans.getUserAnswer());
-      userAnswers.setQuestionId(ans.getQuestionId());
-      userAnswers.setAttempt(attempt);
-
-      boolean isCorrect = Objects.equals(correctAnswer.trim(), ans.getUserAnswer().trim());
-      userAnswers.setCorrect(isCorrect);
-
-      if(isCorrect) {
-        if(req.getField().length >= 2) {   // more than 1 skill like listening and reading
-          if(questionCount <= (req.getAnswers().size() / 2)) types[0]++;
-          else types[1]++;
-        }
-      }
-      questionCount++;
-
-      list.add(userAnswers);
+    List<String> field = Arrays.asList(req.getField());
+    if(field.contains("Listening") || field.contains("Reading") ) {
+      attempt = gradingLR(attempt, req);
+    } else {
+      attempt = gradingSW(attempt, req);
     }
 
-    // count point
-    double[] scores = PointCounting.calculatePoint(req.getType(), types);
-
-    // set section result
-    List<AttemptSectionResult> sectionResults = buildSectionResults(req, scores, types, attempt);
-
-    attempt.setSectionResults(sectionResults);
-    attempt.setUserAnswers(list);
-    double totalScore = 0;
-    for(double score : scores)   totalScore += score;
-    attempt.setScore((long) totalScore);
     attempt = this.attemptRepository.save(attempt);
-
-    List<AttemptSectionResult> saveSectionRes = this.attemptSectionResultRepository.saveAll(sectionResults);
-    List<UserAnswers> savedAnswers = this.userAnswersRepository.saveAll(list);
-
-
-//    ResAttemptDTO resAttemptDTO = buildResponse(attempt, savedAnswers, saveSectionRes);
-
-    long end = System.currentTimeMillis();
-    logger.info("Execution time of doSomething(): {} ms", (end - start));
-
     return attempt.getAttemptId();
   }
 
@@ -210,10 +155,15 @@ public Long createAttempt(ReqAttemptDTO req) {
       AttemptSectionResult sectionResult = new AttemptSectionResult();
       sectionResult.setSectionScore(scores[i]);
       sectionResult.setType(req.getField()[i]);
-      sectionResult.setMaxPossibleScore(Constants.TOEIC_MAX_SECTION_SCORE);
       sectionResult.setCorrectAnswers(sectionCounts[i]);
       sectionResult.setTotalQuestions(req.getAnswers().size() / req.getField().length);
       sectionResult.setAttempt(attempt);
+
+      if (req.getType().equals("TOEIC")) {
+        sectionResult.setMaxPossibleScore(Constants.TOEIC_MAX_SECTION_SCORE);
+      } else if (req.getType().equals("IELTS")) {
+        sectionResult.setMaxPossibleScore(Constants.IELTS_MAX_SECTION_SCORE);
+      }
       sectionResults.add(sectionResult);
     }
 
@@ -235,6 +185,108 @@ public Long createAttempt(ReqAttemptDTO req) {
     response.setSectionResults(sectionResultsDTO);
 
     return response;
+  }
+
+  private Attempt gradingLR(Attempt currentAttempt, ReqAttemptDTO req) {
+    Map<Long, String> answers = getCorrectAnswers(req.getQuizId());
+
+    int[] types = new int[req.getField().length];
+    int questionCount = 1;
+
+    List<UserAnswers> list = new ArrayList<>();
+
+    for (ReqAttemptDTO.AnswerDTO ans : req.getAnswers()) {
+      if (ans.getUserAnswer() == null) {
+        continue;
+      }
+
+      String correctAnswer = answers.get(ans.getQuestionId());
+
+      UserAnswers userAnswers = new UserAnswers();
+      userAnswers.setCorrectAnswer(answers.get(ans.getQuestionId()));
+      userAnswers.setUserAnswer(ans.getUserAnswer());
+      userAnswers.setQuestionId(ans.getQuestionId());
+      userAnswers.setAttempt(currentAttempt);
+
+      boolean isCorrect = Objects.equals(correctAnswer.trim(), ans.getUserAnswer().trim());
+      userAnswers.setCorrect(isCorrect);
+
+      if (isCorrect) {
+        if (req.getField().length >= 2) {
+          if (questionCount <= (req.getAnswers().size() / 2)) {
+            types[0]++;
+          } else {
+            types[1]++;
+          }
+        } else {
+          // Chỉ có 1 kỹ năng
+          types[0]++;
+        }
+      }
+      questionCount++;
+
+      list.add(userAnswers);
+    }
+
+    double[] scores = PointCounting.calculatePoint(req.getType(), types);
+
+    List<AttemptSectionResult> sectionResults = buildSectionResults(req, scores, types, currentAttempt);
+
+    currentAttempt.setSectionResults(sectionResults);
+    currentAttempt.setUserAnswers(list);
+
+    double totalScore = calculateTotalScore(req.getType(), scores);
+    currentAttempt.setScore((long) (totalScore * 10));
+
+    this.attemptSectionResultRepository.saveAll(sectionResults);
+    this.userAnswersRepository.saveAll(list);
+
+    return currentAttempt;
+  }
+
+  private double calculateTotalScore(String type, double[] scores) {
+    if (type.equals("TOEIC")) {
+      // TOEIC: Sum of both sections
+      double total = 0;
+      for (double score : scores) {
+        total += score;
+      }
+      return total;
+    } else if (type.equals("IELTS")) {
+      // IELTS: Average of all sections (usually just 1 or 2)
+      if (scores.length == 0) return 0;
+
+      double sum = 0;
+      for (double score : scores) {
+        sum += score;
+      }
+      return sum / scores.length;
+    }
+    return 0;
+  }
+
+  private Attempt gradingSW(Attempt currentAttempt, ReqAttemptDTO req){
+
+    UserAnswers userAnswers = new UserAnswers();
+    userAnswers.setQuestionId(0L);  // id grading from model
+    userAnswers.setUserAnswer(req.getAnswers().get(0).getUserAnswer());  // answers (might be url or paragraph)
+    userAnswers.setAttempt(currentAttempt);
+    userAnswers.setCorrectAnswer(null);
+    userAnswers.setCorrect(true);
+
+    int[] sections = {0};
+    double[] scores = {0.0};
+    List<AttemptSectionResult> sectionResults = buildSectionResults(req, scores,sections , currentAttempt);
+
+    currentAttempt.setSectionResults(sectionResults);
+    currentAttempt.setUserAnswers(Collections.singletonList(userAnswers));
+
+    currentAttempt.setScore(0L);
+    currentAttempt.setGradingIeltsId(req.getGradingIeltsId());
+    this.attemptSectionResultRepository.saveAll(sectionResults);
+    this.userAnswersRepository.saveAll(Collections.singletonList(userAnswers));
+
+    return currentAttempt;
   }
 
 
