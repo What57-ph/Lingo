@@ -29,6 +29,10 @@ import RootLayout from './layouts/RouteLayout';
 import Analytics from './pages/user/Analytics';
 import Profile from './pages/user/Profile';
 import UserDetailPage from './pages/admin/UserDetailPage';
+import SpeakingTestPage from './pages-ATI/SpeakingTestPage';
+import SpeakingResultPage from './pages-ATI/SpeakingResultPage';
+import IeltsGraderPage from './pages-ATI/IeltsGraderPage';
+import WritingResultPage from './pages-ATI/WritingResultPage';
 function App() {
   const router = createBrowserRouter([
     {
@@ -58,9 +62,9 @@ function App() {
             {
               path: "tests/:id/:name/doTests",
               element: (
-                <ProtectedRoute>
-                  <HavingTestPage />
-                </ProtectedRoute>
+                // <ProtectedRoute>
+                <HavingTestPage />
+                // </ProtectedRoute>
               ),
             },
             {
@@ -71,7 +75,18 @@ function App() {
               path: "profile",
               element: <Profile />,
             },
-
+            {
+              path: "writing-test/:id",
+              element: <IeltsGraderPage />,
+            },
+            {
+              path: "writing-test",
+              element: <IeltsGraderPage />,
+            },
+            {
+              path: "writing-result/:id",
+              element: <WritingResultPage />,
+            },
           ]
         },
         {
@@ -123,9 +138,22 @@ function App() {
             {
               path: "reset",
               element: <ResetPage />,
-            }
+            },
+            // {
+            //   path: "writing-result",
+            //   element: <ResetPage />,
+            // },
+
           ],
         },
+        {
+          path: "speaking-test",
+          element: <SpeakingTestPage />,
+        },
+        {
+          path: "speaking-result",
+          element: <SpeakingResultPage />,
+        }
       ]
     }
   ]);
