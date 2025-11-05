@@ -80,7 +80,7 @@ const SideProgress = ({
                                             className={`
                                                 w-full aspect-square rounded-md
                                                 flex items-center justify-center
-                                                text-sm font-medium
+                                                !text-[12px] font-medium
                                                 transition-all duration-200
                                                 hover:scale-105
                                                 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1

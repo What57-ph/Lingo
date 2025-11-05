@@ -25,7 +25,7 @@ public class Test implements Serializable {
     long id;
     @Column(unique = true)
     String title;
-    int maxScore;
+    double maxScore;
     int timeLimit;
     @Enumerated(EnumType.STRING)
     TestType type;

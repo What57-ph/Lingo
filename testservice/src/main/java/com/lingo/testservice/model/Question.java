@@ -1,6 +1,7 @@
 package com.lingo.testservice.model;
 
 import com.lingo.testservice.utils.enums.MediaResourceCategory;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -21,8 +22,12 @@ public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
+    @Column(columnDefinition = "MEDIUMTEXT")
     String title;
-    long point;
+    @Column(name = "common_title", columnDefinition = "LONGTEXT")
+    @Nullable
+    String commonTitle;
+    double point;
     // fe pass question id to save key
     String answerKey;
     @Column(columnDefinition = "LONGTEXT")

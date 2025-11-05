@@ -91,7 +91,8 @@ const fileSlice = createSlice({
                     testTitle: testTitle,
                     answers: reqAnswer,
                     explanationResourceContent: item.explanationResourceContent,
-                    questionNumber: item.number
+                    questionNumber: item.number,
+                    commonTitle: item.commonTitle
                 };
 
                 questions.push(question);
@@ -114,6 +115,7 @@ const fileSlice = createSlice({
             .addCase(readExcelFile.fulfilled, (state, action) => {
                 state.loading = false;
                 state.excelData = action.payload;
+                console.log("data excel", state.excelData)
             })
             .addCase(saveSingleFile.pending, (state, action) => {
                 state.loading = true;

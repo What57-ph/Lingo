@@ -164,7 +164,7 @@ const CreateTestPage = () => {
     // console.log("Grouped files:", groupedUploadedFiles)
     // console.log("Question by part:", questionGroupedByPart);
     // console.log("Audio file for test:", form.getFieldValue("mediaUrl"));
-    console.log("Questions:", questionList);
+    // console.log("Questions:", questionList);
     console.log("Questions upload sample", questionSample)
     // console.log("Test title before upload:", form.getFieldValue("title"));
     return (

@@ -18,7 +18,7 @@ public class ResTestDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     long id;
     String title;
-    int maxScore;
+    double maxScore;
     int timeLimit;
     TestType type;
     // List<Long> questions;

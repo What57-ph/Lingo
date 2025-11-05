@@ -145,7 +145,7 @@ const TimeFrame = ({ editMode, setEditMode }) => {
                 </div>
 
                 <Progress
-                    percent={userAnswers?.length}
+                    percent={progress}
                     showInfo={false}
                     strokeColor="#ffffff33"
                     trailColor="#ffffff22"

@@ -53,7 +53,7 @@ class TestServiceImpl implements TestService {
     @Override
     @Transactional
     public ResTestDTO add(ReqCreateTestDTO dto) {
-        Optional<MediaResource> resourceOptional = resourceRepository.findByResourceContent(dto.getMediaUrl());
+        Optional<MediaResource> resourceOptional = resourceRepository.findFirstByResourceContent(dto.getMediaUrl());
 
         Test test = mapper.toTest(dto);
         test.setTitle(test.getTitle().replaceAll(" ", "_"));
@@ -77,7 +77,7 @@ class TestServiceImpl implements TestService {
     @Override
     public ResTestDTO update(long id, ReqUpdateTestDTO dto) {
         Optional<Test> testOptional = testRepository.findById(id);
-        Optional<MediaResource> resourceOptional = resourceRepository.findByResourceContent(dto.getMediaURL());
+        Optional<MediaResource> resourceOptional = resourceRepository.findFirstByResourceContent(dto.getMediaURL());
 
         testOptional.ifPresent(test -> {
             test.setTitle(dto.getTitle());

@@ -17,10 +17,19 @@ import TextArea from "antd/es/input/TextArea";
 
 Quill.register("modules/better-table", QuillBetterTable);
 
-const QuestionCard = ({ groupKey, questionRefs, resourceContent, editMode, questions, activeQuestion, setActiveQuestion, explanationResourceContent }) => {
+const QuestionCard = ({ groupKey, questionRefs, resourceContent, editMode, questions, activeQuestion, setActiveQuestion, explanationResourceContent, commonTitle }) => {
     const [form] = useForm();
+    const commonTitleMap = React.useMemo(() => {
+        const map = {};
+        questions.forEach((q, i) => {
+            if (!map[q.commonTitle]) map[q.commonTitle] = [];
+            map[q.commonTitle].push(i);
+        });
+        return map;
+    }, [questions]);
     const [answers, setAnswers] = useState({});
     const [explanation, setExplanation] = useState();
+    const [isCommonTitleRendered, setIsCommonTitleRendered] = useState(false);
     const dispatch = useDispatch();
     const { userAnswers } = useSelector((state) => state.questions);
     const { test } = useSelector((state) => state.test);
@@ -61,9 +70,20 @@ const QuestionCard = ({ groupKey, questionRefs, resourceContent, editMode, quest
     };
 
     const handleSaveAll = (values) => {
-        const isUrl = checkType(resourceContent) === "url";
+        const commonTitleGroups = {};
 
-        questions.forEach((question, questionIndex) => {
+        questions.forEach((q, idx) => {
+            if (!commonTitleGroups[q.commonTitle]) {
+                commonTitleGroups[q.commonTitle] = values.questions[idx].commonTitle;
+            }
+        });
+
+        const normalizedQuestions = questions.map((q, idx) => ({
+            ...q,
+            commonTitle: commonTitleGroups[q.commonTitle] || values.questions[idx].commonTitle,
+        }));
+
+        normalizedQuestions.forEach((question, questionIndex) => {
             const updatingQuestion = {
                 title: values.questions[questionIndex].title,
                 point: question.point,
@@ -72,31 +92,24 @@ const QuestionCard = ({ groupKey, questionRefs, resourceContent, editMode, quest
                 part: question.part,
                 questionNumber: question.questionNumber,
                 category: question.category,
-                resourceContent: isUrl ? question.resourceContent : values.passage,
+                resourceContent:
+                    checkType(resourceContent) === "url" ? question.resourceContent : values.passage,
                 explanationResourceContent: question.explanationResourceContent,
+                commonTitle: question.commonTitle,
             };
 
             dispatch(modifyQuestion({ id: question.id, question: updatingQuestion }));
-            dispatch(
-                modifyResourceContent({
-                    id: question.resourceContentId,
-                    resource: {
-                        resourceContent: values?.passage,
-                        explanationResourceContent: question.explanationResourceContent,
-                        description: "updated",
-                    },
-                })
-            );
-
-            question.answers.forEach((answer, answerIndex) => {
-                const updatingAnswer = {
-                    content: values.questions[questionIndex].answers[answerIndex].content,
-                    correct: String.fromCharCode(65 + answerIndex) === values.questions[questionIndex].correct,
-                };
-                dispatch(modifyAnswer({ id: answer.id, answer: updatingAnswer }));
-            });
         });
     };
+
+
+    const handleCommonTitleChange = (newContent, originalTitle) => {
+        const relatedIndexes = commonTitleMap[originalTitle] || [];
+        relatedIndexes.forEach((i) => {
+            form.setFieldValue(["questions", i, "commonTitle"], newContent);
+        });
+    };
+
 
     const handleUpdateContentImage = (options) => {
         const { file } = options;
@@ -123,26 +136,35 @@ const QuestionCard = ({ groupKey, questionRefs, resourceContent, editMode, quest
         }
     }, [questions]);
     // console.log("user answers", userAnswers)
+    // console.log(questions)
+    // console.log("common title:", commonTitle)
+    // console.log("debug for form:", form.getFieldsValue())
     return (
         <>
-
             <Form
                 form={form}
                 layout="vertical"
                 onFinish={handleSaveAll}
                 initialValues={{
-                    explanation,
                     passage: resourceContent,
-                    questions: questions.map((q) => ({
+                    questions: questions?.map((q) => ({
                         title: q.title,
+                        commonTitle: q.commonTitle,
                         answers: q.answers?.map((a) => ({ content: a.content })),
+                        correct:
+                            q.answers?.find((ans) => ans.correct === "true")
+                                ? String.fromCharCode(65 + q.answers.findIndex((ans) => ans.correct === "true"))
+                                : null,
+                        explanation: q.explanation,
                     })),
                 }}
             >
+
+
                 <div className="flex gap-8 xl:flex-row flex-col">
                     {/* Passage section */}
                     {editMode ? (
-                        <div className="flex flex-col flex-1">
+                        <div className="flex flex-col flex-[1.5]">
                             {checkType(resourceContent) === "url" ? (
                                 <>
                                     <p>Nội dung câu hỏi (hình ảnh)</p>
@@ -174,7 +196,7 @@ const QuestionCard = ({ groupKey, questionRefs, resourceContent, editMode, quest
                             className={
                                 checkType(resourceContent) === "null"
                                     ? "hidden"
-                                    : "bg-blue-50 rounded-lg p-6 mb-8 ml-4 flex-1 flex flex-col w-full"
+                                    : `bg-blue-50 rounded-lg p-6 mb-8 ml-4 flex flex-col  ${!editMode ? "flex-[1.5] max-h-[130vh] overflow-y-scroll" : "flex-1"}`
                             }
                         >
                             <div className="flex items-center mb-4">
@@ -188,7 +210,7 @@ const QuestionCard = ({ groupKey, questionRefs, resourceContent, editMode, quest
                                 <Image src={resourceContent} />
                             ) : (
                                 <div
-                                    className="prose w-full max-w-full text-lg [&_*]:w-full [&_table]:w-full [&_img]:max-w-full"
+                                    className="prose w-full max-w-full text-lg [&_*]:w-full [&_table]:w-full [&_img]:max-w-full !text-[16px]"
                                     dangerouslySetInnerHTML={{ __html: resourceContent }}
                                 />
                             )}
@@ -196,164 +218,195 @@ const QuestionCard = ({ groupKey, questionRefs, resourceContent, editMode, quest
                     )}
 
                     {/* Questions section */}
-                    <div className="flex-1">
-                        {questions.map((q, qId) => (
-                            <Card
-                                key={q.id}
-                                ref={(el) => (questionRefs.current[q.questionNumber] = el)}
-                                className="!border-2 border-gray-200 rounded-lg mb-2 h-auto !mt-2"
-                            >
-                                <div className="flex items-start space-x-4">
-                                    <div className="flex-shrink-0">
-                                        <div
-                                            onClick={() => setActiveQuestion(q.questionNumber)}
-                                            className={`w-12 h-12 rounded-lg flex items-center justify-center font-bold cursor-pointer ${activeQuestion === q.questionNumber
-                                                ? "bg-blue-600 text-white"
-                                                : "bg-blue-100 text-blue-600"
-                                                }`}
-                                        >
-                                            {q.questionNumber}
-                                        </div>
-                                    </div>
-
-                                    <div className="flex-1">
-                                        {editMode ? (
-                                            <Form.Item name={["questions", qId, "title"]} label={`Question ${q.questionNumber}`}>
-                                                <Input.TextArea rows={2} />
-                                            </Form.Item>
-                                        ) : (
-                                            <h4 className="text-lg font-semibold mb-3">
-                                                {test.type === "IELTS" ? q.title || "" : q.title || `Question ${q.questionNumber}`}
-                                            </h4>
-                                        )}
-
-                                        {editMode ? (
-                                            <>
-                                                {q.answers?.map((ans, aId) => (
-                                                    <Form.Item
-                                                        key={ans.id}
-                                                        name={["questions", qId, "answers", aId, "content"]}
-                                                        label={`Answer ${aId + 1}`}
-                                                    >
-                                                        <Input />
-                                                    </Form.Item>
-                                                ))}
-
-                                                <Form.Item
-                                                    name={["questions", qId, "correct"]}
-                                                    label="Correct Answer"
-                                                    initialValue={
-                                                        q.answers?.find((ans) => ans.correct === "true")
-                                                            ? String.fromCharCode(
-                                                                65 + q.answers.findIndex((ans) => ans.correct === "true")
-                                                            )
-                                                            : null
-                                                    }
-                                                >
-                                                    <Radio.Group>
-                                                        {q.answers?.map((ans, aId) => (
-                                                            <Radio key={ans.id} value={String.fromCharCode(65 + aId)}>
-                                                                Answer {aId + 1}
-                                                            </Radio>
-                                                        ))}
-                                                    </Radio.Group>
-                                                </Form.Item>
-                                            </>
-                                        ) : test?.type === "IELTS" && q.answers[0].content === null ? (
-                                            <>
-                                                {console.log(q)}
-                                                {/* {q.title && (<p>{q.title}</p>)} */}
-
-                                                <Input.TextArea key={q.id} onChange={
-                                                    (e) => handleAnswerChange(
-                                                        q.id,
-                                                        e.target.value,
-                                                        q.answers.find((a) => a.id === e.target.value)?.correct,
-                                                        q.title,
-                                                        q.answers.find((a) => a.id === e.target.value)?.content,
-                                                        q.questionNumber)} />
-                                            </>
+                    <div className={`${!editMode ? "flex-[1] max-h-[130vh] overflow-y-scroll" : "flex-1"}`}>
 
 
-                                        ) : (
-                                            <Radio.Group
-                                                onChange={(e) =>
-                                                    handleAnswerChange(
-                                                        q.id,
-                                                        e.target.value,
-                                                        q.answers.find((a) => a.id === e.target.value)?.correct,
-                                                        q.title,
-                                                        q.answers.find((a) => a.id === e.target.value)?.content,
-                                                        q.questionNumber
-                                                    )
-                                                }
-                                                value={userAnswers.find((a) => a.questionId === q.id)?.userAnswer || ""}
-                                                className="!space-y-3 !flex !flex-col"
+                        {questions.map((q, qId) => {
+                            const shouldRenderTitle = qId === 0 || q.commonTitle !== questions[qId - 1].commonTitle;
+
+
+                            return (
+                                <div key={qId} className="">
+                                    {shouldRenderTitle &&
+                                        (editMode ? (
+                                            <Form.Item
+                                                name={["questions", qId, "commonTitle"]}
+                                                valuePropName="value"
+                                                getValueFromEvent={(content) => content}
                                             >
-                                                {q.answers?.map((ans, index) =>
-                                                    ans.content ? (
-                                                        <Radio
-                                                            key={ans.id}
-                                                            value={
-                                                                index === 0
-                                                                    ? "A"
-                                                                    : index === 1
-                                                                        ? "B"
-                                                                        : index === 2
-                                                                            ? "C"
-                                                                            : "D"
-                                                            }
-                                                            className="!text-base"
-                                                        >
-                                                            {ans.content}
-                                                        </Radio>
-                                                    ) : null
+                                                <ReactQuill
+                                                    theme="snow"
+                                                    className="bg-blue-50 rounded-md !text-[16px]"
+                                                    modules={quillModules}
+                                                    onChange={(content) => handleCommonTitleChange(content, q.commonTitle)}
+                                                />
+                                            </Form.Item>
+
+
+                                        ) : (
+                                            <div
+                                                className="prose w-full max-w-full text-lg [&_*]:w-full [&_table]:w-full [&_img]:max-w-full !text-[16px] my-2"
+                                                dangerouslySetInnerHTML={{ __html: q.commonTitle }}
+                                            />
+                                        ))}
+                                    <Card
+                                        key={q.id}
+                                        ref={(el) => (questionRefs.current[q.questionNumber] = el)}
+                                        className="!border-2 border-gray-200 rounded-lg mb-2 h-auto !mt-2"
+                                    >
+                                        <div className="flex items-start space-x-4">
+                                            <div className="flex-shrink-0">
+                                                <div
+                                                    onClick={() => setActiveQuestion(q.questionNumber)}
+                                                    className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold cursor-pointer ${activeQuestion === q.questionNumber
+                                                        ? "bg-blue-600 text-white"
+                                                        : "bg-blue-100 text-blue-600"
+                                                        }`}
+                                                >
+                                                    {q.questionNumber}
+                                                </div>
+                                            </div>
+
+                                            <div className="flex-1">
+                                                {editMode ? (
+                                                    <Form.Item name={["questions", qId, "title"]} label={`Question ${q.questionNumber}`}>
+                                                        <Input.TextArea />
+                                                    </Form.Item>
+                                                ) : (
+                                                    <p className="text-[16px] !mb-2 w-full">
+                                                        {test.type === "IELTS" ? q.title || "" : q.title || `Question ${q.questionNumber}`}
+                                                    </p>
                                                 )}
-                                            </Radio.Group>
+
+                                                {editMode ? (
+                                                    <>
+                                                        {q.answers?.map((ans, aId) => (
+                                                            <Form.Item
+                                                                key={ans.id}
+                                                                name={["questions", qId, "answers", aId, "content"]}
+                                                                label={`Answer ${aId + 1}`}
+                                                            >
+                                                                <Input />
+                                                            </Form.Item>
+                                                        ))}
+
+                                                        <Form.Item
+                                                            name={["questions", qId, "correct"]}
+                                                            label="Correct Answer"
+                                                            initialValue={
+                                                                q.answers?.find((ans) => ans.correct === "true")
+                                                                    ? String.fromCharCode(
+                                                                        65 + q.answers.findIndex((ans) => ans.correct === "true")
+                                                                    )
+                                                                    : null
+                                                            }
+                                                        >
+                                                            <Radio.Group>
+                                                                {q.answers?.map((ans, aId) => (
+                                                                    <Radio key={ans.id} value={String.fromCharCode(65 + aId)}>
+                                                                        Answer {aId + 1}
+                                                                    </Radio>
+                                                                ))}
+                                                            </Radio.Group>
+                                                        </Form.Item>
+                                                    </>
+                                                ) : test?.type === "IELTS" && (q.answers[0].content === null || q.answers[0].content === '') ? (
+                                                    <>
+                                                        {/* {console.log(q)} */}
+                                                        {/* {q.title && (<p>{q.title}</p>)} */}
+
+                                                        <Input.TextArea className="!h-10 !w-1/2" rows={1} key={q.id} onChange={
+                                                            (e) => handleAnswerChange(
+                                                                q.id,
+                                                                e.target.value,
+                                                                q.answers.find((a) => a.id === e.target.value)?.correct,
+                                                                q.title,
+                                                                q.answers.find((a) => a.id === e.target.value)?.content,
+                                                                q.questionNumber)} />
+                                                    </>
+
+
+                                                ) : (
+                                                    <Radio.Group
+                                                        onChange={(e) =>
+                                                            handleAnswerChange(
+                                                                q.id,
+                                                                e.target.value,
+                                                                q.answers.find((a) => a.id === e.target.value)?.correct,
+                                                                q.title,
+                                                                q.answers.find((a) => a.id === e.target.value)?.content,
+                                                                q.questionNumber
+                                                            )
+                                                        }
+                                                        value={userAnswers.find((a) => a.questionId === q.id)?.userAnswer || ""}
+                                                        className="!space-y-3 !flex !flex-col"
+                                                    >
+                                                        {q.answers?.map((ans, index) =>
+                                                            ans.content ? (
+                                                                <Radio
+                                                                    key={ans.id}
+                                                                    value={
+                                                                        index === 0
+                                                                            ? "A"
+                                                                            : index === 1
+                                                                                ? "B"
+                                                                                : index === 2
+                                                                                    ? "C"
+                                                                                    : "D"
+                                                                    }
+                                                                    className="!text-base"
+                                                                >
+                                                                    {ans.content}
+                                                                </Radio>
+                                                            ) : null
+                                                        )}
+                                                    </Radio.Group>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        {editMode && (
+                                            <>
+                                                <Form.Item
+                                                    name={["questions", qId, "explanation"]}
+                                                    label="Giải thích"
+                                                    // initialValue={q.explanation}
+                                                    valuePropName="value"
+                                                    getValueFromEvent={(value) => value}
+                                                >
+                                                    <ReactQuill theme="snow" className="bg-blue-50 rounded-md" modules={quillModules} />
+                                                </Form.Item>
+
+                                                <p>Thêm file cho phần giải thích (tùy chọn)</p>
+                                                <Upload.Dragger
+                                                    customRequest={(options) =>
+                                                        handleUpdateExplanationResource(options, {
+                                                            questionId: q.id,
+                                                            testTitle: q.testTitle,
+                                                            fileCategory: "QUESTION_AUDIO",
+                                                            currentResourceContent: q.explanationResourceContent,
+                                                            file: options.file,
+                                                            updatedFileName: q.explanationResourceContent.split("/").pop(),
+                                                        })
+                                                    }
+                                                    fileList={null}
+                                                    multiple={false}
+                                                    className="!h-64 w-full flex flex-col justify-center items-center my-4"
+                                                >
+                                                    <p className="ant-upload-drag-icon w-24 h-24 flex items-center justify-center p-4">
+                                                        <FaUpload className="text-black text-6xl" />
+                                                    </p>
+                                                    <p className="text-xl font-medium">Kéo thả file vào đây</p>
+                                                    <span>
+                                                        hoặc <span className="text-blue-400">chọn file</span>
+                                                    </span>
+                                                </Upload.Dragger>
+                                            </>
                                         )}
-                                    </div>
+                                    </Card>
                                 </div>
-
-                                {editMode && (
-                                    <>
-                                        <Form.Item
-                                            name={["questions", qId, "explanation"]}
-                                            label="Giải thích"
-                                            initialValue={q.explanation}
-                                            valuePropName="value"
-                                            getValueFromEvent={(value) => value}
-                                        >
-                                            <ReactQuill theme="snow" className="bg-blue-50 rounded-md" modules={quillModules} />
-                                        </Form.Item>
-
-                                        <p>Thêm file cho phần giải thích (tùy chọn)</p>
-                                        <Upload.Dragger
-                                            customRequest={(options) =>
-                                                handleUpdateExplanationResource(options, {
-                                                    questionId: q.id,
-                                                    testTitle: q.testTitle,
-                                                    fileCategory: "QUESTION_AUDIO",
-                                                    currentResourceContent: q.explanationResourceContent,
-                                                    file: options.file,
-                                                    updatedFileName: q.explanationResourceContent.split("/").pop(),
-                                                })
-                                            }
-                                            fileList={null}
-                                            multiple={false}
-                                            className="!h-64 w-full flex flex-col justify-center items-center my-4"
-                                        >
-                                            <p className="ant-upload-drag-icon w-24 h-24 flex items-center justify-center p-4">
-                                                <FaUpload className="text-black text-6xl" />
-                                            </p>
-                                            <p className="text-xl font-medium">Kéo thả file vào đây</p>
-                                            <span>
-                                                hoặc <span className="text-blue-400">chọn file</span>
-                                            </span>
-                                        </Upload.Dragger>
-                                    </>
-                                )}
-                            </Card>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
 

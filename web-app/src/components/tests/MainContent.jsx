@@ -11,46 +11,68 @@ const MainContent = React.memo(({ editMode, testTitle, testId }) => {
     const [isSideProgressOpen, setIsSideProgressOpen] = useState(false);
     const questionRefs = useRef({});
     const { questions } = useSelector((state) => state.questions);
-
+    const { test } = useSelector((state) => state.test)
     const groupedArray = React.useMemo(() => {
-        const groupQuestionByPartAndResource = _(questions)
-            .groupBy("part")
-            .mapValues((partGroup) => _.groupBy(partGroup, "resourceContent"))
-            .value();
+        const groupedByPart = _.groupBy(questions, "part");
 
-        return Object.entries(groupQuestionByPartAndResource).map(([part, resources]) => ({
-            part,
-            resources: Object.entries(resources).map(([resourceContent, questions]) => ({
-                resourceContent,
-                questions,
-            })),
-        }));
+        return Object.entries(groupedByPart).map(([part, partQuestions]) => {
+            const groupedByResource = _.groupBy(partQuestions, "resourceContent");
+
+            const resources = Object.entries(groupedByResource).map(
+                ([resourceContent, resourceQuestions]) => {
+                    const groupedByCommonTitle = _.groupBy(resourceQuestions, "commonTitle");
+                    const groupedByCommonTitleArray = Object.entries(groupedByCommonTitle).map(
+                        ([commonTitle, questions]) => ({
+                            commonTitle,
+                            questions,
+                        })
+                    );
+
+                    return {
+                        resourceContent,
+                        groupedByCommonTitle: groupedByCommonTitleArray,
+                    };
+                }
+            );
+
+            return { part, resources };
+        });
     }, [questions]);
 
-    console.log("groupedArray", groupedArray);
+
+    // console.log("groupedArray", groupedArray);
 
     const questionCardComponents = React.useMemo(() =>
 
         groupedArray.map(({ part, resources }) => (
             <div key={part} className="mb-8">
-                <div className="ml-8 my-4 w-[90%]">
-                    <audio controls className="w-full">
-                        <source src={groupedArray[listQuestionNumber].resources[0].questions[0].explanationResourceContent} type="audio/mpeg" />
-                        Your browser does not support the audio element.
-                    </audio>
-                </div>
-                {resources.map(({ resourceContent, questions }, index) => (
-                    <QuestionCard
-                        key={`${part}-${index}`}
-                        questions={questions}
-                        groupKey={part}
-                        questionRefs={questionRefs}
-                        resourceContent={resourceContent}
-                        editMode={editMode}
-                        activeQuestion={activeQuestion}
-                        setActiveQuestion={setActiveQuestion}
-                        explanationResourceContent={questions[0].explanationResourceContent}
-                    />
+                {groupedArray[listQuestionNumber].resources.groupedByCommonTitle?.[0].questions[0].category === "LISTENING" && test.type === "IELTS" && (
+                    <div className="ml-8 my-4 w-[90%]">
+                        <audio controls className="w-full">
+                            <source src={groupedArray[listQuestionNumber].resources?.[0].groupedByCommonTitle[0].questions[0].explanationResourceContent} type="audio/mpeg" />
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                )}
+
+                {resources?.map(({ resourceContent, groupedByCommonTitle }, index) => (
+                    <>
+                        {/* {console.log("questions for index", index, groupedByCommonTitle[index])} */}
+                        {/* {console.log("common for index", index, _.flatMap(groupedByCommonTitle, "commonTitle"))} */}
+                        <QuestionCard
+                            key={`${part}-${index}`}
+                            questions={_.flatMap(groupedByCommonTitle, "questions")}
+                            groupKey={part}
+                            questionRefs={questionRefs}
+                            resourceContent={resourceContent}
+                            editMode={editMode}
+                            activeQuestion={activeQuestion}
+                            setActiveQuestion={setActiveQuestion}
+                            explanationResourceContent={groupedByCommonTitle?.[0].questions?.[0].explanationResourceContent}
+                            commonTitle={_.flatMap(groupedByCommonTitle, "commonTitle")}
+                        />
+                    </>
+
                 ))}
             </div>
         )),
@@ -85,15 +107,15 @@ const MainContent = React.memo(({ editMode, testTitle, testId }) => {
     const questionToGroupIndex = React.useMemo(() => {
         const map = {};
         groupedArray.forEach((group, groupIdx) => {
-            group.resources.forEach(({ questions }) => {
-                questions.forEach((q) => {
+            _.flatMap(group.resources?.[0].groupedByCommonTitle).forEach(({ questions }) => {
+                questions?.forEach((q) => {
                     map[q.questionNumber] = groupIdx;
                 });
             });
         });
         return map;
     }, [groupedArray]);
-    console.log("audio for", listQuestionNumber, groupedArray[listQuestionNumber].resources[0].questions[0].explanationResourceContent);
+    // console.log("audio for", listQuestionNumber, groupedArray[listQuestionNumber].resources[0].groupedByCommonTitle[0].questions[0].explanationResourceContent);
     return (
         <main className="flex min-h-screen flex-col lg:flex-row">
             <div className="flex-1 p-4 sm:p-6 overflow-y-auto">

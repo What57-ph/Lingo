@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ReqQuestionDTO {
     String title;
-    long point;
+    double point;
     // fe pass question id to save key
     String answerKey;
     String explanation;
