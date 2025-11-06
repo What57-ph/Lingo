@@ -3,6 +3,13 @@ import AuthContext from '../contexts/AuthContext';
 import { useDispatch } from 'react-redux';
 import { loginGoogle } from '../slice/authentication';
 import { toast } from 'react-toastify';
+import Hero from '../components/client/homepage/Hero';
+import WhyChoose from '../components/client/homepage/WhyChoose';
+import AIIELTS from '../components/client/homepage/AIIELTS';
+import SkillsCourses from '../components/client/homepage/SkillsCourses';
+import Testimonials from '../components/client/homepage/Testimonials';
+import CTASection from '../components/client/homepage/CTASection';
+import Partners from '../components/client/homepage/Partners';
 
 const HomePage = () => {
     const dispatch = useDispatch();
@@ -32,6 +39,13 @@ const HomePage = () => {
 
     return (
         <div>
+            <Hero />
+            <WhyChoose />
+            <Partners />
+            <AIIELTS />
+            <SkillsCourses />
+            <Testimonials />
+            <CTASection />
         </div>
     );
 };

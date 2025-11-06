@@ -32,6 +32,7 @@ const testSlice = createSlice({
             })
             .addCase(retrieveAllTests.fulfilled, (state, action) => {
                 state.tests = action.payload;
+                // console.log("debug all tests", state.tests)
                 state.loading = false;
             })
             .addCase(retrieveSingleTest.fulfilled, (state, action) => {
