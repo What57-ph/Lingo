@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejected } fro
 import { getResult, submitSpeaking } from "../config/api-ATI";
 
 const initialState = {
-  result: null,
+  result: {},
   resultId: null,
   loading: false,
   error: null
@@ -24,11 +24,13 @@ export const retrieveResult = createAsyncThunk(
     while (status !== "COMPLETED") {
       response = await getResult(id);
       status = response.status;
+      console.log("Status current: ", status);
 
       if (status !== "COMPLETED") {
-        await new Promise((resolve) => setTimeout(resolve, 30000));
+        await new Promise((resolve) => setTimeout(resolve, 20000));
       }
     }
+    console.log(response);
     return response;
   }
 );
@@ -42,16 +44,17 @@ const speakingSlice = createSlice({
         state.loading = true;
       })
       .addMatcher(isRejected(createSubmit, retrieveResult), (state, action) => {
-        state.loading = true;
+        state.loading = false;
         state.error = action.payload;
       })
       .addMatcher(isFulfilled(createSubmit), (state, action) => {
         state.loading = false;
-        state.resultId = action.payload.id;
+        state.resultId = action.payload.submission_id;
       })
       .addMatcher(isFulfilled(retrieveResult), (state, action) => {
         state.loading = false;
         state.result = action.payload;
+        state.resultId = action.payload.submission_id;
       });
   },
 })

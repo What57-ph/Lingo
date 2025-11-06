@@ -1,79 +1,35 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import WritingDisplayPanel from "../components-ATI/writing/WritingDisplayPanel";
 import WritingAnalysisPanel from "../components-ATI/writing/WritingAnalysisPanel";
+import { retrieveAttempt } from "../slice/attempts";
+// import { retrieveResult } from "../slice-ATI/speaking"; // (1. Import nếu bạn có AI)
+// import { retrieveSingleTest } from "../slice/tests"; 
 
-
-
+// --- DỮ LIỆU MOCK (Giữ nguyên) ---
 const MOCK_AI_RESPONSE = {
-  scores: {
-    overall: 7.5,
-    // (Thêm các điểm thành phần nếu cần)
-  },
-  status: {
-    level: "Giỏi",
-    time: "2 phút 34 giây",
-    state: "Đạt yêu cầu",
-  },
+  scores: { overall: 7.5 },
+  status: { level: "Giỏi", time: "2 phút 34 giây", state: "Đạt yêu cầu" },
   errors: [
-    {
-      text: "technology made our lives more complicated",
-      suggestion: "technology has made our lives more complicated",
-      type: "grammar",
-      typeVi: "Ngữ pháp",
-      location: "Đoạn 1, câu 2",
-      explanation:
-        "Cần sử dụng thì hiện tại hoàn thành để diễn tả tác động kéo dài đến hiện tại",
-      color: "red",
-    },
-    {
-      text: "For example",
-      suggestion: "For instance",
-      type: "vocabulary",
-      typeVi: "Từ vựng",
-      location: "Đoạn 2, câu 2",
-      explanation:
-        'Sử dụng "For instance" sẽ trang trọng và học thuật hơn trong bài viết IELTS',
-      color: "yellow",
-    },
+    { text: "technology made our lives more complicated", suggestion: "technology has made our lives more complicated", type: "grammar", typeVi: "Ngữ pháp", location: "Đoạn 1, câu 2", explanation: "...", color: "red" },
+    { text: "For example", suggestion: "For instance", type: "vocabulary", typeVi: "Từ vựng", location: "Đoạn 2, câu 2", explanation: "...", color: "yellow" },
   ],
   suggestions: {
-    strongPoints: [
-      "Cấu trúc bài viết rõ ràng với mở bài, thân bài và kết luận",
-      "Trả lời đầy đủ cả hai quan điểm và đưa ra ý kiến cá nhân",
-      "Sử dụng từ vựng phong phú và chính xác",
-    ],
-    grammar: [
-      "Chú ý sử dụng đúng thì trong các câu phức",
-      "Kiểm tra lại cấu trúc câu trước khi hoàn thành",
-    ],
-    vocabulary: [
-      "Sử dụng từ đồng nghĩa để tránh lặp từ",
-      "Học thêm các cụm từ học thuật",
-    ],
-    coherence: [
-      "Sử dụng thêm các liên từ nối ý",
-      "Đảm bảo mỗi đoạn có chủ đề rõ ràng",
-    ],
+    strongPoints: ["Cấu trúc bài viết rõ ràng...", "Trả lời đầy đủ..."],
+    grammar: ["Chú ý sử dụng đúng thì...", "Kiểm tra lại cấu trúc..."],
+    vocabulary: ["Sử dụng từ đồng nghĩa...", "Học thêm các cụm từ..."],
+    coherence: ["Sử dụng thêm các liên từ...", "Đảm bảo mỗi đoạn..."],
   },
 };
-
-// ====================================================================
-// === THÊM MỚI 2: MOCK DATA CHO FORM (ĐỂ TEST TRANG) ===
-// ====================================================================
-const MOCK_FORM_DATA = {
-  task: 1,
-  prompt:
+const MOCK_TEST_DATA = {
+  id: 1,
+  taskType: 1,
+  promptText:
     "The chart below shows the changes in the percentage of the population in four European countries who bought different types of products online from 2018 to 2022.",
-  essay: `The chart illustrates the changes in online shopping habits across four European nations between 2018 and 2022.
-
-Overall, there was a noticeable increase in the proportion of people engaging in e-commerce in all countries. However, the types of goods purchased varied significantly.
-
-In 2018, the purchase of electronics was the most popular, especially in Germany (around 35%). This figure saw a steady rise to 40% by 2022. In contrast, online grocery shopping was the least common in 2018, with all four countries reporting figures below 10%. This category, however, experienced the most dramatic growth, quadrupling in France to nearly 20% by 2022.
-
-Clothing and apparel constituted the second major category. The UK led in this segment, starting at 25% and finishing at 32%. Meanwhile, Spain showed a remarkable increase in this area, doubling its percentage from 15% to 30% over the five-year period.`,
-  image: "https://i.imgur.com/gim2k9g.png", // URL ảnh biểu đồ mẫu
+  promptImage: "https://i.imgur.com/gim2k9g.png",
 };
+
 
 export default function WritingResultPage() {
   const [leftWidth, setLeftWidth] = useState(50);
@@ -81,23 +37,66 @@ export default function WritingResultPage() {
   const containerRef = useRef(null);
   const [promptImageUrl, setPromptImageUrl] = useState(null);
 
-  const location = useLocation();
-  // ====================================================================
-  // === SỬA ĐỔI: SỬ DỤNG MOCK DATA LÀM DỰ PHÒNG ===
-  // ====================================================================
-  // Trang sẽ cố gắng lấy 'formData' từ 'location.state' (khi đi từ trang trước).
-  // Nếu không có, nó sẽ dùng 'MOCK_FORM_DATA' để bạn test.
-  const formData = location.state?.formData || MOCK_FORM_DATA;
+  const { id: attemptId } = useParams();
+  const dispatch = useDispatch();
 
-  const wordCount = formData?.essay
-    ? formData.essay.trim().split(/\s+/).filter(Boolean).length
-    : 0;
+  const {
+    attempt,
+    loading: attemptLoading,
+    error: attemptError
+  } = useSelector((state) => state.attempts);
 
-  // useEffect để xử lý URL ảnh (Giữ nguyên)
+  // const { 
+  //   result: assessmentResult, 
+  //   loading: assessmentLoading, 
+  //   error: assessmentError 
+  // } = useSelector((state) => state.speaking);
+
+  const [quizData, setQuizData] = useState(null);
+  const [quizLoading, setQuizLoading] = useState(true);
+
+
+  useEffect(() => {
+    if (attemptId) {
+      dispatch(retrieveAttempt(attemptId));
+    }
+  }, [attemptId, dispatch]);
+
+  // useEffect 2: Fetch đề bài (quiz) KHI 'attempt' đã tải xong
+  useEffect(() => {
+    const quizId = attempt?.quizId;
+    // Chỉ chạy nếu có quizId VÀ (chưa có quizData HOẶC quizData không khớp)
+    if (quizId && (quizData?.id !== quizId)) {
+      setQuizLoading(true);
+      console.log(`(Mock) Đang fetch Đề Bài (Quiz) với ID: ${quizId}`);
+      setTimeout(() => {
+        setQuizData(MOCK_TEST_DATA);
+        setQuizLoading(false);
+      }, 500);
+
+      /*
+      dispatch(retrieveSingleTest(quizId))
+        .unwrap()
+        .then((data) => setQuizData(data))
+        .catch((err) => setQuizData(null))
+        .finally(() => setQuizLoading(false));
+      */
+    }
+  }, [attempt, dispatch]); // Phụ thuộc vào 'attempt'
+
+  /*
+  useEffect(() => {
+    const gradingId = attempt?.gradingIeltsId;
+    if (gradingId) {
+      // (Thêm logic kiểm tra 'assessmentResult' nếu cần)
+      dispatch(retrieveResult(gradingId));
+    }
+  }, [attempt, dispatch]);
+  */
+
   useEffect(() => {
     let imageUrl = null;
-    const imageSource = formData?.image;
-
+    const imageSource = quizData?.promptImage;
     if (imageSource) {
       if (typeof imageSource === "string") {
         imageUrl = imageSource;
@@ -106,18 +105,13 @@ export default function WritingResultPage() {
       }
     }
     setPromptImageUrl(imageUrl);
-
     return () => {
-      if (
-        imageUrl &&
-        (imageSource instanceof File || imageSource instanceof Blob)
-      ) {
+      if (imageUrl && (imageSource instanceof File || imageSource instanceof Blob)) {
         URL.revokeObjectURL(imageUrl);
       }
     };
-  }, [formData?.image]);
+  }, [quizData?.promptImage]);
 
-  // useEffect cho Resizer (Giữ nguyên)
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (!isResizing || !containerRef.current) return;
@@ -128,9 +122,7 @@ export default function WritingResultPage() {
         setLeftWidth(newLeftWidth);
       }
     };
-    const handleMouseUp = () => {
-      setIsResizing(false);
-    };
+    const handleMouseUp = () => setIsResizing(false);
     if (isResizing) {
       document.addEventListener("mousemove", handleMouseMove);
       document.addEventListener("mouseup", handleMouseUp);
@@ -145,36 +137,64 @@ export default function WritingResultPage() {
     };
   }, [isResizing]);
 
-  // Bộ kiểm tra (Guard Clause)
-  // (Sẽ không chạy nếu MOCK_FORM_DATA được sử dụng)
-  if (!formData) {
+  const isLoading = attemptLoading || quizLoading;
+  const combinedError = attemptError;
+
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-8">
-        <h1 className="text-2xl font-bold text-gray-800 mb-4">
-          Không tìm thấy dữ liệu bài làm
-        </h1>
-        <p className="text-gray-600">
-          Vui lòng quay lại trang nộp bài và chấm điểm trước.
-        </p>
+      <div className="flex flex-col h-screen w-full bg-white text-black font-sans items-center justify-center p-4">
+        <div className="text-center max-w-2xl w-full mx-auto p-10 bg-white rounded-xl">
+          <h1 className="text-3xl font-semibold text-gray-900 mb-4">
+            Đang tải kết quả bài làm...
+          </h1>
+          <p className="text-lg text-gray-600 mb-8">
+            LexiBot đang phân tích bài viết của bạn. Vui lòng chờ...
+          </p>
+          <div className="flex justify-center items-center space-x-2">
+            <div className="h-4 w-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+            <div className="h-4 w-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+            <div className="h-4 w-4 bg-blue-600 rounded-full animate-bounce"></div>
+          </div>
+        </div>
       </div>
     );
   }
 
+  if (combinedError || !attempt) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-8">
+        <h1 className="text-2xl font-bold text-red-700 mb-4">
+          Lỗi Tải Bài Làm
+        </h1>
+        <p className="text-gray-600">
+          {attemptError ? attemptError.message : "Không tìm thấy bài làm với ID này."}
+        </p>
+        <Link to="/" className="text-blue-600 mt-4">Quay về trang chủ</Link>
+      </div>
+    );
+  }
+
+  const task = quizData?.taskType;
+  const promptText = quizData?.promptText;
+  const essayText = attempt.answers[0]?.userAnswer;
+  const wordCount = essayText
+    ? essayText.trim().split(/\s+/).filter(Boolean).length
+    : 0;
+
+  const aiResult = MOCK_AI_RESPONSE;
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* <Header /> */}
       <div ref={containerRef} className="flex flex-1 overflow-hidden mt-2">
-        {/* Component bên trái */}
         <WritingDisplayPanel
           width={leftWidth}
-          task={formData.task}
-          promptText={formData.prompt}
-          essayText={formData.essay}
+          task={task}
+          promptText={promptText}
+          essayText={essayText}
           promptImageUrl={promptImageUrl}
           wordCount={wordCount}
         />
 
-        {/* Resizer */}
         <div
           className="w-1 bg-gray-300 hover:bg-teal-500 cursor-col-resize transition-colors relative group"
           onMouseDown={() => setIsResizing(true)}
@@ -182,10 +202,9 @@ export default function WritingResultPage() {
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-5 h-10 bg-gray-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
         </div>
 
-        {/* Component bên phải */}
         <WritingAnalysisPanel
           width={100 - leftWidth}
-          aiData={MOCK_AI_RESPONSE} // Sử dụng mock AI
+          aiData={aiResult}
           wordCount={wordCount}
         />
       </div>

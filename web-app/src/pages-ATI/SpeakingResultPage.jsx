@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom"; // Bỏ useLocation
 import { useDispatch, useSelector } from "react-redux";
 import {
   GraduationCap,
@@ -10,20 +10,12 @@ import {
   X,
 } from "lucide-react";
 import { retrieveResult } from "../slice-ATI/speaking";
-import { createAttempts, retrieveAttempt } from "../slice/attempts";
-
+import { retrieveAttempt } from "../slice/attempts";
 function SpeakingResultPage() {
-  const location = useLocation();
   const dispatch = useDispatch();
 
-  const {
-    recording,
-    gradingId,
-    audioUrl: newAudioUrl,
-    attemptPayload,
+  const { attemptId } = useParams();
 
-    attemptId,
-  } = location.state || {};
 
   const {
     result: assessmentResult,
@@ -37,7 +29,6 @@ function SpeakingResultPage() {
     error: attemptError,
   } = useSelector((state) => state.attempts);
 
-  const attemptCreatedRef = useRef(false);
 
   useEffect(() => {
     if (attemptId) {
@@ -53,35 +44,11 @@ function SpeakingResultPage() {
       ) {
         dispatch(retrieveResult(attempt.gradingIeltsId));
       }
-    } else if (gradingId) {
-      if (
-        assessmentResult?.submission_id !== gradingId &&
-        !assessmentLoading
-      ) {
-        dispatch(retrieveResult(gradingId));
-      }
-
-      if (
-        assessmentResult &&
-        assessmentResult.submission_id === gradingId &&
-        !attemptCreatedRef.current
-      ) {
-        attemptCreatedRef.current = true;
-        const attemptData = {
-          ...attemptPayload,
-          gradingIeltsId: gradingId,
-          answers: [{ questionId: 0, userAnswer: newAudioUrl }],
-        };
-        dispatch(createAttempts(attemptData));
-      }
     }
   }, [
     dispatch,
     attemptId,
-    gradingId,
     attempt,
-    attemptPayload,
-    newAudioUrl,
     assessmentResult,
     assessmentLoading,
   ]);
@@ -89,19 +56,17 @@ function SpeakingResultPage() {
   const isLoading =
     assessmentLoading || (attemptId && attemptLoading && !attempt);
   const combinedError = assessmentError || attemptError;
-  const hasError = (!gradingId && !attemptId) || combinedError;
+  const hasError = !attemptId || combinedError;
 
   if (isLoading) {
     return (
       <div className="flex flex-col h-screen w-full bg-white text-black font-sans items-center justify-center p-4">
         <div className="text-center max-w-2xl w-full mx-auto p-10 bg-white rounded-xl">
           <h1 className="text-3xl font-semibold text-gray-900 mb-4">
-            {attemptId ? "Đang tải kết quả..." : "Đang đánh giá bài thi..."}
+            Đang tải kết quả...
           </h1>
           <p className="text-lg text-gray-600 mb-8">
-            {attemptId
-              ? "Vui lòng chờ trong giây lát."
-              : "LexiBot AI đang phân tích âm điệu, sự trôi chảy, và từ vựng của bạn."}
+            Vui lòng chờ trong giây lát.
           </p>
           <div className="flex justify-center items-center space-x-2">
             <div className="h-4 w-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
@@ -124,22 +89,20 @@ function SpeakingResultPage() {
           <p className="text-lg text-gray-600 mb-8">
             {combinedError
               ? combinedError.message || "Đã xảy ra lỗi không xác định."
-              : "Không tìm thấy dữ liệu."}
+              : "Không tìm thấy dữ liệu. Vui lòng kiểm tra lại URL."}
           </p>
           <Link
             to="/speaking"
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg"
           >
-            Quay lại danh sách
+            Quay lại
           </Link>
         </div>
       </div>
     );
   }
 
-  const finalAudioUrl = attemptId
-    ? attempt?.answers[0]?.userAnswer
-    : recording?.audioUrl || newAudioUrl;
+  const finalAudioUrl = attempt?.answers[0]?.userAnswer;
 
   if (assessmentResult) {
     return (
@@ -173,7 +136,6 @@ function SpeakingResultPage() {
 
 const AssessmentResult = ({ result, recordingUrl }) => {
   const { scores, feedback, transcript } = result || { scores: {}, feedback: {} };
-
   const safeScores = scores || {};
   const safeFeedback = feedback || {};
 
@@ -196,7 +158,7 @@ const AssessmentResult = ({ result, recordingUrl }) => {
               Overall Band Score
             </p>
             <div className="text-8xl font-bold my-2">
-              {overallScore.toFixed(1)}
+              {(Math.round(overallScore / 5) * 5).toFixed(1)}
             </div>
             <div className="w-full h-2 bg-blue-800 rounded-full overflow-hidden">
               <div

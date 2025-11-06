@@ -10,6 +10,7 @@ import questionReducer from "../slice/questions";
 import answerReducer from "../slice/answers";
 import fileReducer from "../slice/files";
 import resourceReducer from "../slice/resource";
+import speakingSlice from "../slice-ATI/speaking";
 const reducer = {
     test: testReducer,
     questions: questionReducer,
@@ -19,8 +20,9 @@ const reducer = {
     authentication: authReducer,
     tests: testListSlice,
     attempts: attemptSlice,
-    accounts: accountSlice
-}
+    accounts: accountSlice,
+    speaking: speakingSlice
+};
 export const store = configureStore({
     reducer: reducer,
     devTools: true

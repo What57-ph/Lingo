@@ -40,16 +40,16 @@ export const getListTests = (params) => {
 }
 
 export const postAttempt = (testData) => {
-  return instance.post("/api/v1/attempt", testData);
+  return publicInstance.post("/api/v1/attempt", testData);
 }
 
 export const getAttemptUserShort = (userId) => {
-  // return instance.get("api/v1/attempt", { params: { userId } })
-  return instance.get("api/v1/attempt", { params: { userId } })
+  // return publicInstance.get("api/v1/attempt", { params: { userId } })
+  return publicInstance.get("api/v1/attempt", { params: { userId } })
 };
 
 export const getAttempt = (attemptId) => {
-  return instance.get(`api/v1/attempt/${attemptId}`)
+  return publicInstance.get(`api/v1/attempt/${attemptId}`)
 };
 
 export function handleApiError(err, defaultMsg = "Có lỗi xảy ra") {
@@ -59,7 +59,7 @@ export function handleApiError(err, defaultMsg = "Có lỗi xảy ra") {
 };
 
 export const getAllAttempts = () => {
-  return instance.get(`api/v1/attempt/all`)
+  return publicInstance.get(`api/v1/attempt/all`)
 }
 
 

@@ -31,7 +31,7 @@ import Profile from './pages/user/Profile';
 import UserDetailPage from './pages/admin/UserDetailPage';
 import SpeakingTestPage from './pages-ATI/SpeakingTestPage';
 import SpeakingResultPage from './pages-ATI/SpeakingResultPage';
-import IeltsGraderPage from './pages-ATI/IeltsGraderPage';
+import WritingTestPage from './pages-ATI/WritingTestPage';
 import WritingResultPage from './pages-ATI/WritingResultPage';
 function App() {
   const router = createBrowserRouter([
@@ -77,11 +77,11 @@ function App() {
             },
             {
               path: "writing-test/:id",
-              element: <IeltsGraderPage />,
+              element: <WritingTestPage />,
             },
             {
               path: "writing-test",
-              element: <IeltsGraderPage />,
+              element: <WritingTestPage />,
             },
             {
               path: "writing-result/:id",
@@ -147,11 +147,11 @@ function App() {
           ],
         },
         {
-          path: "speaking-test",
+          path: "speaking-test/:testId",
           element: <SpeakingTestPage />,
         },
         {
-          path: "speaking-result",
+          path: "speaking-result/:attemptId ",
           element: <SpeakingResultPage />,
         }
       ]

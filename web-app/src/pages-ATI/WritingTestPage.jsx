@@ -2,6 +2,9 @@ import React, { useState, useCallback, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import InputColumn from "../components-ATI/writing/InputColumn";
+import { toast } from "react-toastify";
+import { createAttempts } from "../slice/attempts";
+// import { retrieveSingleTest } from "../slice/tests"; 
 
 const MOCK_TEST_DATA = {
   id: 1,
@@ -11,79 +14,88 @@ const MOCK_TEST_DATA = {
   promptImage: "https://i.imgur.com/gim2k9g.png",
 };
 
-function IeltsGraderPage() {
+function WritingTestPage() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id: testId } = useParams();
 
   const isLockMode = !!testId;
-
   const [pageLoading, setPageLoading] = useState(isLockMode);
-
   const [lockedData, setLockedData] = useState(null);
 
   useEffect(() => {
     if (isLockMode) {
       setPageLoading(true);
-
       console.log(`(Mock) Đang fetch test với ID: ${testId}`);
       setTimeout(() => {
         setLockedData(MOCK_TEST_DATA);
         setPageLoading(false);
       }, 1000);
 
-      // --- PHẦN LOGIC REDUX THẬT (COMMENT LẠI ĐỂ DÙNG SAU) ---
       /*
       dispatch(retrieveSingleTest(testId))
         .unwrap()
-        .then((testData) => {
-          // Chuẩn hóa dữ liệu nếu cần, ví dụ:
-          // const formattedData = {
-          //   id: testData.id,
-          //   taskType: testData.taskType, // Đảm bảo key khớp
-          //   promptText: testData.promptText,
-          //   promptImage: testData.imageUrl 
-          // };
-          // setLockedData(formattedData);
-          setLockedData(testData); 
-        })
+        .then((testData) => setLockedData(testData))
         .catch((error) => {
           console.error("Không tìm thấy bài test:", error);
-          setLockedData(null); // Đặt là null để hiển thị lỗi
+          toast.error("Không tìm thấy bài test!");
+          setLockedData(null);
         })
-        .finally(() => {
-          setPageLoading(false);
-        });
+        .finally(() => setPageLoading(false));
       */
     }
   }, [testId, isLockMode, dispatch]);
 
   const handleGrade = useCallback(
-    (formData) => {
+    async (formData) => {
       setIsLoading(true);
-      console.log("Đang gửi đi để chấm điểm:", formData);
+      toast.info("Đang nộp bài làm của bạn...");
 
-      const navigationState = {
-        formData,
-        promptData: lockedData || { // 'lockedData' từ state
-          taskType: formData.task,
-          promptText: formData.prompt,
-          promptImage: formData.image,
-        },
-      };
+      try {
+        const userId = "b3dbd68b-0613-466c-9037-ebdea8a184c1";
+        const quizId = isLockMode ? lockedData.id : 2;
+        const mockGradingId = "mock-writing-" + Date.now();
 
-      setTimeout(() => {
+        const attemptData = {
+          quizId: quizId,
+          userId: userId,
+          timeTaken: 3600,
+          type: "IELTS",
+          field: ["Writing"],
+          gradingIeltsId: mockGradingId,
+          answers: [
+            { questionId: 0, userAnswer: formData.essay }
+          ]
+        };
+
+        const action = await dispatch(createAttempts(attemptData));
+
+        if (!createAttempts.fulfilled.match(action)) {
+          throw new Error(action.payload || "Lỗi khi lưu bài làm!");
+        }
+
+        const newAttempt = action.payload;
+        const newAttemptId = newAttempt;
+
+        if (!newAttemptId) {
+          throw new Error("Không lấy được ID bài làm sau khi tạo (payload bị rỗng).");
+        }
+
+        toast.success("Nộp bài thành công! Đang chuyển trang kết quả.");
+
+        navigate(`/writing-result/${newAttemptId}`);
+
+      } catch (error) {
+        console.error("Lỗi khi nộp bài viết:", error);
+        toast.error(`Đã xảy ra lỗi: ${error.message}`);
         setIsLoading(false);
-        navigate("/WritingDone", { state: navigationState });
-      }, 2500);
+      }
     },
-    [navigate, lockedData] // Phụ thuộc vào 'lockedData' từ state
+    [navigate, dispatch, isLockMode, lockedData]
   );
 
-  // 6. HÀM RENDER NỘI DUNG CHÍNH
   const renderContent = () => {
-    // Kịch bản 1: Đang ở luồng "Bài Test" VÀ đang tải đề
     if (isLockMode && pageLoading) {
       return (
         <div className="text-center p-20 bg-white rounded-xl shadow-lg border border-gray-200">
@@ -126,11 +138,10 @@ function IeltsGraderPage() {
             Nhập đề bài và bài làm của bạn để được chấm điểm chi tiết.
           </p>
         </div>
-
         {renderContent()}
       </div>
     </div>
   );
 }
 
-export default IeltsGraderPage;
+export default WritingTestPage;
