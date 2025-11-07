@@ -154,7 +154,6 @@ services:
       - backend
     depends_on:
       - apigateway
-      
 networks:
   backend:
     driver: bridge

@@ -18,7 +18,7 @@ export default function WritingAnalysisPanel({ width, aiData, wordCount }) {
         {/* Overall Score */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4 text-center">
-            Điểm số tổng quan
+            Score tổng quan
           </h3>
           <div className="flex items-center justify-center space-x-8">
             <div className="text-center">
