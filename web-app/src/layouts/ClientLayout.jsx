@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import HeaderClient from '../components/client/HeaderClient';
 import { Layout } from 'antd';
 import { Content } from 'antd/es/layout/layout';
+import Footer from '../components/client/homepage/Footer';
 
 export default function ClientLayout() {
     return (
@@ -13,6 +14,7 @@ export default function ClientLayout() {
                     <Outlet />
                 </Content>
             </Layout>
+            <Footer />
 
         </div>
     );

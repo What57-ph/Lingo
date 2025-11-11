@@ -85,8 +85,11 @@ const CreateTestPage = () => {
                         const part = item.mediaUrl
                             .split("/")
                             .pop()
-                            .match(/PART[_ ]?(\d+)/i)?.[1];  // extract number like 1, 2, 3
-                        return parseInt(part, 10) === parseInt(q.part.replace(/\D/g, ""), 10);
+                            .match(/(?:PART|SECTION)[_ ]?(\d+)/i)?.[1]; // supports both
+                        return (
+                            parseInt(part, 10) ===
+                            parseInt(q?.part?.replace(/\D/g, ""), 10)
+                        );
                     });
 
                     return matchedAudio
@@ -95,6 +98,7 @@ const CreateTestPage = () => {
                 })
             );
         }
+
 
 
 
@@ -160,7 +164,7 @@ const CreateTestPage = () => {
     // console.log("Grouped files:", groupedUploadedFiles)
     // console.log("Question by part:", questionGroupedByPart);
     // console.log("Audio file for test:", form.getFieldValue("mediaUrl"));
-    console.log("Questions:", questionList);
+    // console.log("Questions:", questionList);
     console.log("Questions upload sample", questionSample)
     // console.log("Test title before upload:", form.getFieldValue("title"));
     return (

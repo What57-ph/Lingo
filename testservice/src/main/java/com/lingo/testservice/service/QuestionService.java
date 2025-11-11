@@ -85,39 +85,35 @@ class QuestionServiceImpl implements QuestionService {
 
     @Override
     public ResQuestionDTO update(ReqUpdateQuestionDTO dto, long id) {
-        Optional<Question> questionOptional = repository.findById(id);
-        Optional<MediaResource> resourceOptional = resourceRepository.findByResourceContent(dto.getResourceContent());
-        questionOptional.ifPresent(question -> {
-            if (dto.getPart() != null) {
-                question.setPart(dto.getPart());
-            }
-            if (dto.getCategory() != null) {
-                question.setCategory(dto.getCategory());
-            }
-            if (dto.getExplanation() != null) {
-                question.setExplanation(dto.getExplanation());
-            }
-            if (dto.getTitle() != null) {
-                question.setTitle(dto.getTitle());
-            }
-            if (dto.getAnswerKey() != null) {
-                question.setAnswerKey(dto.getAnswerKey());
-            }
-            if (dto.getTitle() != null) {
-                question.setTitle(dto.getTitle());
-            }
+        Question question = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Question not found"));
+
+        if (dto.getPart() != null) question.setPart(dto.getPart());
+        if (dto.getCategory() != null) question.setCategory(dto.getCategory());
+        if (dto.getExplanation() != null) question.setExplanation(dto.getExplanation());
+        if (dto.getTitle() != null) question.setTitle(dto.getTitle());
+        if (dto.getAnswerKey() != null) question.setAnswerKey(dto.getAnswerKey());
+        if (dto.getCommonTitle() != null) question.setCommonTitle(dto.getCommonTitle());
+        if (dto.getExplanationResourceContent() != null)
             question.setExplanationResourceContent(dto.getExplanationResourceContent());
-            if (resourceOptional.isPresent()) {
-                MediaResource resource = resourceOptional.get();
-                resource.setResourceContent(dto.getResourceContent());
-                question.setResource(resource);
-            }
 
-        });
+        if (dto.getResourceContent() != null) {
+            MediaResource resource = resourceRepository
+                    .findFirstByResourceContent(dto.getResourceContent())
+                    .orElseGet(() -> {
+                        MediaResource newRes = MediaResource.builder()
+                                .resourceContent(dto.getResourceContent())
+                                .category(dto.getCategory())
+                                .build();
+                        return resourceRepository.save(newRes);
+                    });
+            question.setResource(resource);
+        }
 
-        Question question = repository.save(questionOptional.get());
-        return mapper.toQuestionResponse(question);
+        Question updated = repository.save(question);
+        return mapper.toQuestionResponse(updated);
     }
+
 
     @Override
     public void delete(long id) {
@@ -149,7 +145,7 @@ class QuestionServiceImpl implements QuestionService {
             }).collect(Collectors.toList());
 
             question.setAnswers(answerList);
-            Optional<MediaResource> existing = resourceRepository.findByResourceContent(dto.getResourceContent());
+            Optional<MediaResource> existing = resourceRepository.findFirstByResourceContent(dto.getResourceContent());
 
             MediaResource resource = existing.orElseGet(() -> {
                 MediaResource newRes = MediaResource.builder()
@@ -159,7 +155,7 @@ class QuestionServiceImpl implements QuestionService {
                         .build();
                 return resourceRepository.save(newRes);
             });
-
+            question.setCommonTitle(dto.getCommonTitle());
             question.setResource(resource);
             question.setExplanationResourceContent(dto.getExplanationResourceContent());
 

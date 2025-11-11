@@ -19,7 +19,7 @@ import java.util.List;
 public class ResQuestionDTO {
     long id;
     String title;
-    long point;
+    double point;
     // fe pass question id to save key
     String answerKey;
     String explanation;
@@ -33,4 +33,5 @@ public class ResQuestionDTO {
     long resourceContentId;
     Instant createdAt;
     Instant updatedAt;
+    String commonTitle;
 }

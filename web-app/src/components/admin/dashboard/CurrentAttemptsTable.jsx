@@ -120,7 +120,7 @@ const CurrentAttemptsTable = () => {
     const { accounts } = useSelector(state => state.accounts);
 
     const tableData = allAttempts.map(attempt => {
-        const account = accounts.find(acc => String(acc.id) === String(attempt.userId));
+        const account = accounts?.find(acc => String(acc.id) === String(attempt.userId));
         const test = tests.find(t => t.id === attempt.quizId);
 
         return {

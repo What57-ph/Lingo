@@ -5,15 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7807224a-69f2-4995-954d-4271220bc1ae" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/config/RedisConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/config/ChatConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/controller/ChatbotController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/model/ChatRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/service/ChatbotService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/resources/logback-spring.xml" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/resources/logback-spring.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/controller/TestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/controller/TestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/dto/response/ResPaginationDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/dto/response/ResPaginationDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/dto/response/ResTestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/dto/response/ResTestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/service/TestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/service/TestService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/resources/logback-spring.xml" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/resources/logback-spring.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/utils/enums/MediaResourceCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/utils/enums/MediaResourceCategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +72,7 @@
   </component>
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/ducsieunhan/Lingo.git&quot;,
+    &quot;url&quot;: &quot;https://github.com/What57-ph/Lingo.git&quot;,
     &quot;accountId&quot;: &quot;e9f86f7e-0b3b-4ad9-a884-6f1882d2a03f&quot;
   }
 }</component>
@@ -97,41 +99,30 @@
     "Application.AccountApplication.executor": "Run",
     "Application.ApiGatewayApplication.executor": "Run",
     "Application.AttemptApplication.executor": "Run",
+    "Application.ChatbotApplication.executor": "Run",
     "Application.DiscoveryserverApplication.executor": "Run",
     "Application.FileserviceApplication.executor": "Run",
     "Application.TestserviceApplication.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "observability",
-    "last_opened_file_path": "C:/Project/Lingo",
+    "git-widget-placeholder": "ReadLis",
+    "last_opened_file_path": "C:/Project/Lingo_Fork/Lingo",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
     "settings.editor.selected.configurable": "preferences.keymap"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.TestserviceApplication">
-    <configuration name="ApiGatewayApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="ALTERNATIVE_JRE_PATH" value="openjdk-21" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="MAIN_CLASS_NAME" value="com.lingo.api_gateway.ApiGatewayApplication" />
-      <module name="api-gateway" />
+  <component name="RunManager" selected="Application.ChatbotApplication">
+    <configuration name="AccountApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.account.AccountApplication" />
+      <module name="account" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lingo.api_gateway.*" />
+          <option name="PATTERN" value="com.lingo.account.*" />
           <option name="ENABLED" value="true" />
         </pattern>
-      </extension>
-      <extension name="net.ashald.envfile">
-        <option name="IS_ENABLED" value="false" />
-        <option name="IS_SUBST" value="false" />
-        <option name="IS_PATH_MACRO_SUPPORTED" value="false" />
-        <option name="IS_IGNORE_MISSING_FILES" value="false" />
-        <option name="IS_ENABLE_EXPERIMENTAL_INTEGRATIONS" value="false" />
-        <ENTRIES>
-          <ENTRY IS_ENABLED="true" PARSER="runconfig" IS_EXECUTABLE="false" />
-        </ENTRIES>
       </extension>
       <method v="2">
         <option name="Make" enabled="true" />
@@ -150,12 +141,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DiscoveryserverApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lingo.discoveryserver.DiscoveryserverApplication" />
-      <module name="discoveryserver" />
+    <configuration name="ChatbotApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.chatbot.ChatbotApplication" />
+      <module name="chatbot" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lingo.discoveryserver.*" />
+          <option name="PATTERN" value="com.lingo.chatbot.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -163,12 +154,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FileserviceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lingo.fileservice.FileserviceApplication" />
-      <module name="fileservice" />
+    <configuration name="DiscoveryserverApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.discoveryserver.DiscoveryserverApplication" />
+      <module name="discoveryserver" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lingo.fileservice.*" />
+          <option name="PATTERN" value="com.lingo.discoveryserver.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -191,11 +182,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.TestserviceApplication" />
-        <item itemvalue="Application.ApiGatewayApplication" />
+        <item itemvalue="Application.ChatbotApplication" />
         <item itemvalue="Application.DiscoveryserverApplication" />
-        <item itemvalue="Application.FileserviceApplication" />
+        <item itemvalue="Application.TestserviceApplication" />
         <item itemvalue="Application.AttemptApplication" />
+        <item itemvalue="Application.AccountApplication" />
       </list>
     </recent_temporary>
   </component>
@@ -219,5 +210,21 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/service/QuestionService.java</url>
+          <line>95</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/controller/QuestionController.java</url>
+          <line>32</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
