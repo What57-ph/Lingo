@@ -5,17 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7807224a-69f2-4995-954d-4271220bc1ae" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/config/ChatConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/controller/ChatbotController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/model/ChatRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/service/ChatbotService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/utils/enums/MediaResourceCategory.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/utils/enums/MediaResourceCategory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/java/com/lingo/api_gateway/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/java/com/lingo/api_gateway/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/controller/ChatbotController.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/controller/ChatbotController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/model/ChatRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/model/ChatRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/service/ChatbotService.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/service/ChatbotService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-app/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/layouts/ClientLayout.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/layouts/ClientLayout.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/store/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/store/store.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,8 +53,8 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="observability" />
-                    <option name="lastUsedInstant" value="1762099354" />
+                    <option name="branchName" value="ReadLis" />
+                    <option name="lastUsedInstant" value="1762849472" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="main" />
@@ -94,33 +93,46 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.AccountApplication.executor": "Run",
-    "Application.ApiGatewayApplication.executor": "Run",
-    "Application.AttemptApplication.executor": "Run",
-    "Application.ChatbotApplication.executor": "Run",
-    "Application.DiscoveryserverApplication.executor": "Run",
-    "Application.FileserviceApplication.executor": "Run",
-    "Application.TestserviceApplication.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "ReadLis",
-    "last_opened_file_path": "C:/Project/Lingo_Fork/Lingo",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.keymap"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.AccountApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.AttemptApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ChatbotApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.DiscoveryserverApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.FileserviceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.TestserviceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ReadLis&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Project/Lingo_Fork/Lingo&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Application.ChatbotApplication">
+}</component>
+  <component name="RunManager" selected="Application.ApiGatewayApplication">
     <configuration name="AccountApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.lingo.account.AccountApplication" />
       <module name="account" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.lingo.account.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ApiGatewayApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.api_gateway.ApiGatewayApplication" />
+      <module name="api-gateway" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lingo.api_gateway.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -141,25 +153,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ChatbotApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lingo.chatbot.ChatbotApplication" />
-      <module name="chatbot" />
+    <configuration name="FileserviceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.fileservice.FileserviceApplication" />
+      <module name="fileservice" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lingo.chatbot.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="DiscoveryserverApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lingo.discoveryserver.DiscoveryserverApplication" />
-      <module name="discoveryserver" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lingo.discoveryserver.*" />
+          <option name="PATTERN" value="com.lingo.fileservice.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -182,8 +181,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ChatbotApplication" />
-        <item itemvalue="Application.DiscoveryserverApplication" />
+        <item itemvalue="Application.ApiGatewayApplication" />
+        <item itemvalue="Application.FileserviceApplication" />
         <item itemvalue="Application.TestserviceApplication" />
         <item itemvalue="Application.AttemptApplication" />
         <item itemvalue="Application.AccountApplication" />
