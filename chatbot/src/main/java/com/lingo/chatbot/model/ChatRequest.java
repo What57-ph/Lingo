@@ -11,6 +11,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ChatRequest {
-    Long userId;
+    String userId;
     String message;
 }

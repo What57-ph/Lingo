@@ -28,6 +28,10 @@ spring:
           uri: http://localhost:9004
           predicates:
             - Path=/api/v1/file/**
+        - id: chatbot
+          uri: http://localhost:9005
+          predicates:
+            - Path=/api/v1/chatbot/**
   security:
     oauth2:
       resourceserver:

@@ -36,7 +36,8 @@ public class SecurityConfig {
                                                                 "/api/v1/test/**", "/api/v1/question/**",
                                                                 "/api/v1/file/**", "/api/v1/answer/**",
                                                                 "/api/v1/resource/**",
-                                                                "/api/v1/attempt/**", "/actuator/**")
+                                                                "/api/v1/attempt/**", "/actuator/**",
+                                                                "/api/v1/chatbot/**")
                                                 .permitAll()
                                                 .pathMatchers("/api/v1/account/gg").authenticated()
                                                 // .pathMatchers("api/v1/account/**").hasAuthority("ADMIN")

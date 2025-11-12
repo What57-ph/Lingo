@@ -5,10 +5,11 @@ import com.lingo.chatbot.service.ChatbotService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.ai.chat.messages.Message;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RestController
@@ -23,8 +24,14 @@ public class ChatbotController {
 
     @PostMapping("/chat-with-media")
     public ResponseEntity<String> chatWithMedia(@RequestParam("file")MultipartFile file,
-                                @RequestParam("message") String message){
-        return ResponseEntity.ok(chatbotService.chatWithMedia(file,message));
+                                @RequestParam("message") String message,
+                                @RequestParam("userId") String userId               ){
+        return ResponseEntity.ok(chatbotService.chatWithMedia(file,message,userId));
+    }
+
+    @GetMapping("/conversation/{id}")
+    public ResponseEntity<List<Message>> getConversationMessages(@PathVariable("id") String id){
+        return ResponseEntity.ok(chatbotService.getConversationMessage(id));
     }
 
 }

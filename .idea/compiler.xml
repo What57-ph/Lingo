@@ -42,6 +42,15 @@
         <module name="fileservice" />
         <module name="account" />
       </profile>
+      <profile name="Annotation profile for commentservice" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.42/lombok-1.18.42.jar" />
+        </processorPath>
+        <module name="commentservice" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="demo" target="17" />
@@ -54,6 +63,7 @@
       <module name="api-gateway" options="-parameters" />
       <module name="attempt" options="-parameters" />
       <module name="chatbot" options="-parameters" />
+      <module name="commentservice" options="-parameters" />
       <module name="common-library" options="-parameters" />
       <module name="demo" options="-parameters" />
       <module name="discoveryserver" options="-parameters" />
