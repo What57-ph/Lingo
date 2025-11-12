@@ -1,4 +1,4 @@
-import instance from "../config/AxiosConfig";
+import instance from "../config/AxiosPublicReq";
 // {userId, message}
 export const chatWithAI = async (chatRequest) => {
     const URL = `/api/v1/chatbot/askAI`;
