@@ -11,9 +11,11 @@ import answerReducer from "../slice/answers";
 import fileReducer from "../slice/files";
 import resourceReducer from "../slice/resource";
 import speakingSlice from "../slice-ATI/speaking";
+import chatReducer from "../slice/chat";
 const reducer = {
     test: testReducer,
     questions: questionReducer,
+    chat: chatReducer,
     answers: answerReducer,
     file: fileReducer,
     resource: resourceReducer,

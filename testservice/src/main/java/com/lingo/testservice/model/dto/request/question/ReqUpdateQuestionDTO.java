@@ -1,6 +1,7 @@
 package com.lingo.testservice.model.dto.request.question;
 
 import com.lingo.testservice.model.dto.request.answer.ReqAnswerDTO;
+import jakarta.annotation.Nullable;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -12,4 +13,5 @@ public class ReqUpdateQuestionDTO extends ReqQuestionDTO {
     String resourceContent;
     String explanationResourceContent;
     String testTitle;
+    String commonTitle;
 }

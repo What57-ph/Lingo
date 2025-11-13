@@ -5,9 +5,9 @@ import { MdOutlineTrendingFlat } from "react-icons/md";
 
 const StatisticCard = ({ title, logo, number, trend, trendPeriod }) => {
     const [trendDesc, setTrendDesc] = useState();
-    if (typeof number !== "number") {
-        console.log("number is not a number:", number);
-    }
+    // if (typeof number !== "number") {
+    //     console.log("number is not a number:", number);
+    // }
     useEffect(() => {
         setTrendDesc(
             <div className='flex gap-2 items-center text-sm'>
@@ -17,7 +17,7 @@ const StatisticCard = ({ title, logo, number, trend, trendPeriod }) => {
                         <FaArrowTrendUp />
                         <span>{Math.round(trend * 10) / 10} %</span>
                     </span>
-                ) : trend < 1 ? (
+                ) : (trend < 1 && trend > 0) ? (
 
                     <span className='text-red-600 flex items-center gap-1'>
                         <FaArrowTrendDown />
@@ -53,7 +53,8 @@ const StatisticCard = ({ title, logo, number, trend, trendPeriod }) => {
 
                                 <span className="flex items-baseline">
                                     <span className="text-xl font-semibold">
-                                        {number["IELTS"][0]?.averageScore}
+                                        {number?.IELTS?.[0]?.averageScore}
+
                                     </span>
                                     <span className="text-sm ml-1 text-gray-500">IELTS</span>
                                 </span>
@@ -62,7 +63,7 @@ const StatisticCard = ({ title, logo, number, trend, trendPeriod }) => {
 
                                 <span className="flex items-baseline">
                                     <span className="text-xl font-semibold">
-                                        {Math.round(number["TOEIC"][0]?.averageScore) || ""}
+                                        {Math.round(number?.TOEIC?.[0]?.averageScore) || ""}
                                     </span>
                                     <span className="text-sm ml-1 text-gray-500">TOEIC</span>
                                 </span>

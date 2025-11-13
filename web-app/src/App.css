@@ -2,6 +2,9 @@
 
 @layer base {
   body {
+    font-family: "Be Vietnam Pro", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   .uploadFrame {
     @apply !border-dashed !border-3 !border-gray-200 text-center py-10 !h-80;
@@ -21,6 +24,10 @@
   .statisticCard {
     @apply w-13 h-13 flex items-center justify-center;
   }
+  button,
+  a {
+    @apply transition-all duration-300 ease-in-out;
+  }
 }
 
 @layer components {
@@ -35,4 +42,107 @@
   .filter-tab.active {
     @apply bg-[#ffffff] shadow-md;
   }
+  .quill-better-table {
+    @apply !w-full;
+  }
+}
+.hero-gradient {
+  background: linear-gradient(to bottom, #c5d2ff 0%, #a5d2f6 100%);
+}
+/* Hiệu ứng card tinh tế hơn */
+.card-hover {
+  @apply transition-all duration-300 ease-in-out;
+  @apply shadow-lg border border-transparent; /* Thêm border transparent */
+}
+.card-hover:hover {
+  @apply transform -translate-y-1.5;
+  @apply shadow-xl; /* Shadow đậm hơn khi hover */
+  /* Bạn có thể thêm border màu nhẹ ở đây nếu muốn, ví dụ: border-gray-100 */
+}
+
+/* Hiệu ứng nút mượt hơn */
+.btn-hover {
+  @apply transition-all duration-300 ease-in-out;
+  @apply shadow-md; /* Shadow nhẹ mặc định */
+}
+.btn-hover:hover {
+  @apply transform -translate-y-0.5;
+  @apply shadow-lg; /* Shadow đậm hơn khi hover */
+}
+
+/* MARQUEE & SLIDEUP (Giữ nguyên)
+*/
+@keyframes marquee {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 20s linear infinite;
+  display: flex;
+  width: max-content;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+/* === THAY ĐỔI HIỆU ỨNG GỢN SÓNG === */
+.card-wave-pattern::after {
+  content: "";
+  position: absolute;
+  /* Đặt ở góc dưới bên phải */
+  bottom: -40%;
+  right: -40%;
+  width: 150%;
+  padding-bottom: 150%;
+  z-index: 0;
+
+  /* Đổi từ màu đen (rgba(0,0,0...)) sang màu TRẮNG (rgba(255,255,255...)) 
+     để tạo hiệu ứng "sáng" thay vì "tối"
+  */
+  background-image: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.08) 30%,
+    /* Vòng 1: Trắng mờ 8% */ transparent 31%,
+    transparent 50%,
+    rgba(255, 255, 255, 0.08) 51%,
+    /* Vòng 2 */ transparent 52%,
+    transparent 70%,
+    rgba(255, 255, 255, 0.08) 71%,
+    /* Vòng 3 */ transparent 72%
+  );
+
+  filter: blur(2px); /* Giảm blur một chút */
+  opacity: 0.9; /* Tăng opacity của lớp sóng */
+  transition: all 0.4s ease-in-out;
+}
+
+.card-wave-pattern:hover::after {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+.cta-gradient {
+  background-color: #f0f9ff; /* blue-50 */
+  background-image: linear-gradient(
+    135deg,
+    #f0f9ff 0%,
+    #e0f2fe 100%
+  ); /* light blue to slightly darker light blue */
 }

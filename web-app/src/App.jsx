@@ -33,6 +33,11 @@ import SpeakingTestPage from './pages-ATI/SpeakingTestPage';
 import SpeakingResultPage from './pages-ATI/SpeakingResultPage';
 import WritingTestPage from './pages-ATI/WritingTestPage';
 import WritingResultPage from './pages-ATI/WritingResultPage';
+import IeltsGrader from './pages/tests/IeltsGrader';
+import IeltsListWriting from './pages/tests/IeltsListWriting';
+import IeltsListListening from './pages/tests/IeltsListListening';
+import IeltsListReading from './pages/tests/IeltsListReading';
+import AIAssessmentPage from './pages/tests/AIAssessmentPage';
 function App() {
   const router = createBrowserRouter([
     {
@@ -46,6 +51,26 @@ function App() {
             {
               index: true,
               element: <HomePage />,
+            },
+            {
+              path: "ai-assessment",
+              element: <IeltsGrader />
+            },
+            {
+              path: "writing",
+              element: <IeltsListWriting />
+            },
+            {
+              path: "listening",
+              element: <IeltsListListening />
+            },
+            {
+              path: "reading",
+              element: <IeltsListReading />
+            },
+            {
+              path: "/ai-assessment-page",
+              element: <AIAssessmentPage />
             },
             {
               path: "tests",
@@ -92,9 +117,9 @@ function App() {
         {
           path: "admin",
           element: (
-            <ProtectedRoute>
-              <AdminLayout />
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            <AdminLayout />
+            // </ProtectedRoute>
           ),
           children: [
             {

@@ -13,7 +13,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ReqTestDTO {
     String title;
-    int maxScore;
+    double maxScore;
     int timeLimit;
     @Nullable
     int numOfQuestions;
