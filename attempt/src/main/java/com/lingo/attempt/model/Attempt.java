@@ -26,6 +26,9 @@ public class Attempt {
   private Date submittedAt;
   private String type ;
 
+  private String gradingIeltsId;   // delete after
+
+
   @OneToMany(mappedBy = "attempt",cascade = CascadeType.ALL, orphanRemoval = true)
   private List<UserAnswers> userAnswers;
 

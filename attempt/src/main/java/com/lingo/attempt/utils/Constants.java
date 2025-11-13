@@ -11,6 +11,7 @@ public class Constants {
   public static final double TOEIC_PERFECT_SCORE_SECTION = 96;
   public static final double TOEIC_MAX_TOTAL_SCORE = 990;
   public static final double TOEIC_MAX_SECTION_SCORE = 495;
+  public static final double IELTS_MAX_SECTION_SCORE = 9.0;
 
 
   public static final double IELTS_POINT_PER_QUESTION = 0.25;

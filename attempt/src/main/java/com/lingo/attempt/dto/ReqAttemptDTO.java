@@ -16,6 +16,7 @@ public class ReqAttemptDTO {
   private String type; // toeic ielts
   private String[] field;
   private List<AnswerDTO> answers;
+  private String gradingIeltsId;
 
   @Data
   @AllArgsConstructor

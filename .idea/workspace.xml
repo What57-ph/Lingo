@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7807224a-69f2-4995-954d-4271220bc1ae" name="Changes" comment="">
+<<<<<<< HEAD
       <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/config/FeignConfig.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/controller/CommentController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/request/RequestCommentDTO.java" afterDir="false" />
@@ -39,6 +40,10 @@
       <change beforePath="$PROJECT_DIR$/web-app/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/App.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListListening.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListListening.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListReading.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListReading.jsx" afterDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListReading.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListReading.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListSpeaking.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListSpeaking.jsx" afterDir="false" />
+>>>>>>> main
       <change beforePath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListWriting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListWriting.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -122,6 +127,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.AccountApplication.executor": "Run",
@@ -144,6 +150,29 @@
   }
 }]]></component>
   <component name="RunManager" selected="Application.TestserviceApplication">
+=======
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.AccountApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.AttemptApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.ChatbotApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.DiscoveryserverApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.FileserviceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Application.TestserviceApplication.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Project/Lingo_Fork/Lingo&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
+  }
+}</component>
+  <component name="RunManager" selected="Application.AccountApplication">
+>>>>>>> main
     <configuration name="AccountApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.lingo.account.AccountApplication" />
       <module name="account" />
@@ -157,12 +186,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ApiGatewayApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lingo.api_gateway.ApiGatewayApplication" />
-      <module name="api-gateway" />
+    <configuration name="AttemptApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.attempt.AttemptApplication" />
+      <module name="attempt" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lingo.api_gateway.*" />
+          <option name="PATTERN" value="com.lingo.attempt.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -170,12 +199,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+<<<<<<< HEAD
     <configuration name="CommentserviceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.lingo.commentservice.CommentserviceApplication" />
       <module name="commentservice" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.lingo.commentservice.*" />
+=======
+    <configuration name="ChatbotApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.chatbot.ChatbotApplication" />
+      <module name="chatbot" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lingo.chatbot.*" />
+>>>>>>> main
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -211,11 +249,19 @@
     </configuration>
     <recent_temporary>
       <list>
+<<<<<<< HEAD
         <item itemvalue="Application.TestserviceApplication" />
         <item itemvalue="Application.CommentserviceApplication" />
         <item itemvalue="Application.AccountApplication" />
         <item itemvalue="Application.ApiGatewayApplication" />
         <item itemvalue="Application.DiscoveryserverApplication" />
+=======
+        <item itemvalue="Application.AccountApplication" />
+        <item itemvalue="Application.ChatbotApplication" />
+        <item itemvalue="Application.AttemptApplication" />
+        <item itemvalue="Application.TestserviceApplication" />
+        <item itemvalue="Application.FileserviceApplication" />
+>>>>>>> main
       </list>
     </recent_temporary>
   </component>
