@@ -56,7 +56,7 @@ const TestCard = ({ test }) => {
         {Math.round(progress)}%
       </div>
       <Link
-        to={`/speaking-test/${test.id}`}
+        to={`/tests/${test.id}/${test.title}/doTests`}
         className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition duration-200"
       >
         <LightningIcon />
@@ -102,8 +102,8 @@ const Pagination = ({
         onClick={handlePrev}
         disabled={currentPage === 1}
         className={`px-3 py-2 rounded-md transition-colors ${currentPage === 1
-            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-            : "bg-white text-gray-700 hover:bg-purple-100"
+          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+          : "bg-white text-gray-700 hover:bg-purple-100"
           } border border-gray-300`}
       >
         Prev
@@ -114,8 +114,8 @@ const Pagination = ({
           key={number}
           onClick={() => setCurrentPage(number)}
           className={`px-4 py-2 rounded-md transition-colors border ${currentPage === number
-              ? "bg-purple-600 text-white border-purple-600"
-              : "bg-white text-gray-700 hover:bg-purple-100 border-gray-300"
+            ? "bg-purple-600 text-white border-purple-600"
+            : "bg-white text-gray-700 hover:bg-purple-100 border-gray-300"
             }`}
         >
           {number}
@@ -126,8 +126,8 @@ const Pagination = ({
         onClick={handleNext}
         disabled={currentPage === totalPages}
         className={`px-3 py-2 rounded-md transition-colors ${currentPage === totalPages
-            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-            : "bg-white text-gray-700 hover:bg-purple-100"
+          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+          : "bg-white text-gray-700 hover:bg-purple-100"
           } border border-gray-300`}
       >
         Next

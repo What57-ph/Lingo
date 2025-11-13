@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { retrieveAllTests } from "../../slice/tests";
 import {
   ClockCircleOutlined,
@@ -54,13 +54,14 @@ const TestCard = ({ test, onTakeTest }) => {
         </span>
       </div>
       <div className="flex-grow"></div>
-      <button
+      <Link
+        to={`/tests/${test.id}/${test.title}/doTests`}
         onClick={() => onTakeTest(test)}
         className="w-full bg-white hover:bg-gray-50 text-blue-600 font-semibold py-2 px-4 rounded-lg border border-blue-600 transition duration-200 cursor-pointer flex items-center justify-center gap-2"
       >
         <LightningIcon />
         Take Test
-      </button>
+      </Link>
     </div>
   );
 };
@@ -97,8 +98,8 @@ const Pagination = ({
         onClick={handlePrev}
         disabled={currentPage === 1}
         className={`px-3 py-2 rounded-md transition-colors ${currentPage === 1
-            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-            : "bg-white text-gray-700 hover:bg-blue-100"
+          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+          : "bg-white text-gray-700 hover:bg-blue-100"
           } border border-gray-300`}
       >
         Prev
@@ -109,8 +110,8 @@ const Pagination = ({
           key={number}
           onClick={() => setCurrentPage(number)}
           className={`px-4 py-2 rounded-md transition-colors border ${currentPage === number
-              ? "bg-blue-600 text-white border-blue-600"
-              : "bg-white text-gray-700 hover:bg-blue-100 border-gray-300"
+            ? "bg-blue-600 text-white border-blue-600"
+            : "bg-white text-gray-700 hover:bg-blue-100 border-gray-300"
             }`}
         >
           {number}
@@ -121,8 +122,8 @@ const Pagination = ({
         onClick={handleNext}
         disabled={currentPage === totalPages}
         className={`px-3 py-2 rounded-md transition-colors ${currentPage === totalPages
-            ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-            : "bg-white text-gray-700 hover:bg-blue-100"
+          ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+          : "bg-white text-gray-700 hover:bg-blue-100"
           } border border-gray-300`}
       >
         Next
