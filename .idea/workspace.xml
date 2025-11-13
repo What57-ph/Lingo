@@ -5,10 +5,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7807224a-69f2-4995-954d-4271220bc1ae" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/model/Comment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/model/Reply.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/repository/CommentRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/repository/ReplyRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/config/FeignConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/controller/CommentController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/request/RequestCommentDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/request/RequestReplyDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/response/ResAccountDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/response/ResponseCommentDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/enums/CommentReaction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/enums/CommentStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/enums/CommentType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/httpclient/AccountClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/mapper/CommentMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/service/CommentService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fileservice/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fileservice/src/main/java/com/lingo/fileservice/config/GoogleCredentialsConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fileservice/src/main/java/com/lingo/fileservice/service/GoogleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/java/com/lingo/api_gateway/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/java/com/lingo/api_gateway/config/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/CommentserviceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/CommentserviceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/model/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/model/Comment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/model/Reply.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/repository/CommentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/repository/CommentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/repository/ReplyRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fileservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/fileservice/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fileservice/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/fileservice/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/mapper/TestMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/mapper/TestMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/dto/request/test/ReqTestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/model/dto/request/test/ReqTestDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListListening.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListListening.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListReading.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListReading.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListWriting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListWriting.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,9 +49,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Enum" />
         <option value="Class" />
-        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -48,7 +79,7 @@
                 <list>
                   <RecentBranch>
                     <option name="branchName" value="comment" />
-                    <option name="lastUsedInstant" value="1762926710" />
+                    <option name="lastUsedInstant" value="1762928067" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="ReadLis" />
@@ -97,6 +128,7 @@
     "Application.ApiGatewayApplication.executor": "Run",
     "Application.AttemptApplication.executor": "Run",
     "Application.ChatbotApplication.executor": "Run",
+    "Application.CommentserviceApplication.executor": "Run",
     "Application.DiscoveryserverApplication.executor": "Run",
     "Application.FileserviceApplication.executor": "Run",
     "Application.TestserviceApplication.executor": "Run",
@@ -111,7 +143,7 @@
     "settings.editor.selected.configurable": "preferences.keymap"
   }
 }]]></component>
-  <component name="RunManager" selected="Application.ApiGatewayApplication">
+  <component name="RunManager" selected="Application.TestserviceApplication">
     <configuration name="AccountApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.lingo.account.AccountApplication" />
       <module name="account" />
@@ -138,12 +170,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AttemptApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lingo.attempt.AttemptApplication" />
-      <module name="attempt" />
+    <configuration name="CommentserviceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.commentservice.CommentserviceApplication" />
+      <module name="commentservice" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lingo.attempt.*" />
+          <option name="PATTERN" value="com.lingo.commentservice.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -151,12 +183,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FileserviceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lingo.fileservice.FileserviceApplication" />
-      <module name="fileservice" />
+    <configuration name="DiscoveryserverApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.discoveryserver.DiscoveryserverApplication" />
+      <module name="discoveryserver" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lingo.fileservice.*" />
+          <option name="PATTERN" value="com.lingo.discoveryserver.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -179,11 +211,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ApiGatewayApplication" />
-        <item itemvalue="Application.FileserviceApplication" />
         <item itemvalue="Application.TestserviceApplication" />
-        <item itemvalue="Application.AttemptApplication" />
+        <item itemvalue="Application.CommentserviceApplication" />
         <item itemvalue="Application.AccountApplication" />
+        <item itemvalue="Application.ApiGatewayApplication" />
+        <item itemvalue="Application.DiscoveryserverApplication" />
       </list>
     </recent_temporary>
   </component>

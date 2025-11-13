@@ -58,4 +58,5 @@ com\lingo\testservice\model\dto\response\ResPaginationDTO.class
 com\lingo\testservice\utils\enums\TestCategory.class
 com\lingo\testservice\mapper\MediaResourceMapper.class
 com\lingo\testservice\service\TestService.class
+com\lingo\testservice\config\RedisConfig.class
 com\lingo\testservice\mapper\MediaResourceMapperImpl.class

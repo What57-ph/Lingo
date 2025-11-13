@@ -34,6 +34,7 @@ import IeltsListWriting from './pages/tests/IeltsListWriting';
 import IeltsListListening from './pages/tests/IeltsListListening';
 import IeltsListReading from './pages/tests/IeltsListReading';
 import AIAssessmentPage from './pages/tests/AIAssessmentPage';
+import IeltsListSpeaking from './pages/tests/IeltsListSpeaking';
 function App() {
   const router = createBrowserRouter([
     {
@@ -63,6 +64,10 @@ function App() {
             {
               path: "reading",
               element: <IeltsListReading />
+            },
+            {
+              path: "speaking",
+              element: <IeltsListSpeaking />
             },
             {
               path: "/ai-assessment-page",
