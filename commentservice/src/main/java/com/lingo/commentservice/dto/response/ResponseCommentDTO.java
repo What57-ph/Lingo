@@ -1,6 +1,7 @@
 package com.lingo.commentservice.dto.response;
 
 import com.lingo.commentservice.enums.CommentStatus;
+import com.lingo.commentservice.enums.CommentType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -20,6 +21,7 @@ public class ResponseCommentDTO {
     String avatar;
     String username;
     CommentStatus status;
+    CommentType type;
     Instant createdAt;
     Instant updatedAt;
     List<ReplyOfComment> replies;
@@ -37,6 +39,7 @@ public class ResponseCommentDTO {
         String avatar;
         String username;
         CommentStatus status;
+        CommentType type;
         Instant createdAt;
         Instant updatedAt;
     }

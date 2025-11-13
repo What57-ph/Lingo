@@ -17,3 +17,15 @@ export const createComment = async (commentRequest) => {
     const response = await instance.post(URL, commentRequest);
     return response;
 }
+
+export const inactiveComment = async (id) => {
+    const URL = `/api/v1/comment/${id}`;
+    const response = await instance.delete(URL);
+    return response;
+}
+
+export const getCommentsOfTest = async (testId) => {
+    const URL = `/api/v1/comment/commentOfTest/${testId}`;
+    const response = await instance.get(URL);
+    return response;
+}

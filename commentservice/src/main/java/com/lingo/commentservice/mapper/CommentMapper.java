@@ -9,10 +9,12 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
     @Mapping(target = "userId",source = "userId")
+    @Mapping(target = "type", source = "type")
     Comment toComment(RequestCommentDTO request);
 
     @Mapping(target = "updatedAt", source = "updatedAt")
     @Mapping(target = "createdAt", source = "createdAt")
     @Mapping(target = "replies", source = "replies")
+    @Mapping(target = "type", source = "type")
     ResponseCommentDTO toCommentResponse(Comment comment);
 }

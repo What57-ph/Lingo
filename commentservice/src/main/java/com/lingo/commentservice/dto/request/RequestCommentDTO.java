@@ -16,5 +16,5 @@ public class RequestCommentDTO {
     @Nullable
     Long replyId;
     String content;
-    CommentType Type;
+    CommentType type;
 }

@@ -11,6 +11,7 @@ import answerReducer from "../slice/answers";
 import fileReducer from "../slice/files";
 import resourceReducer from "../slice/resource";
 import chatReducer from "../slice/chat";
+import commentReducer from "../slice/commentSlice"
 const reducer = {
     test: testReducer,
     questions: questionReducer,
@@ -21,7 +22,8 @@ const reducer = {
     authentication: authReducer,
     tests: testListSlice,
     attempts: attemptSlice,
-    accounts: accountSlice
+    accounts: accountSlice,
+    comments: commentReducer,
 }
 export const store = configureStore({
     reducer: reducer,

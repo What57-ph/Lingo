@@ -51,4 +51,9 @@ public class CommentController {
     public ResponseEntity<List<ResponseCommentDTO>> getReplyOfComment(@PathVariable("id") long id){
         return ResponseEntity.ok(commentService.getAnswerOfComment(id));
     }
+
+    @GetMapping("/commentOfTest/{testId}")
+    public ResponseEntity<List<ResponseCommentDTO>> getAllCommentsOfTest(@PathVariable("testId") long testId){
+        return ResponseEntity.ok(commentService.getCommentsOfTest(testId));
+    }
 }
