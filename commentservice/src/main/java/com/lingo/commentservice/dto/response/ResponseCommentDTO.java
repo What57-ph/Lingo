@@ -16,6 +16,7 @@ import java.util.List;
 public class ResponseCommentDTO {
     long id;
     long testId;
+    long replyId;
     String userId;
     String content;
     String avatar;
@@ -34,6 +35,7 @@ public class ResponseCommentDTO {
     public static class ReplyOfComment{
         long id;
         long testId;
+        long replyId;
         String userId;
         String content;
         String avatar;

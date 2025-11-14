@@ -10,6 +10,9 @@ import com.lingo.commentservice.mapper.CommentMapper;
 import com.lingo.commentservice.model.Comment;
 import com.lingo.commentservice.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collector;
@@ -27,6 +30,7 @@ public interface CommentService {
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
@@ -35,6 +39,7 @@ class CommentServiceImpl implements CommentService {
 
     @Override
     @jakarta.transaction.Transactional
+    @CacheEvict(value = "commentsByTest", key = "#dto.testId")
     public ResponseCommentDTO add(RequestCommentDTO dto) {
         Comment comment = commentMapper.toComment(dto);
         comment.setStatus(CommentStatus.ACTIVE);
@@ -49,6 +54,7 @@ class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @CacheEvict(value = "commentsByTest", key = "#dto.testId")
     public ResponseCommentDTO update(RequestCommentDTO dto, long id) {
         Comment existing = commentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Comment not found with id: " + id));
@@ -61,6 +67,7 @@ class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @CacheEvict(value = "commentsByTest", key = "#existing.testId")
     public void delete(long id) {
         Comment existing = commentRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Comment not found with id: " + id));
@@ -98,17 +105,39 @@ class CommentServiceImpl implements CommentService {
         List<ResponseCommentDTO> responses= comments.stream().map(commentMapper :: toCommentResponse).collect(Collectors.toList());
 
         return responses.stream().peek(comment -> {
-            ResAccountDTO accountInfo= accountClient.getAccountInfo(comment.getUserId());
+            try {
+                ResAccountDTO accountInfo= accountClient.getAccountInfo(comment.getUserId());
+                if (accountInfo !=null){
+                    comment.setUsername(accountInfo.getFirstName() + " " +accountInfo.getLastName());
+                    comment.setAvatar(accountInfo.getAvatar());
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                return;
+            }
 
-            comment.setUsername(accountInfo.getUsername());
-            comment.setAvatar(accountInfo.getAvatar());
+
         }).collect(Collectors.toList());
     }
 
     @Override
+    @Cacheable(value = "commentsOfTest",key = "#testId")
     public List<ResponseCommentDTO> getCommentsOfTest(long testId) {
         List<Comment> comments=commentRepository.findByTestId(testId);
+        List<ResponseCommentDTO> responses= comments.stream().map(commentMapper :: toCommentResponse).collect(Collectors.toList());
 
-        return comments.stream().map(commentMapper :: toCommentResponse).collect(Collectors.toList());
+        return responses.stream().peek(response ->{
+            try {
+                ResAccountDTO accountDTO =accountClient.getAccountInfo(response.getUserId());
+                if (accountDTO !=null){
+                    response.setUsername(accountDTO.getFirstName() + " "+ accountDTO.getLastName());
+                    response.setAvatar(accountDTO.getAvatar());
+                }
+            } catch (Exception e){
+                log.error(e.getMessage());
+                return ;
+            }
+
+        }).collect(Collectors.toList());
     }
 }

@@ -4,10 +4,16 @@ import { DislikeFilled, LikeFilled, UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addComment, retrieveCommentsOfTest } from "../../slice/commentSlice";
 
-const SingleComment = ({ comment, testId, isReply = false, currentCommentMode, setCurrentCommentMode }) => {
+const SingleComment = ({
+  comment,
+  testId,
+  isReply = false,
+  currentCommentMode,
+  setCurrentCommentMode,
+}) => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.authentication);
   const { currentUser } = useSelector((state) => state.accounts);
+
   const [showReplyInput, setShowReplyInput] = useState(false);
   const [showReplies, setShowReplies] = useState(true);
   const [replyText, setReplyText] = useState("");
@@ -18,13 +24,13 @@ const SingleComment = ({ comment, testId, isReply = false, currentCommentMode, s
     dispatch(
       addComment({
         content: replyText,
-        testId: testId,
+        testId,
         replyId: comment.id,
-        userId: currentUser?.id || null,
+        userId: currentUser?.keycloakId || null,
         type: "ANSWER",
       })
     ).then(() => {
-      setCurrentCommentMode("REPLY")
+      setCurrentCommentMode("REPLY");
       setReplyText("");
       setShowReplyInput(false);
       dispatch(retrieveCommentsOfTest(testId));
@@ -39,55 +45,44 @@ const SingleComment = ({ comment, testId, isReply = false, currentCommentMode, s
       day: "numeric",
     });
   };
-  const renderReplyComment = (commentId) => {
-    while (currentCommentMode === "REPLY") {
+  console.log("current user", currentUser)
 
-    }
-  }
   return (
     <div className={`${isReply ? "ml-12 mt-4" : ""}`}>
       <div className="flex space-x-3 gap-1">
-        <Avatar
-          className={`!bg-${isReply ? 'gray' : 'red'}-500 flex-shrink-0`}
-          icon={<UserOutlined />}
-        />
+        <Avatar className={`!bg-${isReply ? "gray" : "red"}-500`} icon={<UserOutlined />} />
         <div className="flex-1">
+          {/* Comment Card */}
           <div className="rounded-lg p-4 bg-gray-50 border border-gray-200">
             <div className="flex items-center justify-between mb-2">
-              <span className="font-medium text-gray-900">
-                {comment.username || "Guest"}
-              </span>
-              <span className="text-xs text-gray-500">
-                {formatDate(comment.createdAt)}
-              </span>
+              <span className="font-medium text-gray-900">{comment.username || "Guest"}</span>
+              <span className="text-xs text-gray-500">{formatDate(comment.createdAt)}</span>
             </div>
+
             <p className="text-gray-700 text-sm mb-3">{comment.content}</p>
+
             <div className="flex items-center text-xs text-gray-500 gap-2">
               <Button type="text" size="small">
                 <LikeFilled /> {comment.likes || 0}
               </Button>
+
               <Button type="text" size="small">
                 <DislikeFilled /> {comment.dislikes || 0}
               </Button>
-              <Button
-                type="text"
-                size="small"
-                onClick={() => setShowReplyInput((prev) => !prev)}
-              >
+
+              <Button type="text" size="small" onClick={() => setShowReplyInput((p) => !p)}>
                 Trả lời
               </Button>
-              {comment.replies && comment.replies.length > 0 && (
-                <Button
-                  type="text"
-                  size="small"
-                  onClick={() => setShowReplies((prev) => !prev)}
-                >
+
+              {comment.replies?.length > 0 && (
+                <Button type="text" size="small" onClick={() => setShowReplies((p) => !p)}>
                   {showReplies ? "Ẩn" : "Xem"} {comment.replies.length} phản hồi
                 </Button>
               )}
             </div>
           </div>
 
+          {/* Reply Input */}
           {showReplyInput && (
             <div className="mt-3 ml-0">
               <Input.TextArea
@@ -110,21 +105,22 @@ const SingleComment = ({ comment, testId, isReply = false, currentCommentMode, s
         </div>
       </div>
 
-      {/* Render nested replies */}
-      {showReplies && comment.replies && comment.replies.length > 0 && (
-        <div className="mt-4">
-          {comment.replies.map((reply) => (
-            <SingleComment
-              key={reply.id}
-              comment={reply}
-              testId={testId}
-              isReply={true}
-              currentCommentMode={currentCommentMode}
-              setCurrentCommentMode={setCurrentCommentMode}
-            />
-          ))}
-        </div>
-      )}
+      {showReplies &&
+        comment.replies &&
+        comment.replies.length > 0 && (
+          <div className="mt-4">
+            {comment.replies.map((reply) => (
+              <SingleComment
+                key={reply.id}
+                comment={reply}
+                testId={testId}
+                isReply={true}
+                currentCommentMode={currentCommentMode}
+                setCurrentCommentMode={setCurrentCommentMode}
+              />
+            ))}
+          </div>
+        )}
     </div>
   );
 };

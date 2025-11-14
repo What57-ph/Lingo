@@ -102,8 +102,8 @@ const commentSlice = createSlice({
             })
             .addCase(retrieveRepliesOfComment.fulfilled, (state, action) => {
                 state.loading = false;
-                const { commentId, replies } = action.payload;
-                state.replyOfComment[commentId] = replies;
+                const { id, replies } = action.payload;
+                state.replyOfComment[id] = replies;
             })
             .addCase(retrieveRepliesOfComment.rejected, (state, action) => {
                 state.loading = false;

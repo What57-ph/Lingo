@@ -5,19 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7807224a-69f2-4995-954d-4271220bc1ae" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/config/RedisConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/resources/logback-spring.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/controller/AccountController.java" beforeDir="false" afterPath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/controller/AccountController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/service/AccountService.java" beforeDir="false" afterPath="$PROJECT_DIR$/account/src/main/java/com/lingo/account/service/AccountService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/request/RequestReplyDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/request/RequestReplyDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/CommentserviceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/CommentserviceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/response/ResponseCommentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/response/ResponseCommentDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/mapper/CommentMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/mapper/CommentMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/service/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-app/src/components/tests/BoxComment.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/tests/BoxComment.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-app/src/components/tests/SingleComment.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/tests/SingleComment.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/config/api.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/config/api.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/pages/tests/BeforeTestPage.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/tests/BeforeTestPage.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/service/commentService.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/service/commentService.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/slice/accounts.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/slice/accounts.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web-app/src/slice/commentSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/slice/commentSlice.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -97,28 +95,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.AccountApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.AttemptApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ChatbotApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.CommentserviceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.DiscoveryserverApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FileserviceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.TestserviceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;comment&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Project/Lingo_Fork/Lingo&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.AccountApplication.executor": "Run",
+    "Application.ApiGatewayApplication.executor": "Run",
+    "Application.AttemptApplication.executor": "Run",
+    "Application.ChatbotApplication.executor": "Run",
+    "Application.CommentserviceApplication.executor": "Run",
+    "Application.DiscoveryserverApplication.executor": "Run",
+    "Application.FileserviceApplication.executor": "Run",
+    "Application.TestserviceApplication.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "comment",
+    "last_opened_file_path": "C:/Project/Lingo_Fork/Lingo/commentservice/src/main/resources",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
-}</component>
-  <component name="RunManager" selected="Application.AccountApplication">
+}]]></component>
+  <component name="RunManager" selected="Application.CommentserviceApplication">
     <configuration name="AccountApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.lingo.account.AccountApplication" />
       <module name="account" />
@@ -186,8 +184,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.AccountApplication" />
         <item itemvalue="Application.CommentserviceApplication" />
+        <item itemvalue="Application.AccountApplication" />
         <item itemvalue="Application.TestserviceApplication" />
         <item itemvalue="Application.ApiGatewayApplication" />
         <item itemvalue="Application.DiscoveryserverApplication" />
