@@ -1,13 +1,15 @@
-// SingleComment.jsx
 import { useState } from "react";
 import { Avatar, Button, Input } from "antd";
 import { DislikeFilled, LikeFilled, UserOutlined } from "@ant-design/icons";
-import { useDispatch } from "react-redux";
-import { addComment, retrieveRepliesOfComment } from "../../slice/commentSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addComment, retrieveCommentsOfTest } from "../../slice/commentSlice";
 
-const SingleComment = ({ id, author, time, content, likes, dislikes, replies, testId }) => {
+const SingleComment = ({ comment, testId, isReply = false, currentCommentMode, setCurrentCommentMode }) => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.authentication);
+  const { currentUser } = useSelector((state) => state.accounts);
   const [showReplyInput, setShowReplyInput] = useState(false);
+  const [showReplies, setShowReplies] = useState(true);
   const [replyText, setReplyText] = useState("");
 
   const handleReplySubmit = () => {
@@ -17,66 +19,112 @@ const SingleComment = ({ id, author, time, content, likes, dislikes, replies, te
       addComment({
         content: replyText,
         testId: testId,
-        parentCommentId: id, // send parent comment id to API
+        replyId: comment.id,
+        userId: currentUser?.id || null,
+        type: "ANSWER",
       })
     ).then(() => {
+      setCurrentCommentMode("REPLY")
       setReplyText("");
       setShowReplyInput(false);
-      dispatch(retrieveRepliesOfComment(id)); // refresh replies for this comment
+      dispatch(retrieveCommentsOfTest(testId));
     });
   };
 
-  return (
-    <div className="flex space-x-3 gap-1">
-      <Avatar className="!bg-red-500" icon={<UserOutlined />} />
-      <div className="flex-1">
-        <div className="rounded-lg p-4 bg-white shadow-sm">
-          <div className="flex items-center justify-between mb-2">
-            <span className="font-medium text-gray-900">{author}</span>
-            <span className="text-xs text-gray-500">{time}</span>
-          </div>
-          <p className="text-gray-700 text-sm mb-3">{content}</p>
-          <div className="flex items-center text-xs text-gray-500 gap-2">
-            <Button type="text">
-              <LikeFilled /> {likes || 0}
-            </Button>
-            <Button type="text">
-              <DislikeFilled /> {dislikes || 0}
-            </Button>
-            <Button
-              type="text"
-              onClick={() => setShowReplyInput((prev) => !prev)}
-            >
-              Trả lời
-            </Button>
-          </div>
-        </div>
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("vi-VN", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+  const renderReplyComment = (commentId) => {
+    while (currentCommentMode === "REPLY") {
 
-        {showReplyInput && (
-          <div className="ml-8 mt-2">
-            <Input.TextArea
-              rows={2}
-              placeholder="Viết phản hồi..."
-              value={replyText}
-              onChange={(e) => setReplyText(e.target.value)}
-            />
-            <div className="flex justify-end mt-2 gap-2">
-              <Button onClick={() => setShowReplyInput(false)}>Hủy</Button>
-              <Button type="primary" onClick={handleReplySubmit}>
-                Gửi
+    }
+  }
+  return (
+    <div className={`${isReply ? "ml-12 mt-4" : ""}`}>
+      <div className="flex space-x-3 gap-1">
+        <Avatar
+          className={`!bg-${isReply ? 'gray' : 'red'}-500 flex-shrink-0`}
+          icon={<UserOutlined />}
+        />
+        <div className="flex-1">
+          <div className="rounded-lg p-4 bg-gray-50 border border-gray-200">
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-medium text-gray-900">
+                {comment.username || "Guest"}
+              </span>
+              <span className="text-xs text-gray-500">
+                {formatDate(comment.createdAt)}
+              </span>
+            </div>
+            <p className="text-gray-700 text-sm mb-3">{comment.content}</p>
+            <div className="flex items-center text-xs text-gray-500 gap-2">
+              <Button type="text" size="small">
+                <LikeFilled /> {comment.likes || 0}
               </Button>
+              <Button type="text" size="small">
+                <DislikeFilled /> {comment.dislikes || 0}
+              </Button>
+              <Button
+                type="text"
+                size="small"
+                onClick={() => setShowReplyInput((prev) => !prev)}
+              >
+                Trả lời
+              </Button>
+              {comment.replies && comment.replies.length > 0 && (
+                <Button
+                  type="text"
+                  size="small"
+                  onClick={() => setShowReplies((prev) => !prev)}
+                >
+                  {showReplies ? "Ẩn" : "Xem"} {comment.replies.length} phản hồi
+                </Button>
+              )}
             </div>
           </div>
-        )}
 
-        {replies?.length > 0 && (
-          <div className="ml-8 mt-2 space-y-2">
-            {replies.map((reply) => (
-              <SingleComment key={reply.id} {...reply} testId={testId} />
-            ))}
-          </div>
-        )}
+          {showReplyInput && (
+            <div className="mt-3 ml-0">
+              <Input.TextArea
+                rows={2}
+                placeholder="Viết phản hồi..."
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                className="mb-2"
+              />
+              <div className="flex justify-end gap-2">
+                <Button size="small" onClick={() => setShowReplyInput(false)}>
+                  Hủy
+                </Button>
+                <Button type="primary" size="small" onClick={handleReplySubmit}>
+                  Gửi
+                </Button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
+
+      {/* Render nested replies */}
+      {showReplies && comment.replies && comment.replies.length > 0 && (
+        <div className="mt-4">
+          {comment.replies.map((reply) => (
+            <SingleComment
+              key={reply.id}
+              comment={reply}
+              testId={testId}
+              isReply={true}
+              currentCommentMode={currentCommentMode}
+              setCurrentCommentMode={setCurrentCommentMode}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

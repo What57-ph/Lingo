@@ -1,5 +1,6 @@
 package com.lingo.commentservice.dto.request;
 
+import com.lingo.commentservice.enums.CommentType;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -12,4 +13,6 @@ public class RequestReplyDTO {
     String userId;
     Long replyId;
     Long testId;
+    String content;
+    CommentType type;
 }

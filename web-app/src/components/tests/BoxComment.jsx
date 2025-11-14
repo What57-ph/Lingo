@@ -1,43 +1,56 @@
-// BoxComment.jsx
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, Input, Button, Select } from "antd";
 import SingleComment from "./SingleComment";
-import { retrieveAllComments, addComment } from "../../slice/commentSlice";
+import { retrieveCommentsOfTest, addComment } from "../../slice/commentSlice";
+import { retrieveAccountByUsername } from "../../slice/accounts";
 
 const BoxComment = ({ testId }) => {
   const { TextArea } = Input;
   const dispatch = useDispatch();
-  const { comments, loading } = useSelector((state) => state.comments);
-
+  const { commentOfTest, loading } = useSelector((state) => state.comments);
+  const { user } = useSelector((state) => state.authentication);
+  const { currentUser } = useSelector((state) => state.accounts)
   const [newComment, setNewComment] = useState("");
   const [sort, setSort] = useState("newest");
-
-  // Fetch comments on page load
+  const [currentCommentMode, setCurrentCommentMode] = useState("COMMENT");
   useEffect(() => {
     if (testId) {
-      dispatch(retrieveAllComments(testId));
+      dispatch(retrieveCommentsOfTest(testId));
     }
   }, [dispatch, testId]);
 
+  useEffect(() => {
+    dispatch(retrieveAccountByUsername(user?.preferred_username))
+  }, [])
   const handlePostComment = () => {
     if (!newComment.trim()) return;
-    dispatch(addComment({ content: newComment, testId })).then(() => {
+    dispatch(
+      addComment({
+        content: newComment,
+        testId,
+        type: "COMMENT",
+        userId: currentUser?.id || null,
+      })
+    ).then(() => {
+      setCurrentCommentMode("COMMENT")
       setNewComment("");
-      dispatch(retrieveAllComments(testId)); // refresh after posting
+      dispatch(retrieveCommentsOfTest(testId));
     });
   };
 
   const handleSortChange = (value) => {
     setSort(value);
-    // Optional: sort locally or refetch based on API
   };
 
+  console.log("current user", user)
+  console.log("comment of test", commentOfTest)
+  console.log("needed comments", commentOfTest.filter((comment) => comment.type === "COMMENT"))
   return (
     <Card className="!shadow-lg !pb-3 !mt-7">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-900">
-          Bình luận ({comments?.length || 0})
+          Bình luận ({commentOfTest?.length || 0})
         </h2>
         <Select
           defaultValue={sort}
@@ -68,12 +81,14 @@ const BoxComment = ({ testId }) => {
       <div className="space-y-6">
         {loading ? (
           <p>Đang tải bình luận...</p>
-        ) : comments?.length > 0 ? (
-          comments.map((comment) => (
+        ) : commentOfTest?.length > 0 ? (
+          commentOfTest.filter((comment) => comment.type === "COMMENT").map((comment) => (
             <SingleComment
               key={comment.id}
-              {...comment}
-              testId={testId} // pass testId for replies
+              comment={comment}
+              testId={testId}
+              currentCommentMode={currentCommentMode}
+              setCurrentCommentMode={currentCommentMode}
             />
           ))
         ) : (

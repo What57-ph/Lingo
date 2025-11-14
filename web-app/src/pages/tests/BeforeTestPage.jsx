@@ -17,12 +17,19 @@ import BoxComment from "../../components/tests/BoxComment";
 import RightSider from "../../components/tests/RightSider";
 import HistoryAttempts from "../../components/tests/BeforePage/HistoryAttempts";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { retrieveCommentsOfTest } from "../../slice/commentSlice";
 
 const BeforeTestPage = () => {
   const { Text } = Typography;
   const location = useLocation();
   const navigate = useNavigate();
-  const { testId } = useParams(); // <-- get testId from URL
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(retrieveCommentsOfTest(id))
+  }, [])
 
   const handleDoTest = () => navigate(location.pathname + "/doTests");
 
@@ -126,7 +133,7 @@ const BeforeTestPage = () => {
             </Card>
 
             {/* comment section */}
-            <BoxComment testId={testId} />
+            <BoxComment testId={id} />
           </div>
 
           <div className="lg:col-span-3 space-y-6">

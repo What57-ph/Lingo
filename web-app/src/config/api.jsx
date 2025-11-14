@@ -72,6 +72,9 @@ export const getAllAccounts = (params) => {
 export const getAccount = (accountId) => {
   return publicInstance.get(`api/v1/account/${accountId}`);
 };
+export const getAccountByUsername = (username) => {
+  return publicInstance.get(`api/v1/account/getByUsername/${username}`);
+};
 
 export const enableAccount = ({ id, enable }) => {
   return publicInstance.post(

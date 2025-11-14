@@ -1,7 +1,7 @@
 import instance from "../config/AxiosConfig";
 
 export const getAllComments = async () => {
-    const URL = `/api/v1/comment/`;
+    const URL = `/api/v1/comment`;
     const response = await instance.get(URL);
     return response;
 }

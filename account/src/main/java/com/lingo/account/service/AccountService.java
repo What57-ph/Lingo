@@ -73,6 +73,11 @@ public class AccountService {
     return accountMapper.toResDTO(account);
   }
 
+  public ResAccountDTO getAccountByUsername(String username) throws NotFoundException {
+    Account account = (Account) this.accountRepository.findByUsername(username)
+            .orElseThrow(() -> new NotFoundException(Constants.ErrorCode.USER_NOT_FOUND));
+    return accountMapper.toResDTO(account);
+  }
   public ResPaginationDTO getAllAccounts(
           int pageNo,
           int pageSize,

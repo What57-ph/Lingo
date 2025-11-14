@@ -90,7 +90,7 @@ const commentSlice = createSlice({
             })
             .addCase(retrieveCommentsOfTest.fulfilled, (state, action) => {
                 state.loading = false;
-                state.commentOfTest = action.payload.result || [];
+                state.commentOfTest = action.payload || [];
             })
             .addCase(retrieveCommentsOfTest.rejected, (state, action) => {
                 state.loading = false;
