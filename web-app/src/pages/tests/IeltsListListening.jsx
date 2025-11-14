@@ -243,7 +243,7 @@ function IeltsListListening() {
   );
   useEffect(() => {
 
-    dispatch(retrieveAllTests())
+    dispatch(retrieveAllTests("&sort=id,asc&filter= category: 'LISTENING'"))
   }, []);
   useEffect(() => {
     setTestsData({
