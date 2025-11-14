@@ -11,6 +11,7 @@ import answerReducer from "../slice/answers";
 import fileReducer from "../slice/files";
 import resourceReducer from "../slice/resource";
 import speakingSlice from "../slice-ATI/speaking";
+import writingSlice from "../slice-ATI/writing";
 import chatReducer from "../slice/chat";
 const reducer = {
     test: testReducer,
@@ -23,7 +24,8 @@ const reducer = {
     tests: testListSlice,
     attempts: attemptSlice,
     accounts: accountSlice,
-    speaking: speakingSlice
+    speaking: speakingSlice,
+    writing: writingSlice
 };
 export const store = configureStore({
     reducer: reducer,

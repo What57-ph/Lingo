@@ -24,6 +24,7 @@ function WritingTestPage() {
   const [pageLoading, setPageLoading] = useState(isLockMode);
   const [lockedData, setLockedData] = useState(null);
 
+  // useEffect: Fetch đề bài nếu ở "Lock Mode"
   useEffect(() => {
     if (isLockMode) {
       setPageLoading(true);
@@ -32,7 +33,6 @@ function WritingTestPage() {
         setLockedData(MOCK_TEST_DATA);
         setPageLoading(false);
       }, 1000);
-
       /*
       dispatch(retrieveSingleTest(testId))
         .unwrap()
@@ -47,15 +47,25 @@ function WritingTestPage() {
     }
   }, [testId, isLockMode, dispatch]);
 
+  // Xử lý nộp bài: Chỉ lưu và chuyển hướng
   const handleGrade = useCallback(
     async (formData) => {
       setIsLoading(true);
       toast.info("Đang nộp bài làm của bạn...");
 
       try {
+        const taskText = isLockMode ? lockedData.promptText : formData.task;
+        const essayText = formData.essay;
+
+        if (!essayText || !taskText) {
+          toast.error("Vui lòng nhập đầy đủ đề bài và bài luận.");
+          setIsLoading(false);
+          return;
+        }
+
         const userId = "b3dbd68b-0613-466c-9037-ebdea8a184c1";
-        const quizId = isLockMode ? lockedData.id : 2;
-        const mockGradingId = "mock-writing-" + Date.now();
+        const quizId = isLockMode ? lockedData.id : 0;
+        const gradingIeltsId = "mock-writing-" + Date.now(); // ID duy nhất để liên kết
 
         const attemptData = {
           quizId: quizId,
@@ -63,28 +73,33 @@ function WritingTestPage() {
           timeTaken: 3600,
           type: "IELTS",
           field: ["Writing"],
-          gradingIeltsId: mockGradingId,
+          gradingIeltsId: gradingIeltsId,
           answers: [
-            { questionId: 0, userAnswer: formData.essay }
+            { questionId: 0, userAnswer: essayText }
           ]
         };
 
+        // BƯỚC 1: Lưu bài làm
         const action = await dispatch(createAttempts(attemptData));
 
         if (!createAttempts.fulfilled.match(action)) {
           throw new Error(action.payload || "Lỗi khi lưu bài làm!");
         }
 
-        const newAttempt = action.payload;
-        const newAttemptId = newAttempt;
+        const newAttemptId = action.payload;
 
         if (!newAttemptId) {
-          throw new Error("Không lấy được ID bài làm sau khi tạo (payload bị rỗng).");
+          throw new Error("Không lấy được ID bài làm sau khi tạo.");
         }
 
+        // BƯỚC 2: Chuyển hướng ngay lập tức
         toast.success("Nộp bài thành công! Đang chuyển trang kết quả.");
-
-        navigate(`/writing-result/${newAttemptId}`);
+        navigate(`/writing-result/${newAttemptId}`, {
+          state: {
+            task: taskText,
+            essay: essayText
+          }
+        });
 
       } catch (error) {
         console.error("Lỗi khi nộp bài viết:", error);
@@ -95,6 +110,7 @@ function WritingTestPage() {
     [navigate, dispatch, isLockMode, lockedData]
   );
 
+  // (Phần render và return giữ nguyên)
   const renderContent = () => {
     if (isLockMode && pageLoading) {
       return (

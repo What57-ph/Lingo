@@ -1,27 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useLocation, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import WritingDisplayPanel from "../components-ATI/writing/WritingDisplayPanel";
 import WritingAnalysisPanel from "../components-ATI/writing/WritingAnalysisPanel";
 import { retrieveAttempt } from "../slice/attempts";
-// import { retrieveResult } from "../slice-ATI/speaking"; // (1. Import nếu bạn có AI)
-// import { retrieveSingleTest } from "../slice/tests"; 
+import { createSubmit, resetWritingResult } from "../slice-ATI/writing";
 
-// --- DỮ LIỆU MOCK (Giữ nguyên) ---
-const MOCK_AI_RESPONSE = {
-  scores: { overall: 7.5 },
-  status: { level: "Giỏi", time: "2 phút 34 giây", state: "Đạt yêu cầu" },
-  errors: [
-    { text: "technology made our lives more complicated", suggestion: "technology has made our lives more complicated", type: "grammar", typeVi: "Ngữ pháp", location: "Đoạn 1, câu 2", explanation: "...", color: "red" },
-    { text: "For example", suggestion: "For instance", type: "vocabulary", typeVi: "Từ vựng", location: "Đoạn 2, câu 2", explanation: "...", color: "yellow" },
-  ],
-  suggestions: {
-    strongPoints: ["Cấu trúc bài viết rõ ràng...", "Trả lời đầy đủ..."],
-    grammar: ["Chú ý sử dụng đúng thì...", "Kiểm tra lại cấu trúc..."],
-    vocabulary: ["Sử dụng từ đồng nghĩa...", "Học thêm các cụm từ..."],
-    coherence: ["Sử dụng thêm các liên từ...", "Đảm bảo mỗi đoạn..."],
-  },
-};
 const MOCK_TEST_DATA = {
   id: 1,
   taskType: 1,
@@ -30,15 +14,20 @@ const MOCK_TEST_DATA = {
   promptImage: "https://i.imgur.com/gim2k9g.png",
 };
 
-
 export default function WritingResultPage() {
   const [leftWidth, setLeftWidth] = useState(50);
   const [isResizing, setIsResizing] = useState(false);
   const containerRef = useRef(null);
   const [promptImageUrl, setPromptImageUrl] = useState(null);
+  const [isAiCallInitiated, setIsAiCallInitiated] = useState(false);
 
   const { id: attemptId } = useParams();
+  const location = useLocation();
   const dispatch = useDispatch();
+
+  // ✅ LẤY task VÀ essay TỪ LOCATION STATE
+  const taskFromState = location.state?.task;
+  const essayFromState = location.state?.essay;
 
   const {
     attempt,
@@ -46,54 +35,77 @@ export default function WritingResultPage() {
     error: attemptError
   } = useSelector((state) => state.attempts);
 
-  // const { 
-  //   result: assessmentResult, 
-  //   loading: assessmentLoading, 
-  //   error: assessmentError 
-  // } = useSelector((state) => state.speaking);
+  const {
+    result: assessmentResult,
+    loading: assessmentLoading,
+    error: assessmentError
+  } = useSelector((state) => state.writing);
 
   const [quizData, setQuizData] = useState(null);
   const [quizLoading, setQuizLoading] = useState(true);
 
+  // Reset state khi vào trang mới
+  useEffect(() => {
+    dispatch(resetWritingResult());
+    setIsAiCallInitiated(false);
+  }, [attemptId, dispatch]);
 
+  // Fetch attempt
   useEffect(() => {
     if (attemptId) {
       dispatch(retrieveAttempt(attemptId));
     }
   }, [attemptId, dispatch]);
 
-  // useEffect 2: Fetch đề bài (quiz) KHI 'attempt' đã tải xong
+  // Fetch quiz data (chỉ để hiển thị ảnh nếu có)
   useEffect(() => {
     const quizId = attempt?.quizId;
-    // Chỉ chạy nếu có quizId VÀ (chưa có quizData HOẶC quizData không khớp)
-    if (quizId && (quizData?.id !== quizId)) {
-      setQuizLoading(true);
-      console.log(`(Mock) Đang fetch Đề Bài (Quiz) với ID: ${quizId}`);
-      setTimeout(() => {
-        setQuizData(MOCK_TEST_DATA);
+
+    if (!attemptLoading && attempt) {
+      if (quizId && quizId > 0 && (quizData?.id !== quizId)) {
+        setQuizLoading(true);
+        setTimeout(() => {
+          setQuizData(MOCK_TEST_DATA);
+          setQuizLoading(false);
+        }, 500);
+      } else {
         setQuizLoading(false);
-      }, 500);
-
-      /*
-      dispatch(retrieveSingleTest(quizId))
-        .unwrap()
-        .then((data) => setQuizData(data))
-        .catch((err) => setQuizData(null))
-        .finally(() => setQuizLoading(false));
-      */
+      }
     }
-  }, [attempt, dispatch]); // Phụ thuộc vào 'attempt'
+  }, [attempt, attemptLoading, quizData?.id]);
 
-  /*
+  // ✅ GỌI AI NGAY KHI CÓ task VÀ essay (TỪ STATE)
   useEffect(() => {
-    const gradingId = attempt?.gradingIeltsId;
-    if (gradingId) {
-      // (Thêm logic kiểm tra 'assessmentResult' nếu cần)
-      dispatch(retrieveResult(gradingId));
-    }
-  }, [attempt, dispatch]);
-  */
+    if (
+      taskFromState &&
+      essayFromState &&
+      !assessmentResult &&
+      !assessmentLoading &&
+      !isAiCallInitiated
+    ) {
+      console.log("📤 Gửi bài cho AI chấm điểm...");
+      console.log("Task:", taskFromState);
+      console.log("Essay:", essayFromState.substring(0, 100) + "...");
 
+      setIsAiCallInitiated(true);
+
+      const aiFormData = {
+        task: taskFromState,
+        essay: essayFromState,
+      };
+
+      dispatch(createSubmit(aiFormData))
+        .unwrap()
+        .then((result) => {
+          console.log("✅ Nhận được kết quả AI:", result);
+        })
+        .catch((error) => {
+          console.error("❌ Lỗi khi gọi AI:", error);
+        });
+    }
+  }, [taskFromState, essayFromState, assessmentResult, assessmentLoading, isAiCallInitiated, dispatch]);
+
+  // Handle image URL
   useEffect(() => {
     let imageUrl = null;
     const imageSource = quizData?.promptImage;
@@ -112,6 +124,7 @@ export default function WritingResultPage() {
     };
   }, [quizData?.promptImage]);
 
+  // Handle resize
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (!isResizing || !containerRef.current) return;
@@ -137,9 +150,10 @@ export default function WritingResultPage() {
     };
   }, [isResizing]);
 
-  const isLoading = attemptLoading || quizLoading;
-  const combinedError = attemptError;
+  const isLoading = attemptLoading || quizLoading || assessmentLoading;
+  const combinedError = attemptError || assessmentError;
 
+  // Loading state
   if (isLoading) {
     return (
       <div className="flex flex-col h-screen w-full bg-white text-black font-sans items-center justify-center p-4">
@@ -148,7 +162,9 @@ export default function WritingResultPage() {
             Đang tải kết quả bài làm...
           </h1>
           <p className="text-lg text-gray-600 mb-8">
-            LexiBot đang phân tích bài viết của bạn. Vui lòng chờ...
+            {assessmentLoading
+              ? "LexiBot đang phân tích bài viết của bạn. Việc này có thể mất một chút thời gian..."
+              : "Đang tải dữ liệu bài làm..."}
           </p>
           <div className="flex justify-center items-center space-x-2">
             <div className="h-4 w-4 bg-blue-600 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
@@ -160,28 +176,28 @@ export default function WritingResultPage() {
     );
   }
 
+  // Error state
   if (combinedError || !attempt) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-8">
         <h1 className="text-2xl font-bold text-red-700 mb-4">
-          Lỗi Tải Bài Làm
+          Lỗi Tải Dữ Liệu
         </h1>
         <p className="text-gray-600">
-          {attemptError ? attemptError.message : "Không tìm thấy bài làm với ID này."}
+          {combinedError ? combinedError.message : "Không tìm thấy bài làm với ID này."}
         </p>
         <Link to="/" className="text-blue-600 mt-4">Quay về trang chủ</Link>
       </div>
     );
   }
 
-  const task = quizData?.taskType;
-  const promptText = quizData?.promptText;
-  const essayText = attempt.answers[0]?.userAnswer;
+  // ✅ LẤY DỮ LIỆU ĐỂ HIỂN THỊ
+  const task = quizData?.taskType || 1;
+  const promptText = taskFromState || quizData?.promptText || "Không có đề bài";
+  const essayText = essayFromState || attempt.answers[0]?.userAnswer || "";
   const wordCount = essayText
     ? essayText.trim().split(/\s+/).filter(Boolean).length
     : 0;
-
-  const aiResult = MOCK_AI_RESPONSE;
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -204,7 +220,7 @@ export default function WritingResultPage() {
 
         <WritingAnalysisPanel
           width={100 - leftWidth}
-          aiData={aiResult}
+          aiData={assessmentResult}
           wordCount={wordCount}
         />
       </div>
