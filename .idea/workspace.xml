@@ -5,9 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7807224a-69f2-4995-954d-4271220bc1ae" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListReading.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListReading.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListSpeaking.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListSpeaking.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListWriting.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/pages/tests/IeltsListWriting.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/config/RedisConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/commentservice/src/main/resources/logback-spring.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/CommentserviceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/CommentserviceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/response/ResponseCommentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/response/ResponseCommentDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/mapper/CommentMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/mapper/CommentMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/service/CommentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/components/tests/BoxComment.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/tests/BoxComment.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/components/tests/SingleComment.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/components/tests/SingleComment.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web-app/src/slice/commentSlice.js" beforeDir="false" afterPath="$PROJECT_DIR$/web-app/src/slice/commentSlice.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,11 +41,11 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;What57-ph&quot;
-  }
-}</component>
+        &quot;lastFilter&quot;: {
+        &quot;state&quot;: &quot;OPEN&quot;,
+        &quot;assignee&quot;: &quot;What57-ph&quot;
+        }
+        }</component>
   <component name="GitToolBoxStore">
     <option name="recentBranches">
       <RecentBranches>
@@ -63,11 +72,11 @@
     </option>
   </component>
   <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/What57-ph/Lingo.git&quot;,
-    &quot;accountId&quot;: &quot;e9f86f7e-0b3b-4ad9-a884-6f1882d2a03f&quot;
-  }
-}</component>
+        &quot;selectedUrlAndAccountId&quot;: {
+        &quot;url&quot;: &quot;https://github.com/What57-ph/Lingo.git&quot;,
+        &quot;accountId&quot;: &quot;e9f86f7e-0b3b-4ad9-a884-6f1882d2a03f&quot;
+        }
+        }</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -79,34 +88,35 @@
     <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 6
-}</component>
+        &quot;associatedIndex&quot;: 6
+        }</component>
   <component name="ProjectId" id="325h23VlCnHZo38h36nAFUafhuE" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.AccountApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.AttemptApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ChatbotApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.DiscoveryserverApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FileserviceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.TestserviceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Project/Lingo_Fork/Lingo&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.AccountApplication.executor": "Run",
+    "Application.ApiGatewayApplication.executor": "Run",
+    "Application.AttemptApplication.executor": "Run",
+    "Application.ChatbotApplication.executor": "Run",
+    "Application.CommentserviceApplication.executor": "Run",
+    "Application.DiscoveryserverApplication.executor": "Run",
+    "Application.FileserviceApplication.executor": "Run",
+    "Application.TestserviceApplication.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "comment",
+    "last_opened_file_path": "C:/Project/Lingo_Fork/Lingo/commentservice/src/main/resources",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
-}</component>
-  <component name="RunManager" selected="Application.AccountApplication">
+}]]></component>
+  <component name="RunManager" selected="Application.CommentserviceApplication">
     <configuration name="AccountApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.lingo.account.AccountApplication" />
       <module name="account" />
@@ -120,12 +130,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="AttemptApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lingo.attempt.AttemptApplication" />
-      <module name="attempt" />
+    <configuration name="ApiGatewayApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.api_gateway.ApiGatewayApplication" />
+      <module name="api-gateway" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lingo.attempt.*" />
+          <option name="PATTERN" value="com.lingo.api_gateway.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -133,12 +143,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ChatbotApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lingo.chatbot.ChatbotApplication" />
-      <module name="chatbot" />
+    <configuration name="CommentserviceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.commentservice.CommentserviceApplication" />
+      <module name="commentservice" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lingo.chatbot.*" />
+          <option name="PATTERN" value="com.lingo.commentservice.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -146,12 +156,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FileserviceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lingo.fileservice.FileserviceApplication" />
-      <module name="fileservice" />
+    <configuration name="DiscoveryserverApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.discoveryserver.DiscoveryserverApplication" />
+      <module name="discoveryserver" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lingo.fileservice.*" />
+          <option name="PATTERN" value="com.lingo.discoveryserver.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -174,11 +184,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.CommentserviceApplication" />
         <item itemvalue="Application.AccountApplication" />
-        <item itemvalue="Application.ChatbotApplication" />
-        <item itemvalue="Application.AttemptApplication" />
         <item itemvalue="Application.TestserviceApplication" />
-        <item itemvalue="Application.FileserviceApplication" />
+        <item itemvalue="Application.ApiGatewayApplication" />
+        <item itemvalue="Application.DiscoveryserverApplication" />
       </list>
     </recent_temporary>
   </component>

@@ -13,6 +13,7 @@ import resourceReducer from "../slice/resource";
 import speakingSlice from "../slice-ATI/speaking";
 import writingSlice from "../slice-ATI/writing";
 import chatReducer from "../slice/chat";
+import commentReducer from "../slice/commentSlice"
 const reducer = {
     test: testReducer,
     questions: questionReducer,
@@ -24,6 +25,7 @@ const reducer = {
     tests: testListSlice,
     attempts: attemptSlice,
     accounts: accountSlice,
+    comments: commentReducer,
     speaking: speakingSlice,
     writing: writingSlice
 };

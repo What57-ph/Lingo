@@ -94,6 +94,12 @@
       <artifactId>loki-logback-appender</artifactId>
       <version>1.5.2</version>
     </dependency>
+    <dependency>
+      <groupId>io.github.cdimascio</groupId>
+      <artifactId>java-dotenv</artifactId>
+      <version>5.2.2</version>
+    </dependency>
+
   </dependencies>
   <dependencyManagement>
     <dependencies>
