@@ -1,17 +1,33 @@
 import React, { useState, useEffect } from "react";
 import ChartUpload from "./ChartUpload"; // <- Import component
 
+// (1. Thêm hàm chuẩn hóa)
+// Hàm này chuyển đổi "Task 1" -> 1, "Task 2" -> 2
+const normalizeTaskType = (taskString) => {
+  if (taskString === "Task 1") return 1;
+  if (taskString === "Task 2") return 2;
+  // Mặc định là 1 nếu không khớp (hoặc là số 1)
+  return typeof taskString === 'number' ? taskString : 1;
+};
+
 const InputColumn = ({ onGrade, isLoading, lockedData }) => {
   const isLocked = !!lockedData;
-  const [selectedTask, setSelectedTask] = useState(lockedData?.taskType || 1);
+
+  // (2. Dùng hàm chuẩn hóa khi khởi tạo state)
+  const [selectedTask, setSelectedTask] = useState(
+    isLocked ? normalizeTaskType(lockedData?.taskType) : 1
+  );
   const [promptText, setPromptText] = useState(lockedData?.promptText || "");
   const [essayText, setEssayText] = useState("");
   const [uploadedFile, setUploadedFile] = useState(null);
   const [errors, setErrors] = useState({ prompt: null, essay: null });
 
+  // (3. Dùng hàm chuẩn hóa trong useEffect)
   useEffect(() => {
     if (lockedData) {
-      setSelectedTask(lockedData.taskType);
+      // Chuyển "Task 1" thành 1
+      setSelectedTask(normalizeTaskType(lockedData.taskType));
+      // 'promptText' và 'promptImage' (trong lockedData) đã được map đúng
       setPromptText(lockedData.promptText || "");
       setUploadedFile(null);
       setErrors({ prompt: null, essay: null });
@@ -40,6 +56,7 @@ const InputColumn = ({ onGrade, isLoading, lockedData }) => {
     let newErrors = { prompt: null, essay: null };
 
     if (!isLocked) {
+      // Logic kiểm tra lỗi (hiện đã đúng vì selectedTask là số 1 hoặc 2)
       if (selectedTask === 1 && promptText.trim() === "" && !uploadedFile) {
         newErrors.prompt = "Vui lòng nhập đề bài hoặc tải ảnh lên.";
         hasError = true;
@@ -63,6 +80,7 @@ const InputColumn = ({ onGrade, isLoading, lockedData }) => {
       task: selectedTask,
       prompt: promptText,
       essay: essayText,
+      // Logic lấy ảnh đã đúng
       image: isLocked ? lockedData.promptImage : uploadedFile,
     });
   };
@@ -101,6 +119,7 @@ const InputColumn = ({ onGrade, isLoading, lockedData }) => {
               name="task-type"
               value="1"
               className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+              // (4. Logic 'checked' giờ sẽ hoạt động đúng)
               checked={selectedTask === 1}
               onChange={() => handleTaskChange(1)}
               disabled={isLocked}
@@ -121,6 +140,7 @@ const InputColumn = ({ onGrade, isLoading, lockedData }) => {
               name="task-type"
               value="2"
               className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2"
+              // (4. Logic 'checked' giờ sẽ hoạt động đúng)
               checked={selectedTask === 2}
               onChange={() => handleTaskChange(2)}
               disabled={isLocked}
@@ -133,10 +153,12 @@ const InputColumn = ({ onGrade, isLoading, lockedData }) => {
       </div>
 
       {/* KHỐI 1.5: UPLOAD ẢNH (Conditional) */}
+      {/* (5. Logic 'selectedTask === 1' giờ sẽ hoạt động đúng) */}
       {selectedTask === 1 && (
         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200 transition-all duration-300">
           <ChartUpload
             handleFileSelect={handleFileChange}
+            // (6. 'initialImageUrl' đã được map đúng từ 'resourceContent')
             initialImageUrl={lockedData?.promptImage}
             disabled={isLocked}
           />
@@ -172,6 +194,7 @@ const InputColumn = ({ onGrade, isLoading, lockedData }) => {
             : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
             } ${isLocked ? "bg-gray-100 cursor-not-allowed" : ""}`}
           placeholder="Ví dụ: 'The chart below shows the percentage of the population...'"
+          // (7. 'promptText' đã được map đúng từ 'title')
           value={promptText}
           onChange={(e) => {
             if (isLocked) return;
@@ -218,7 +241,6 @@ const InputColumn = ({ onGrade, isLoading, lockedData }) => {
           onChange={(e) => {
             setEssayText(e.target.value);
             if (e.target.value.trim() !== "") {
-              // SỬA LỖI LOGIC: Phải xóa lỗi 'essay', không phải 'prompt'
               setErrors((prev) => ({ ...prev, essay: null }));
             }
           }}

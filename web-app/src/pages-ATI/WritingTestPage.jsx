@@ -1,53 +1,74 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import InputColumn from "../components-ATI/writing/InputColumn";
 import { toast } from "react-toastify";
 import { createAttempts } from "../slice/attempts";
-// import { retrieveSingleTest } from "../slice/tests"; 
+// (1. Import thunk để fetch câu hỏi)
+// Giả định bạn có thunk này từ slice 'questions'
+import { retrieveQuestionForTest } from "../slice/questions";
 
-const MOCK_TEST_DATA = {
-  id: 1,
-  taskType: 1,
-  promptText:
-    "The chart below shows the changes in the percentage of the population in four European countries who bought different types of products online from 2018 to 2022.",
-  promptImage: "https://i.imgur.com/gim2k9g.png",
-};
+// (2. Xóa MOCK_TEST_DATA)
+// const MOCK_TEST_DATA = { ... };
 
 function WritingTestPage() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // Dùng cho việc 'nộp bài'
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id: testId } = useParams();
 
   const isLockMode = !!testId;
-  const [pageLoading, setPageLoading] = useState(isLockMode);
-  const [lockedData, setLockedData] = useState(null);
 
-  // useEffect: Fetch đề bài nếu ở "Lock Mode"
+  // (3. Lấy state từ Redux)
+  // Lấy 'pageLoading' và 'questions' từ slice (ví dụ: 'questions')
+  const {
+    questions,
+    loading: pageLoading, // 'pageLoading' giờ do Redux quản lý
+    error
+  } = useSelector((state) => state.questions); // Giả định slice tên 'questions'
+
+  const { user } = useSelector((state) => state.authentication);
+
+
+  // (4. Dùng useMemo để "chuyển đổi" data)
+  // Chuyển đổi response API (mảng) thành object 'lockedData'
+  const lockedData = useMemo(() => {
+    // Nếu không ở 'lock mode' hoặc không có câu hỏi, trả về null
+    if (!isLockMode || !questions || questions.length === 0) {
+      return null;
+    }
+
+    // Response API là một mảng, nhưng trang này chỉ hiển thị 1 task.
+    // Lấy phần tử đầu tiên (ví dụ: Task 1)
+    const task = questions[0];
+
+    // "Chuyển đổi" trường mới (API) thành trường cũ (UI)
+    return {
+      id: task.id,
+      taskType: task.part,       // "Task 1"
+      promptText: task.title,   // "The chart shows..."
+      promptImage: task.resourceContent // Link ảnh (nếu có)
+    };
+  }, [isLockMode, questions]);
+
+
+  // (5. useEffect: Fetch dữ liệu thật)
   useEffect(() => {
     if (isLockMode) {
-      setPageLoading(true);
-      console.log(`(Mock) Đang fetch test với ID: ${testId}`);
-      setTimeout(() => {
-        setLockedData(MOCK_TEST_DATA);
-        setPageLoading(false);
-      }, 1000);
-      /*
-      dispatch(retrieveSingleTest(testId))
+      // 'setPageLoading(true)' không cần nữa vì Redux lo
+      console.log(`Fetching test với ID: ${testId}`);
+      dispatch(retrieveQuestionForTest(testId))
         .unwrap()
-        .then((testData) => setLockedData(testData))
         .catch((error) => {
           console.error("Không tìm thấy bài test:", error);
           toast.error("Không tìm thấy bài test!");
-          setLockedData(null);
-        })
-        .finally(() => setPageLoading(false));
-      */
+          // 'setLockedData(null)' không cần nữa vì useMemo sẽ xử lý
+        });
     }
   }, [testId, isLockMode, dispatch]);
 
   // Xử lý nộp bài: Chỉ lưu và chuyển hướng
+  // (Hàm này không cần thay đổi vì 'lockedData' đã được 'useMemo' chuẩn bị)
   const handleGrade = useCallback(
     async (formData) => {
       setIsLoading(true);
@@ -63,9 +84,9 @@ function WritingTestPage() {
           return;
         }
 
-        const userId = "b3dbd68b-0613-466c-9037-ebdea8a184c1";
+        const userId = user?.sub;
         const quizId = isLockMode ? lockedData.id : 0;
-        const gradingIeltsId = "mock-writing-" + Date.now(); // ID duy nhất để liên kết
+        const gradingIeltsId = "mock-writing-" + Date.now();
 
         const attemptData = {
           quizId: quizId,
@@ -79,7 +100,6 @@ function WritingTestPage() {
           ]
         };
 
-        // BƯỚC 1: Lưu bài làm
         const action = await dispatch(createAttempts(attemptData));
 
         if (!createAttempts.fulfilled.match(action)) {
@@ -92,12 +112,13 @@ function WritingTestPage() {
           throw new Error("Không lấy được ID bài làm sau khi tạo.");
         }
 
-        // BƯỚC 2: Chuyển hướng ngay lập tức
         toast.success("Nộp bài thành công! Đang chuyển trang kết quả.");
         navigate(`/writing-result/${newAttemptId}`, {
           state: {
             task: taskText,
-            essay: essayText
+            essay: essayText,
+            // (Thêm ảnh nếu có)
+            promptImage: isLockMode ? lockedData.promptImage : null
           }
         });
 
@@ -107,10 +128,11 @@ function WritingTestPage() {
         setIsLoading(false);
       }
     },
-    [navigate, dispatch, isLockMode, lockedData]
+    // 'lockedData' giờ là dependency vì nó đến từ 'useMemo'
+    [navigate, dispatch, isLockMode, lockedData, user]
   );
 
-  // (Phần render và return giữ nguyên)
+  // (6. renderContent giờ đã được điều khiển bởi Redux)
   const renderContent = () => {
     if (isLockMode && pageLoading) {
       return (
@@ -123,12 +145,13 @@ function WritingTestPage() {
       );
     }
 
-    if (isLockMode && !pageLoading && !lockedData) {
+    // Nếu có lỗi API (error) hoặc không có 'lockedData' (sau khi load xong)
+    if (isLockMode && !pageLoading && (error || !lockedData)) {
       return (
         <div className="text-center p-20 bg-red-50 rounded-xl shadow-lg border border-red-200">
           <h2 className="text-2xl font-semibold text-red-700">Lỗi</h2>
           <p className="text-red-600 mt-2">
-            Không tìm thấy bài test với ID: {testId}.
+            {error ? error.message : `Không tìm thấy bài test với ID: ${testId}.`}
           </p>
         </div>
       );

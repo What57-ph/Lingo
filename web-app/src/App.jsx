@@ -54,10 +54,6 @@ function App() {
               element: <HomePage />,
             },
             {
-              path: "ai-assessment",
-              element: <IeltsGrader />
-            },
-            {
               path: "writing",
               element: <IeltsListWriting />
             },

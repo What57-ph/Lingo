@@ -1,37 +1,35 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { FinishedScreen } from "../components-ATI/speaking/FinishedScreen";
 import SpeakingHeader from "../components-ATI/speaking/SpeakingHeader";
 import SpeakingFooter from "../components-ATI/speaking/SpeakingFooter";
-import { SPEAKING_QUESTIONS as DEFAULT_QUESTIONS } from "../data/MockData";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { saveSingleFile } from "../slice/files";
 import { createSubmit } from "../slice-ATI/speaking";
 import { createAttempts } from "../slice/attempts";
 import { toast } from "react-toastify";
+import { retrieveQuestionForTest, retrieveSingleQuestion } from "../slice/questions";
 
-const MOCK_LOCKED_TEST = {
-  quizId: 101, // ID của bài test
-  topicPrompt: "Mock Test: Technology",
-  questions: [
-    { type: "Part 1", text: "Do you use any gadgets on a daily basis?" },
-    { type: "Part 2", text: "Describe a piece of technology you find useful." },
-    { type: "Part 3", text: "Do you think technology makes our lives simpler or more complicated?" },
-  ],
-};
-
-const FREE_PRACTICE_TEST = {
-  quizId: 2,
-  topicPrompt: "IELTS Speaking Free Practice",
-  questions: DEFAULT_QUESTIONS,
-};
 
 function SpeakingTestPage() {
   const { testId } = useParams();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { user } = useSelector((state) => state.authentication);
+
   const isLockMode = !!testId;
 
-  const [testData, setTestData] = useState(null);
-  const [pageLoading, setPageLoading] = useState(true);
+  const {
+    questions: fetchedQuestions,
+    loading: pageLoading,
+    error
+  } = useSelector((state) => state.questions);
+
+  const quizId = useMemo(() => (isLockMode ? parseInt(testId, 10) : 2), [isLockMode, testId]);
+  const topicPrompt = useMemo(() => (
+    isLockMode ? `IELTS Speaking Test #${testId}` : "IELTS Speaking Free Practice"
+  ), [isLockMode, testId]);
+
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [recordingStatus, setRecordingStatus] = useState("idle");
@@ -45,40 +43,17 @@ function SpeakingTestPage() {
   const streamRef = useRef(null);
   const recordedChunksRef = useRef([]);
 
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    setPageLoading(true);
-    if (isLockMode) {
-      console.log(`(Mock) Đang fetch test với ID: ${testId}`);
+    const idToFetch = testId || "24";
 
-      setTimeout(() => {
-        setTestData(MOCK_LOCKED_TEST);
-        setPageLoading(false);
-      }, 1000);
+    dispatch(retrieveQuestionForTest(idToFetch))
+      .unwrap()
+      .catch((err) => {
+        console.error("Không tìm thấy bài test:", err);
+        toast.error("Không tìm thấy bài test!");
+      });
 
-      /*
-      dispatch(retrieveSingleTest(testId))
-        .unwrap()
-        .then((data) => {
-          setTestData({
-            quizId: data.id,
-            topicPrompt: data.title,
-            questions: data.questions,
-          });
-        })
-        .catch((err) => {
-          toast.error("Không tìm thấy bài test!");
-          setTestData(null);
-        })
-        .finally(() => setPageLoading(false));
-      */
-    } else {
-      setTestData(FREE_PRACTICE_TEST);
-      setPageLoading(false);
-    }
-  }, [testId, isLockMode, dispatch]);
+  }, [testId, dispatch]);
 
   useEffect(() => {
     if (recordingStatus === "recording") {
@@ -135,7 +110,6 @@ function SpeakingTestPage() {
     }
   };
 
-  // --- Hàm Điều khiển ---
 
   const handleToggleRecordPause = () => {
     if (isFinished) return;
@@ -194,8 +168,7 @@ function SpeakingTestPage() {
   };
 
   const handleSubmitForGrading = async () => {
-    const userId = "b3dbd68b-0613-466c-9037-ebdea8a184c1";
-    const { quizId, topicPrompt } = testData;
+    const userId = user?.sub;
 
     if (!finalRecording.blob) {
       toast.warn("Không tìm thấy file ghi âm.");
@@ -208,7 +181,7 @@ function SpeakingTestPage() {
       const uploadAction = await dispatch(
         saveSingleFile({
           file: finalRecording.blob,
-          testTitle: topicPrompt,
+          testTitle: topicPrompt, // Dùng topicPrompt mới
           fileCategory: "SPEAKING",
         })
       );
@@ -220,7 +193,7 @@ function SpeakingTestPage() {
 
       const formData = new FormData();
       formData.append("user_id", userId);
-      formData.append("topic_prompt", topicPrompt);
+      formData.append("topic_prompt", topicPrompt); // Dùng topicPrompt mới
       formData.append("audio", finalRecording.blob, "speaking_test.webm");
 
       const submitAction = await dispatch(createSubmit(formData));
@@ -231,7 +204,7 @@ function SpeakingTestPage() {
       console.log("Đã nộp cho AI, gradingId:", gradingId);
 
       const attemptData = {
-        quizId: quizId,
+        quizId: quizId, // Dùng quizId mới (là testId hoặc 2)
         userId: userId,
         timeTaken: totalElapsedTime,
         type: "IELTS",
@@ -258,13 +231,12 @@ function SpeakingTestPage() {
       console.log("Đã tạo attempt thành công, ID:", newAttemptId);
       toast.success("Nộp bài thành công! Đang chuyển trang kết quả.");
 
-      // --- BƯỚC 4: Điều hướng bằng URL ĐỘNG ---
       navigate(`/speaking-result/${newAttemptId}`);
 
     } catch (error) {
       console.error("Lỗi khi nộp bài:", error);
       toast.error(`Đã xảy ra lỗi: ${error.message}`);
-      setIsSubmitting(false); // Chỉ dừng loading nếu lỗi
+      setIsSubmitting(false);
     }
   };
 
@@ -277,12 +249,14 @@ function SpeakingTestPage() {
     );
   }
 
-  if (!testData) {
+  if (error || !fetchedQuestions || fetchedQuestions.length === 0) {
     return (
       <div className="flex h-screen w-full items-center justify-center text-center">
         <div>
           <h1 className="text-2xl font-semibold text-red-600">Lỗi</h1>
-          <p className="mt-2">Không tìm thấy bài thi với ID: {testId}.</p>
+          <p className="mt-2">
+            {error ? error.message : `Không tìm thấy câu hỏi cho bài thi: ${testId || 2}.`}
+          </p>
           <Link to="/" className="mt-4 inline-block text-blue-600 hover:underline">
             Quay về trang chủ
           </Link>
@@ -291,8 +265,8 @@ function SpeakingTestPage() {
     );
   }
 
-  const TOTAL_QUESTIONS = testData.questions.length;
-  const currentQuestion = testData.questions[currentQuestionIndex];
+  const TOTAL_QUESTIONS = fetchedQuestions.length;
+  const currentQuestion = fetchedQuestions[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === TOTAL_QUESTIONS - 1;
 
   handleNextQuestion = () => {
@@ -311,11 +285,12 @@ function SpeakingTestPage() {
       <main className="flex-1 flex items-center justify-center p-8">
         {!isFinished ? (
           <div className="text-center">
+            {/* (8. Thay đổi .type -> .part và .text -> .title) */}
             <span className="text-sm font-semibold text-blue-600 uppercase">
-              {currentQuestion.type}
+              {currentQuestion.part}
             </span>
             <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 mt-4 whitespace-pre-line max-w-3xl">
-              {currentQuestion.text}
+              {currentQuestion.title}
             </h1>
           </div>
         ) : (
