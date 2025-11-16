@@ -46,7 +46,7 @@ const RightSider = () => {
             </div>
             <div className="text-center p-3 bg-green-50 rounded-lg">
               <div className="text-2xl font-bold text-green-600">750</div>
-              <div className="text-xs text-gray-600">Điểm cao nhất</div>
+              <div className="text-xs text-gray-600">Highest Score</div>
             </div>
           </div>
           <div className="flex space-x-2 mb-4">

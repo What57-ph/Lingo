@@ -50,7 +50,7 @@ const AfterTestPage = () => {
     {
       "icon": <PercentageOutlined className="!text-blue-400" />,
       "content": `${Math.round(correctAnswers / totalQuestions * 100)}%`,
-      "tag": "Độ chính xác",
+      "tag": "Accuracy",
       "bgColor": "bg-blue-50",
       "tColor": "text-blue-600"
     },

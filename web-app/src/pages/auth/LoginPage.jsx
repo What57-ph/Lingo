@@ -1,7 +1,7 @@
 import { AppleFilled, FacebookFilled, FacebookOutlined, GoogleOutlined, LockFilled, LockOutlined, LockTwoTone, MailFilled, MailOutlined, MailTwoTone } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Spin } from "antd"
 import '../../styles/animation.css'
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../slice/authentication";
 import { toast } from "react-toastify";
@@ -78,7 +78,7 @@ const LoginPage = () => {
             <Form.Item name="remember" valuePropName="checked" label={null} noStyle>
               <Checkbox>Ghi nhớ tôi</Checkbox>
             </Form.Item>
-            <a href="#" class="text-sm text-blue-600 hover:text-blue-800 transition-colors" id="forgot-password">Quên mật khẩu?</a>
+            <Link to={"/auth/forget"} class="text-sm text-blue-600 hover:text-blue-800 transition-colors" id="forgot-password">Quên mật khẩu?</Link>
           </div>
 
           <Form.Item label={null} className="!mt-6">
