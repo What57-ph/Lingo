@@ -100,15 +100,8 @@ const HeaderClient = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center space-x-8 h-full">
-                        <Link className="flex items-center space-x-3" to={"/"}>
-                            <div className="w-10 h-10 bg-gradient-to-br bg-blue-500 rounded-xl flex items-center justify-center shadow-lg">
-                                <FaEarlybirds className="text-[#ffffff] text-2xl" />
-                            </div>
-                            <div className="flex flex-col">
-                                <span className="text-3xl font-bold font-mono bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">
-                                    Lingo
-                                </span>
-                            </div>
+                        <Link to="/" className="text-2xl font-bold text-blue-600">
+                            Prep<span className="text-blue-800">IELTS</span>
                         </Link>
                         <nav className="hidden lg:flex space-x-2 m-1 h-1/2">
                             <Link to={"/tests"} className={`${location.pathname === '/tests' ? "!text-blue-600 !bg-blue-50 !rounded-lg" : "!text-gray-700 hover:!text-blue-600"} 

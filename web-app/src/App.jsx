@@ -29,6 +29,10 @@ import RootLayout from './layouts/RouteLayout';
 import Analytics from './pages/user/Analytics';
 import Profile from './pages/user/Profile';
 import UserDetailPage from './pages/admin/UserDetailPage';
+import SpeakingTestPage from './pages-ATI/SpeakingTestPage';
+import SpeakingResultPage from './pages-ATI/SpeakingResultPage';
+import WritingTestPage from './pages-ATI/WritingTestPage';
+import WritingResultPage from './pages-ATI/WritingResultPage';
 import IeltsGrader from './pages/tests/IeltsGrader';
 import IeltsListWriting from './pages/tests/IeltsListWriting';
 import IeltsListListening from './pages/tests/IeltsListListening';
@@ -48,10 +52,6 @@ function App() {
             {
               index: true,
               element: <HomePage />,
-            },
-            {
-              path: "ai-assessment",
-              element: <IeltsGrader />
             },
             {
               path: "writing",
@@ -101,7 +101,18 @@ function App() {
               path: "profile",
               element: <Profile />,
             },
-
+            {
+              path: "writing-test/:id",
+              element: <WritingTestPage />,
+            },
+            {
+              path: "writing-test",
+              element: <WritingTestPage />,
+            },
+            {
+              path: "writing-result/:id",
+              element: <WritingResultPage />,
+            },
           ]
         },
         {
@@ -153,9 +164,22 @@ function App() {
             {
               path: "reset",
               element: <ResetPage />,
-            }
+            },
+            // {
+            //   path: "writing-result",
+            //   element: <ResetPage />,
+            // },
+
           ],
         },
+        {
+          path: "speaking-test/:testId",
+          element: <SpeakingTestPage />,
+        },
+        {
+          path: "speaking-result/:attemptId ",
+          element: <SpeakingResultPage />,
+        }
       ]
     }
   ]);

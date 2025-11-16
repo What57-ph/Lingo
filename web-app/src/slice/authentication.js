@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit";
 import axios from "axios";
-import { getUserInfoApi, handleApiError, loginApi, loginGoogleApi, logoutApi, registerApi, registerGG } from "../config/api";
+import { getUserInfoApi, handleApiError, loginApi, loginGoogleApi, logoutApi, registerApi, registerGG, resetPassword, sendOTP, verifyOTP } from "../config/api";
 import { decodeToken } from "../utils/DecodeToken";
 import { updateAvatarAccount } from "./accounts";
 
@@ -9,7 +9,8 @@ const initialState = {
   token: localStorage.getItem('access_token') || null,
   isAuthenticated: !!localStorage.getItem('access_token'),
   loading: false,
-  error: null
+  error: null,
+  mail: null
 };
 
 export const initializeAuth = createAsyncThunk(
@@ -99,6 +100,50 @@ export const loginGoogle = createAsyncThunk(
   }
 );
 
+export const requestOtp = createAsyncThunk(
+  "authentication/sendOtp",
+  async (data, thunkAPI) => {
+    try {
+      const response = await sendOTP(data.email, data.reset);
+      console.log("Request OTP : ", response);
+      return response;
+    } catch (error) {
+      handleApiError(error, "Gửi OTP thất bại");
+      return thunkAPI.rejectWithValue(error?.response?.detail || "Gửi OTP thất bại");
+    }
+  }
+)
+
+export const checkOtp = createAsyncThunk(
+  "authentication/verifyOtp",
+  async (data, thunkAPI) => {
+    try {
+      const response = await verifyOTP(data.email, data.otp);
+      console.log("Check OTP : ", response);
+      return response;
+    } catch (error) {
+      handleApiError(error, "Gửi OTP thất bại");
+      return thunkAPI.rejectWithValue(error?.response?.detail || "Gửi OTP thất bại");
+    }
+  }
+);
+
+export const changePassword = createAsyncThunk(
+  "authentication/changePassword",
+  async (data, thunkAPI) => {
+    try {
+      const response = await resetPassword(data.email, data.password);
+      console.log("Change password: ", response);
+      return response;
+    } catch (error) {
+      handleApiError(error, "Gửi OTP thất bại");
+      return thunkAPI.rejectWithValue(error?.response?.detail || "Gửi OTP thất bại");
+    }
+  }
+);
+
+
+
 
 const authSlice = createSlice({
   name: "authentication",
@@ -106,23 +151,16 @@ const authSlice = createSlice({
   reducers: {
     setIsAuthenticated: (state, action) => {
       state.isAuthenticated = action.payload;
-    }
+    },
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
   }, extraReducers: (builder) => {
     builder
-
       .addCase(initializeAuth.fulfilled, (state, action) => {
         state.isAuthenticated = true;
         state.user = action.payload.user;
         state.token = action.payload.token;
-      })
-      .addCase(initializeAuth.rejected, (state, action) => {
-        state.isAuthenticated = false;
-      })
-
-      // normal login 
-      .addCase(login.pending, (state) => {
-        state.loading = true;
-        state.error = null;
       })
       .addCase(login.fulfilled, (state, action) => {
         state.isAuthenticated = true;
@@ -130,28 +168,8 @@ const authSlice = createSlice({
         state.token = action.payload.token;
         state.loading = false;
       })
-      .addCase(login.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-
-      // normal register
-      .addCase(register.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(register.fulfilled, (state, action) => {
         state.loading = false;
-      })
-      .addCase(register.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-
-      // normal register
-      .addCase(logout.pending, (state) => {
-        state.loading = true;
-        state.error = null;
       })
       .addCase(logout.fulfilled, (state, action) => {
         state.loading = false;
@@ -159,37 +177,34 @@ const authSlice = createSlice({
         state.user = null;
         state.token = null;
       })
-      .addCase(logout.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
 
       // google flow
 
-      .addCase(loginGoogle.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(loginGoogle.fulfilled, (state, action) => {
         state.isAuthenticated = true;
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.loading = false;
       })
-      .addCase(loginGoogle.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
-
       .addCase(updateAvatarAccount.fulfilled, (state, action) => {
         const { avatar } = action.meta.arg;
         state.user.avatar = avatar;
       })
-
+      .addMatcher(isPending(login, register, logout, loginGoogle, updateAvatarAccount, requestOtp, checkOtp, changePassword), (state, action) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addMatcher(isRejected(login, register, logout, loginGoogle, updateAvatarAccount, requestOtp, checkOtp, changePassword), (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addMatcher(isFulfilled(requestOtp, checkOtp, changePassword), (state, action) => {
+        state.loading = false;
+      })
   }
 
 });
 
 const { reducer } = authSlice;
 export default reducer;
-export const { setIsAuthenticated } = authSlice.actions;
+export const { setIsAuthenticated, setLoading } = authSlice.actions;

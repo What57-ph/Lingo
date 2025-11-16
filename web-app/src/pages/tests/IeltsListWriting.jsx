@@ -55,7 +55,7 @@ const TestCard = ({ test, onTakeTest }) => {
       </div>
       <div className="flex-grow"></div>
       <Link
-        to={`/tests/${test.id}/${test.title}/doTests`}
+        to={`/writing-test/${test.id}`}
         onClick={() => onTakeTest(test)}
         className="w-full bg-white hover:bg-gray-50 text-blue-600 font-semibold py-2 px-4 rounded-lg border border-blue-600 transition duration-200 cursor-pointer flex items-center justify-center gap-2"
       >

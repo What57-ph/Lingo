@@ -34,18 +34,18 @@ public class AttemptService {
   private final AttemptMapper attemptMapper;
   private static final Logger logger = LoggerFactory.getLogger(AttemptService.class);
 
-  public List<ResAttemptDTO> getAllAttempts (){
+  public List<ResAttemptDTO> getAllAttempts() {
     return this.attemptRepository.findAll()
-            .stream().map(this.attemptMapper :: toResAttemptDTO)
-            .toList();
+        .stream().map(this.attemptMapper::toResAttemptDTO)
+        .toList();
   }
-  
+
   public Long createAttempt(ReqAttemptDTO req) {
     validateRequest(req);
     Attempt attempt = buildAttempt(req);
 
     List<String> field = Arrays.asList(req.getField());
-    if(field.contains("Listening") || field.contains("Reading") ) {
+    if (field.contains("Listening") || field.contains("Reading")) {
       attempt = gradingLR(attempt, req);
     } else {
       attempt = gradingSW(attempt, req);
@@ -57,25 +57,25 @@ public class AttemptService {
 
   public ResAttemptDTO getSingleAttempt(Long attemptId) {
     Attempt attempt = this.attemptRepository.findById(attemptId)
-            .orElseThrow(() -> new NotFoundException(Constants.ATTEMPT_NOT_FOUND));
+        .orElseThrow(() -> new NotFoundException(Constants.ATTEMPT_NOT_FOUND));
 
     ResAttemptDTO att = buildResponse(attempt, attempt.getUserAnswers(), attempt.getSectionResults());
 
     return att;
   }
 
-  public List<ResAttemptDTO> getUserAttempts(String userId){
+  public List<ResAttemptDTO> getUserAttempts(String userId) {
 
     List<ResAttemptDTO> list = new ArrayList<>();
     List<Attempt> attempts = null;
     try {
       attempts = this.attemptRepository.findByUserId(userId);
 
-      for(Attempt attempt : attempts) {
+      for (Attempt attempt : attempts) {
         ResAttemptDTO att = this.attemptMapper.toResAttemptDTO(attempt);
         List<ResAttemptDTO.Answers> answers = attempt.getUserAnswers().stream()
-                .map(this.attemptMapper::toResAnswerDTO)
-                .toList();
+            .map(this.attemptMapper::toResAnswerDTO)
+            .toList();
         att.setAnswers(answers);
         list.add(att);
       }
@@ -86,12 +86,13 @@ public class AttemptService {
     }
   }
 
-  public List<ResAttemptShortDTO> getUserAttemptsShort(String userId){
+  public List<ResAttemptShortDTO> getUserAttemptsShort(String userId) {
     try {
       List<ResAttemptShortDTO> attempts = this.attemptRepository.getUserAttemptsShort(userId);
 
-      for (ResAttemptShortDTO attempt : attempts){
-        List<AttemptSectionResult> section = this.attemptSectionResultRepository.findByAttempt_AttemptId(attempt.getAttemptId());
+      for (ResAttemptShortDTO attempt : attempts) {
+        List<AttemptSectionResult> section = this.attemptSectionResultRepository
+            .findByAttempt_AttemptId(attempt.getAttemptId());
 
         List<ResAttemptShortDTO.SectionResult> ResSection = this.attemptMapper.toResShortSectionResultDTO(section);
 
@@ -114,9 +115,9 @@ public class AttemptService {
 
   private List<Long> extractQuestionIds(ReqAttemptDTO req) {
     List<Long> questionIds = req.getAnswers().stream()
-            .filter(q -> q.getUserAnswer() != null )
-            .map(ReqAttemptDTO.AnswerDTO::getQuestionId)
-            .toList();
+        .filter(q -> q.getUserAnswer() != null)
+        .map(ReqAttemptDTO.AnswerDTO::getQuestionId)
+        .toList();
 
     if (questionIds.isEmpty()) {
       throw new IllegalArgumentException("No valid answers provided");
@@ -128,12 +129,12 @@ public class AttemptService {
   private Map<Long, String> getCorrectAnswers(long testId) {
     try {
       return feignTestService.getCorrectAnswer(testId).stream()
-              .collect(Collectors.toMap(
-                      ResCorrectAns::getQuestionId,
-                      ResCorrectAns::getCorrectAnswer
-              ));
+          .collect(Collectors.toMap(
+              ResCorrectAns::getQuestionId,
+              ResCorrectAns::getCorrectAnswer));
     } catch (Exception e) {
-//      log.error("Failed to fetch correct answers for questions: {}", questionIds, e);
+      // log.error("Failed to fetch correct answers for questions: {}", questionIds,
+      // e);
       throw new RuntimeException("Unable to retrieve correct answers", e);
     }
   }
@@ -148,7 +149,8 @@ public class AttemptService {
     return attempt;
   }
 
-  private List<AttemptSectionResult> buildSectionResults(ReqAttemptDTO req, double[] scores, int[] sectionCounts, Attempt attempt) {
+  private List<AttemptSectionResult> buildSectionResults(ReqAttemptDTO req, double[] scores, int[] sectionCounts,
+      Attempt attempt) {
     List<AttemptSectionResult> sectionResults = new ArrayList<>();
 
     for (int i = 0; i < scores.length; i++) {
@@ -170,16 +172,17 @@ public class AttemptService {
     return sectionResults;
   }
 
-  private ResAttemptDTO buildResponse(Attempt attempt, List<UserAnswers> answers, List<AttemptSectionResult> sectionResults) {
+  private ResAttemptDTO buildResponse(Attempt attempt, List<UserAnswers> answers,
+      List<AttemptSectionResult> sectionResults) {
     ResAttemptDTO response = attemptMapper.toResAttemptDTO(attempt);
 
     List<ResAttemptDTO.Answers> answersDTO = answers.stream()
-            .map(attemptMapper::toResAnswerDTO)
-            .toList();
+        .map(attemptMapper::toResAnswerDTO)
+        .toList();
 
     List<ResAttemptDTO.SectionResult> sectionResultsDTO = sectionResults.stream()
-            .map(attemptMapper::toResSectionResultDTO)
-            .toList();
+        .map(attemptMapper::toResSectionResultDTO)
+        .toList();
 
     response.setAnswers(answersDTO);
     response.setSectionResults(sectionResultsDTO);
@@ -254,7 +257,8 @@ public class AttemptService {
       return total;
     } else if (type.equals("IELTS")) {
       // IELTS: Average of all sections (usually just 1 or 2)
-      if (scores.length == 0) return 0;
+      if (scores.length == 0)
+        return 0;
 
       double sum = 0;
       for (double score : scores) {
@@ -265,22 +269,21 @@ public class AttemptService {
     return 0;
   }
 
-  private Attempt gradingSW(Attempt currentAttempt, ReqAttemptDTO req){
-
+  private Attempt gradingSW(Attempt currentAttempt, ReqAttemptDTO req) {
     UserAnswers userAnswers = new UserAnswers();
-    userAnswers.setQuestionId(0L);  // id grading from model
-    userAnswers.setUserAnswer(req.getAnswers().get(0).getUserAnswer());  // answers (might be url or paragraph)
+    userAnswers.setQuestionId(0L); // id grading from model
+    userAnswers.setUserAnswer(req.getAnswers().get(0).getUserAnswer()); // answers (might be url or paragraph)
     userAnswers.setAttempt(currentAttempt);
     userAnswers.setCorrectAnswer(null);
     userAnswers.setCorrect(true);
 
-    int[] sections = {0};
-    double[] scores = {0.0};
-    List<AttemptSectionResult> sectionResults = buildSectionResults(req, scores,sections , currentAttempt);
+    int[] sections = { 0 };
+    double[] scores = { 0.0 };
+    List<AttemptSectionResult> sectionResults = buildSectionResults(req, scores, sections, currentAttempt);
 
     currentAttempt.setSectionResults(sectionResults);
-    currentAttempt.setUserAnswers(Collections.singletonList(userAnswers));
 
+    currentAttempt.setUserAnswers(Collections.singletonList(userAnswers));
     currentAttempt.setScore(0L);
     currentAttempt.setGradingIeltsId(req.getGradingIeltsId());
     this.attemptSectionResultRepository.saveAll(sectionResults);
@@ -288,8 +291,5 @@ public class AttemptService {
 
     return currentAttempt;
   }
-
-
-
 
 }
